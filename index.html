@@ -123,12 +123,58 @@ body::before{
 .r5{left:94%; animation-duration:12s; animation-delay:5.5s; font-size:1.3rem}
 
 /* =============================================
-   PAGE LOAD REVEAL — translateY + opacity only
+   PAGE LOAD REVEAL — antigravity bounce drop
+   Items fall from above and bounce to rest
 ============================================= */
-.rev{opacity:0;transform:translateY(22px);animation:revUp .65s cubic-bezier(.23,1,.32,1) forwards}
-@keyframes revUp{to{opacity:1;transform:translateY(0)}}
-.d1{animation-delay:.08s}.d2{animation-delay:.18s}.d3{animation-delay:.28s}
-.d4{animation-delay:.38s}.d5{animation-delay:.50s}.d6{animation-delay:.62s}
+.rev{
+  opacity:0;
+  transform:translateY(-44px) scale(.95);
+  animation:gravDrop .85s cubic-bezier(.34,1.56,.64,1) forwards;
+  will-change:transform,opacity;
+}
+@keyframes gravDrop{
+  0%  {opacity:0; transform:translateY(-44px) scale(.95)}
+  55% {opacity:1; transform:translateY(8px)   scale(1.02)}
+  75% {           transform:translateY(-4px)  scale(.99)}
+  90% {           transform:translateY(2px)   scale(1.005)}
+  100%{opacity:1; transform:translateY(0)     scale(1)}
+}
+.d1{animation-delay:.08s}.d2{animation-delay:.2s}.d3{animation-delay:.32s}
+.d4{animation-delay:.44s}.d5{animation-delay:.56s}.d6{animation-delay:.68s}
+
+/* =============================================
+   REVERSE GRAVITY STARS — slow downward drift
+   Two layers at different speeds create depth
+============================================= */
+.stars-fall{
+  position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(1px   1px   at 14%  5%,rgba(255,255,255,.7)  0%,transparent 100%),
+    radial-gradient(1px   1px   at 38%  3%,rgba(167,139,250,.6)  0%,transparent 100%),
+    radial-gradient(1.5px 1.5px at 62%  2%,rgba(255,255,255,.8)  0%,transparent 100%),
+    radial-gradient(1px   1px   at 81%  4%,rgba(56,189,248,.55)  0%,transparent 100%),
+    radial-gradient(1px   1px   at 26%  8%,rgba(255,255,255,.5)  0%,transparent 100%),
+    radial-gradient(1px   1px   at 73%  6%,rgba(196,181,253,.6)  0%,transparent 100%),
+    radial-gradient(1px   1px   at 52%  9%,rgba(255,255,255,.45) 0%,transparent 100%),
+    radial-gradient(1px   1px   at 91%  7%,rgba(167,139,250,.5)  0%,transparent 100%);
+  animation:sFall 20s linear infinite;
+  will-change:transform;
+}
+@keyframes sFall{0%{transform:translateY(0)}100%{transform:translateY(70px)}}
+
+.stars-fall2{
+  position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(1px 1px at  9% 15%,rgba(255,255,255,.4)  0%,transparent 100%),
+    radial-gradient(1px 1px at 44% 12%,rgba(56,189,248,.45)  0%,transparent 100%),
+    radial-gradient(1px 1px at 67% 18%,rgba(255,255,255,.5)  0%,transparent 100%),
+    radial-gradient(1px 1px at 88% 11%,rgba(167,139,250,.4)  0%,transparent 100%),
+    radial-gradient(1px 1px at 31% 16%,rgba(196,181,253,.5)  0%,transparent 100%),
+    radial-gradient(1px 1px at 55% 20%,rgba(255,255,255,.35) 0%,transparent 100%);
+  animation:sFall2 32s linear infinite;
+  will-change:transform;
+}
+@keyframes sFall2{0%{transform:translateY(0)}100%{transform:translateY(50px)}}
 
 /* =============================================
    LAYOUT
@@ -323,6 +369,88 @@ h1::after {clip-path:polygon(0 62%,100% 62%,100% 78%,0 78%);animation:glB 9s inf
 }
 
 /* =============================================
+   FEATURES SECTION
+============================================= */
+.features{
+  position:relative;z-index:10;
+  padding:0 16px 56px;
+}
+.features-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:14px;
+  max-width:760px;
+  margin:0 auto;
+}
+@media(max-width:520px){
+  .features-grid{grid-template-columns:1fr;gap:10px;max-width:340px}
+}
+.feat{
+  position:relative;
+  padding:24px 20px;
+  background:rgba(255,255,255,.03);
+  border:1px solid var(--border);
+  border-radius:18px;
+  text-align:center;
+  overflow:hidden;
+  /* Reveal handled by .rev class, levitate starts after */
+  will-change:transform;
+}
+/* Levitate applied after reveal completes via separate class */
+.feat-inner{
+  animation:featLevitate 4s ease-in-out infinite;
+  will-change:transform;
+}
+.feat:nth-child(2) .feat-inner{animation-delay:-.8s;animation-duration:4.5s}
+.feat:nth-child(3) .feat-inner{animation-delay:-1.6s;animation-duration:3.8s}
+@keyframes featLevitate{
+  0%,100%{transform:translateY(0)}
+  50%    {transform:translateY(-10px)}
+}
+@media(hover:hover) and (pointer:fine){
+  .feat:hover{border-color:rgba(167,139,250,.25)}
+}
+.feat:active{transform:scale(.97)!important}
+.feat::before{
+  content:'';
+  position:absolute;top:0;left:15%;width:70%;height:1px;
+  opacity:.7;
+}
+.feat:nth-child(1)::before{background:linear-gradient(90deg,transparent,rgba(167,139,250,.7),transparent)}
+.feat:nth-child(2)::before{background:linear-gradient(90deg,transparent,rgba(56,189,248,.7),transparent)}
+.feat:nth-child(3)::before{background:linear-gradient(90deg,transparent,rgba(250,204,21,.7),transparent)}
+.feat:active{transform:scale(.97)}
+.feat-icon{
+  font-size:2rem;
+  margin-bottom:12px;
+  display:block;
+  animation:iconBob 3s ease-in-out infinite;
+  will-change:transform;
+}
+.feat:nth-child(2) .feat-icon{animation-delay:.5s}
+.feat:nth-child(3) .feat-icon{animation-delay:1s}
+@keyframes iconBob{
+  0%,100%{transform:translateY(0)}
+  50%    {transform:translateY(-5px)}
+}
+.feat-title{
+  font-family:'Cinzel',serif;
+  font-size:.82rem;
+  font-weight:700;
+  letter-spacing:.08em;
+  margin-bottom:6px;
+  display:block;
+}
+.feat:nth-child(1) .feat-title{color:#c4b5fd}
+.feat:nth-child(2) .feat-title{color:#7dd3fc}
+.feat:nth-child(3) .feat-title{color:#fde047}
+.feat-desc{
+  font-size:.72rem;
+  color:var(--muted);
+  line-height:1.5;
+}
+
+/* =============================================
    DIVIDER
 ============================================= */
 .divider{position:relative;text-align:center;margin:0 auto 32px;max-width:960px}
@@ -348,33 +476,54 @@ h1::after {clip-path:polygon(0 62%,100% 62%,100% 78%,0 78%);animation:glB 9s inf
   grid-template-columns:repeat(2,1fr);
   gap:14px;max-width:860px;margin:0 auto;
 }
-@media(min-width:580px){.grid{grid-template-columns:repeat(4,1fr);gap:20px}}
+@media(min-width:580px){.grid{grid-template-columns:repeat(3,1fr);gap:20px}}
+@media(min-width:900px){.grid{grid-template-columns:repeat(6,1fr);gap:20px}}
 
 .pw{
-  opacity:0;transform:translateY(18px);
-  animation:revUp .65s cubic-bezier(.23,1,.32,1) forwards;
+  opacity:0;
+  animation:gravDrop .8s cubic-bezier(.34,1.56,.64,1) forwards;
   will-change:transform,opacity;
 }
 .pw:nth-child(1){animation-delay:.62s}
 .pw:nth-child(2){animation-delay:.74s}
 .pw:nth-child(3){animation-delay:.86s}
 .pw:nth-child(4){animation-delay:.98s}
+.pw:nth-child(5){animation-delay:1.10s}
+.pw:nth-child(6){animation-delay:1.22s}
 
+/* Phone frames float at different heights after reveal */
 .pf{
   border-radius:28px;overflow:hidden;
   border:4px solid rgba(255,255,255,.07);
-  /* Static shadow — not animated */
   box-shadow:0 16px 40px rgba(0,0,0,.6);
   aspect-ratio:9/19.5;background:#0c1020;
   position:relative;
-  transition:transform .35s cubic-bezier(.23,1,.32,1);
   will-change:transform;
 }
-/* Hover only on real pointer devices */
+/* Each phone floats at its own rhythm */
+.pw:nth-child(1) .pf{animation:phoneFloat1 5s   ease-in-out infinite}
+.pw:nth-child(2) .pf{animation:phoneFloat2 6s   ease-in-out infinite}
+.pw:nth-child(3) .pf{animation:phoneFloat3 4.5s ease-in-out infinite}
+.pw:nth-child(4) .pf{animation:phoneFloat1 5.8s ease-in-out infinite;animation-delay:-.5s}
+.pw:nth-child(5) .pf{animation:phoneFloat2 5.2s ease-in-out infinite;animation-delay:-1s}
+.pw:nth-child(6) .pf{animation:phoneFloat3 6.3s ease-in-out infinite;animation-delay:-1.5s}
+@keyframes phoneFloat1{
+  0%,100%{transform:translateY(0)     rotate(0deg)}
+  50%    {transform:translateY(-12px) rotate(.5deg)}
+}
+@keyframes phoneFloat2{
+  0%,100%{transform:translateY(0)     rotate(0deg)}
+  50%    {transform:translateY(-8px)  rotate(-.4deg)}
+}
+@keyframes phoneFloat3{
+  0%,100%{transform:translateY(0)     rotate(0deg)}
+  50%    {transform:translateY(-14px) rotate(.3deg)}
+}
+/* Hover only on real pointer devices — pauses float, lifts higher */
 @media(hover:hover) and (pointer:fine){
   .pf:hover{
-    transform:translateY(-10px) scale(1.03);
-    /* Static shadow change — no transition on shadow */
+    animation-play-state:paused;
+    transform:translateY(-18px) scale(1.04)!important;
     box-shadow:0 30px 60px rgba(0,0,0,.7);
   }
 }
@@ -386,7 +535,18 @@ h1::after {clip-path:polygon(0 62%,100% 62%,100% 78%,0 78%);animation:glB 9s inf
   background:linear-gradient(135deg,rgba(255,255,255,.05) 0%,transparent 50%);
   pointer-events:none;
 }
-.pf img{width:100%;height:100%;object-fit:cover;border-radius:24px;display:block}
+.pf img{
+  width:100%;height:100%;object-fit:cover;border-radius:24px;display:block;
+  /* Show dark bg if image fails to load */
+  background:#0c1020;
+}
+/* Broken image placeholder */
+.pf img::after{
+  content:'📱';
+  display:flex;align-items:center;justify-content:center;
+  width:100%;height:100%;font-size:2rem;
+  background:#0c1020;border-radius:24px;
+}
 .pl{
   text-align:center;margin-top:8px;
   font-size:.66rem;color:var(--muted);
@@ -435,6 +595,10 @@ footer{
 
 <!-- STARS (static CSS) -->
 <div class="stars"></div>
+
+<!-- REVERSE GRAVITY STARS (slow downward drift) -->
+<div class="stars-fall"></div>
+<div class="stars-fall2"></div>
 
 <!-- SHOOTING STARS (CSS transform only) -->
 <div class="shooters">
@@ -517,24 +681,59 @@ footer{
   </div>
 </header>
 
+<!-- FEATURES -->
+<section class="features">
+  <div class="features-grid">
+    <div class="feat rev d6">
+      <div class="feat-inner">
+        <span class="feat-icon">✨</span>
+        <span class="feat-title">Ultra Smooth Experience</span>
+        <p class="feat-desc">Buttery 60–144fps performance tuned for the Redmi K50i</p>
+      </div>
+    </div>
+    <div class="feat rev" style="animation-delay:.74s">
+      <div class="feat-inner">
+        <span class="feat-icon">🎨</span>
+        <span class="feat-title">Deep Customization</span>
+        <p class="feat-desc">Personalize every corner — themes, fonts, icons & more</p>
+      </div>
+    </div>
+    <div class="feat rev" style="animation-delay:.88s">
+      <div class="feat-inner">
+        <span class="feat-icon">⚡</span>
+        <span class="feat-title">Blazing Fast</span>
+        <p class="feat-desc">Optimized kernel & scheduler for lightning-fast response</p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- SCREENSHOTS -->
 <section class="ss">
   <div class="divider rev d6"><span>Device Screenshots</span></div>
   <div class="grid">
     <div class="pw">
-      <div class="pf"><img src="screenshots/home.png"     alt="Lunaris UI" loading="lazy"></div>
+      <div class="pf"><img src="screenshots/home.png"        alt="Lunaris UI" loading="lazy"></div>
       <p class="pl">Lunaris UI</p>
     </div>
     <div class="pw">
-      <div class="pf"><img src="screenshots/lunaris.png"  alt="Lunaris UI" loading="lazy"></div>
+      <div class="pf"><img src="screenshots/lunaris.png"     alt="Lunaris UI" loading="lazy"></div>
       <p class="pl">Lunaris UI</p>
     </div>
     <div class="pw">
-      <div class="pf"><img src="screenshots/music.png"    alt="Lunaris UI" loading="lazy"></div>
+      <div class="pf"><img src="screenshots/music.png"       alt="Lunaris UI" loading="lazy"></div>
       <p class="pl">Lunaris UI</p>
     </div>
     <div class="pw">
-      <div class="pf"><img src="screenshots/settings.png" alt="Lunaris UI" loading="lazy"></div>
+      <div class="pf"><img src="screenshots/settings.png"    alt="Lunaris UI" loading="lazy"></div>
+      <p class="pl">Lunaris UI</p>
+    </div>
+    <div class="pw">
+      <div class="pf"><img src="screenshots/appdrawer.png"   alt="Lunaris UI" loading="lazy"></div>
+      <p class="pl">Lunaris UI</p>
+    </div>
+    <div class="pw">
+      <div class="pf"><img src="screenshots/homescreen.png"  alt="Lunaris UI" loading="lazy"></div>
       <p class="pl">Lunaris UI</p>
     </div>
   </div>
