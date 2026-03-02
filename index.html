@@ -322,6 +322,26 @@ h1::after {clip-path:polygon(0 62%,100% 62%,100% 78%,0 78%);animation:glB 9s inf
    BUTTONS  — shimmer uses transform only
 ============================================= */
 .btns{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-bottom:60px}
+
+/* Each btn wrapper floats independently */
+.btns a:nth-child(1){animation:btnFloat1 3.5s ease-in-out infinite}
+.btns a:nth-child(2){animation:btnFloat2 4.2s ease-in-out infinite;animation-delay:-.6s}
+.btns a:nth-child(3){animation:btnFloat3 3.8s ease-in-out infinite;animation-delay:-1.2s}
+.btns a:nth-child(4){animation:btnFloat1 4.6s ease-in-out infinite;animation-delay:-1.8s}
+
+@keyframes btnFloat1{
+  0%,100%{transform:translateY(0)}
+  50%    {transform:translateY(-7px)}
+}
+@keyframes btnFloat2{
+  0%,100%{transform:translateY(0)}
+  50%    {transform:translateY(-5px)}
+}
+@keyframes btnFloat3{
+  0%,100%{transform:translateY(0)}
+  50%    {transform:translateY(-8px)}
+}
+
 .btn{
   display:inline-flex;align-items:center;gap:9px;
   padding:13px 22px;
@@ -329,8 +349,7 @@ h1::after {clip-path:polygon(0 62%,100% 62%,100% 78%,0 78%);animation:glB 9s inf
   border-radius:12px;text-decoration:none;color:#fff;
   cursor:pointer;border:1px solid transparent;
   letter-spacing:.02em;position:relative;overflow:hidden;
-  /* Only transform transitions — no box-shadow transition */
-  transition:transform .28s cubic-bezier(.23,1,.32,1),opacity .2s;
+  transition:filter .25s,opacity .2s;
   will-change:transform;
   -webkit-tap-highlight-color:transparent;
 }
@@ -344,8 +363,9 @@ h1::after {clip-path:polygon(0 62%,100% 62%,100% 78%,0 78%);animation:glB 9s inf
   transition:transform .45s ease;
 }
 .btn:hover::before{transform:skewX(-20deg) translateX(460%)}
-.btn:hover{transform:translateY(-3px) scale(1.02)}
-.btn:active{transform:translateY(0) scale(.97);opacity:.85}
+/* Hover brightens instead of translateY (float handles Y movement) */
+.btn:hover{filter:brightness(1.18)}
+.btn:active{filter:brightness(.85);opacity:.85}
 
 .bp{
   background:linear-gradient(135deg,#5b21b6,#7c3aed);
@@ -751,15 +771,15 @@ footer{
   /* Desktop-only: magnetic buttons + 3D card tilt + cursor glow */
   if(!touch){
 
-    /* Magnetic buttons */
+    /* Magnetic buttons — scale only, float handles Y */
     document.querySelectorAll('.btn').forEach(b=>{
       b.addEventListener('mousemove',e=>{
         const r=b.getBoundingClientRect();
-        const dx=(e.clientX-r.left-r.width/2)*.1;
-        const dy=(e.clientY-r.top -r.height/2)*.1;
-        b.style.transform=`translateY(-3px) scale(1.02) translate(${dx}px,${dy}px)`;
+        const dx=(e.clientX-r.left-r.width/2)*.08;
+        const dy=(e.clientY-r.top -r.height/2)*.08;
+        b.style.filter=`brightness(1.18) drop-shadow(${dx*.3}px ${dy*.3}px 8px rgba(124,106,255,.3))`;
       });
-      b.addEventListener('mouseleave',()=>{b.style.transform=''});
+      b.addEventListener('mouseleave',()=>{b.style.filter=''});
     });
 
     /* 3D phone tilt — transform only */
@@ -792,11 +812,11 @@ footer{
     document.addEventListener('mouseleave',()=>{g.style.opacity='0'});
   }
 
-  /* Mobile: simple scale press feedback */
+  /* Mobile: brightness press feedback */
   if(touch){
     document.querySelectorAll('.btn').forEach(b=>{
-      b.addEventListener('touchstart',()=>{b.style.transform='scale(.96)'},{ passive:true});
-      b.addEventListener('touchend',  ()=>{b.style.transform=''},         { passive:true});
+      b.addEventListener('touchstart',()=>{b.style.filter='brightness(.8)'},{ passive:true});
+      b.addEventListener('touchend',  ()=>{b.style.filter=''},              { passive:true});
     });
   }
 })();
