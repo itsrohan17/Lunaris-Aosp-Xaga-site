@@ -7,23 +7,22 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Outfit:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-/* ─────────────────────────────────────────
+/* =============================================
    TOKENS
-───────────────────────────────────────── */
+============================================= */
 :root{
   --bg:#04091a;
-  --surface:rgba(255,255,255,0.04);
   --border:rgba(255,255,255,0.08);
+  --violet:#a78bfa;
   --accent:#7c6aff;
   --sky:#38bdf8;
-  --violet:#a78bfa;
   --text:#e8e0ff;
   --muted:#5e6a8a;
 }
 
-/* ─────────────────────────────────────────
-   RESET
-───────────────────────────────────────── */
+/* =============================================
+   BASE
+============================================= */
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html{scroll-behavior:smooth}
 body{
@@ -31,107 +30,80 @@ body{
   background:var(--bg);
   color:var(--text);
   overflow-x:hidden;
-  min-height:100vh;
-  /* GPU-composited layer for smoother overall scrolling */
   -webkit-font-smoothing:antialiased;
 }
 
-/* ─────────────────────────────────────────
-   STATIC STAR FIELD  (CSS-only, zero JS)
-───────────────────────────────────────── */
+/* =============================================
+   BACKGROUND GRADIENT  — static, zero cost
+   No blur, no filter. Just a CSS gradient.
+============================================= */
+body::before{
+  content:'';
+  position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 70% 55% at 15% 10%, rgba(99,60,220,.18) 0%, transparent 65%),
+    radial-gradient(ellipse 55% 45% at 85% 60%, rgba(30,100,220,.14) 0%, transparent 65%),
+    radial-gradient(ellipse 45% 50% at 50% 95%, rgba(124,106,255,.10) 0%, transparent 65%);
+  /* No animation on this layer — static is free */
+}
+
+/* =============================================
+   STAR FIELD  — CSS only, opacity twinkle only
+   will-change:opacity so it stays on compositor
+============================================= */
 .stars{
   position:fixed;inset:0;z-index:0;pointer-events:none;
-  /* 3 layers of tiny dots at different densities */
   background:
-    /* layer 1 – bright sparse */
-    radial-gradient(1.5px 1.5px at  7% 12%,rgba(255,255,255,.8) 0%,transparent 100%),
-    radial-gradient(1px   1px   at 18% 68%,rgba(255,255,255,.6) 0%,transparent 100%),
-    radial-gradient(1.5px 1.5px at 31%  5%,rgba(255,255,255,.7) 0%,transparent 100%),
-    radial-gradient(1px   1px   at 44% 82%,rgba(255,255,255,.5) 0%,transparent 100%),
-    radial-gradient(1.5px 1.5px at 57% 38%,rgba(255,255,255,.8) 0%,transparent 100%),
-    radial-gradient(1px   1px   at 63% 91%,rgba(255,255,255,.4) 0%,transparent 100%),
-    radial-gradient(1.5px 1.5px at 76% 22%,rgba(255,255,255,.7) 0%,transparent 100%),
-    radial-gradient(1px   1px   at 84% 55%,rgba(255,255,255,.5) 0%,transparent 100%),
-    radial-gradient(1.5px 1.5px at 92%  8%,rgba(255,255,255,.8) 0%,transparent 100%),
-    /* layer 2 – violet tinted */
-    radial-gradient(2px 2px at 24% 47%,rgba(167,139,250,.55) 0%,transparent 100%),
-    radial-gradient(2px 2px at 51% 19%,rgba(167,139,250,.4)  0%,transparent 100%),
-    radial-gradient(2px 2px at 79% 73%,rgba(56,189,248,.45)  0%,transparent 100%),
-    /* layer 3 – blue tinted */
-    radial-gradient(1px 1px at 36% 61%,rgba(56,189,248,.5) 0%,transparent 100%),
-    radial-gradient(1px 1px at 88% 42%,rgba(56,189,248,.4) 0%,transparent 100%);
-  animation:starTwinkle 8s ease-in-out infinite alternate;
+    radial-gradient(1.5px 1.5px at  6% 11%,rgba(255,255,255,.85) 0%,transparent 100%),
+    radial-gradient(1px   1px   at 17% 67%,rgba(255,255,255,.6)  0%,transparent 100%),
+    radial-gradient(1.5px 1.5px at 29%  4%,rgba(255,255,255,.75) 0%,transparent 100%),
+    radial-gradient(1px   1px   at 43% 81%,rgba(255,255,255,.55) 0%,transparent 100%),
+    radial-gradient(1.5px 1.5px at 56% 36%,rgba(255,255,255,.8)  0%,transparent 100%),
+    radial-gradient(1px   1px   at 62% 90%,rgba(255,255,255,.45) 0%,transparent 100%),
+    radial-gradient(1.5px 1.5px at 75% 21%,rgba(255,255,255,.75) 0%,transparent 100%),
+    radial-gradient(1px   1px   at 83% 54%,rgba(255,255,255,.5)  0%,transparent 100%),
+    radial-gradient(1.5px 1.5px at 91%  7%,rgba(255,255,255,.85) 0%,transparent 100%),
+    radial-gradient(2px   2px   at 23% 46%,rgba(167,139,250,.6)  0%,transparent 100%),
+    radial-gradient(2px   2px   at 50% 18%,rgba(167,139,250,.45) 0%,transparent 100%),
+    radial-gradient(2px   2px   at 78% 72%,rgba(56,189,248,.5)   0%,transparent 100%),
+    radial-gradient(1px   1px   at 35% 60%,rgba(56,189,248,.55)  0%,transparent 100%),
+    radial-gradient(1px   1px   at 87% 41%,rgba(56,189,248,.4)   0%,transparent 100%),
+    radial-gradient(1px   1px   at 12% 88%,rgba(255,255,255,.35) 0%,transparent 100%),
+    radial-gradient(1.5px 1.5px at 68% 14%,rgba(196,181,253,.6)  0%,transparent 100%),
+    radial-gradient(1px   1px   at 97% 77%,rgba(255,255,255,.5)  0%,transparent 100%);
+  /* Only animating opacity — compositor only, zero repaint */
+  animation:twinkle 6s ease-in-out infinite alternate;
   will-change:opacity;
 }
-@keyframes starTwinkle{
-  0%  {opacity:.6}
-  50% {opacity:1}
-  100%{opacity:.7}
-}
+@keyframes twinkle{0%{opacity:.55}50%{opacity:1}100%{opacity:.65}}
 
-/* ─────────────────────────────────────────
-   AURORA BLOBS  (CSS-only, will-change:transform)
-───────────────────────────────────────── */
-.aurora{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
-.ab{
-  position:absolute;border-radius:50%;
-  will-change:transform;
-  animation:aFloat ease-in-out infinite;
-}
-/* Reduced blur on mobile to avoid GPU overload */
-.ab:nth-child(1){
-  width:55vw;height:40vw;min-width:260px;
-  top:-15%;left:-10%;
-  background:radial-gradient(ellipse,rgba(99,60,220,.2),transparent 70%);
-  filter:blur(55px);
-  animation-duration:20s;
-}
-.ab:nth-child(2){
-  width:50vw;height:50vw;min-width:220px;
-  top:35%;right:-12%;
-  background:radial-gradient(ellipse,rgba(30,100,220,.16),transparent 70%);
-  filter:blur(60px);
-  animation-duration:25s;animation-delay:-8s;
-}
-.ab:nth-child(3){
-  width:40vw;height:35vw;min-width:180px;
-  bottom:-8%;left:25%;
-  background:radial-gradient(ellipse,rgba(124,106,255,.13),transparent 70%);
-  filter:blur(50px);
-  animation-duration:18s;animation-delay:-12s;
-}
-@keyframes aFloat{
-  0%  {transform:translate(0,0)   scale(1)}
-  40% {transform:translate(20px,-30px) scale(1.08)}
-  70% {transform:translate(-15px,20px) scale(.94)}
-  100%{transform:translate(0,0)   scale(1)}
-}
-
-/* ─────────────────────────────────────────
-   SHOOTING STARS  (CSS, 3 stars, staggered)
-───────────────────────────────────────── */
+/* =============================================
+   SHOOTING STARS  — translateX only, GPU-only
+============================================= */
 .shooters{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
 .s{
   position:absolute;
-  width:120px;height:1.5px;
-  background:linear-gradient(90deg,rgba(255,255,255,0),rgba(200,180,255,.9));
+  height:1.5px;
+  background:linear-gradient(90deg,transparent,rgba(200,180,255,.95),transparent);
   border-radius:2px;
   opacity:0;
+  /* Only transform + opacity — no layout, no paint */
   will-change:transform,opacity;
 }
-.s:nth-child(1){top:12%;left:-15%;transform:rotate(20deg);animation:shoot 7s  4s  linear infinite}
-.s:nth-child(2){top:28%;left:-15%;transform:rotate(20deg);animation:shoot 7s  10s linear infinite}
-.s:nth-child(3){top:8%; left:-15%;transform:rotate(20deg);animation:shoot 7s  17s linear infinite}
+.s1{width:100px;top:8%; left:-110px;animation:shoot 6s  3s  linear infinite}
+.s2{width:140px;top:22%;left:-150px;animation:shoot 6s  11s linear infinite}
+.s3{width:80px; top:14%;left:-90px; animation:shoot 6s  19s linear infinite}
+.s4{width:120px;top:5%; left:-130px;animation:shoot 6s  26s linear infinite}
 @keyframes shoot{
-  0%  {opacity:0;transform:rotate(20deg) translateX(0)}
-  5%  {opacity:1}
-  60% {opacity:.6}
-  100%{opacity:0;transform:rotate(20deg) translateX(130vw)}
+  0%  {opacity:0; transform:translateX(0)      rotate(18deg)}
+  6%  {opacity:1}
+  80% {opacity:.7}
+  100%{opacity:0; transform:translateX(130vw)  rotate(18deg)}
 }
 
-/* ─────────────────────────────────────────
-   ROCKETS
-───────────────────────────────────────── */
+/* =============================================
+   ROCKETS  — translateY only, GPU-only
+============================================= */
 .rc{position:fixed;inset:0;z-index:1;pointer-events:none}
 .r{
   position:absolute;bottom:-80px;opacity:0;
@@ -139,58 +111,57 @@ body{
   animation:flyUp linear infinite;
 }
 @keyframes flyUp{
-  0%  {transform:translateY(80px)  scale(.5) rotate(-12deg);opacity:0}
-  8%  {opacity:.55}
-  92% {opacity:.35}
-  100%{transform:translateY(-115vh) scale(1.5) rotate(-12deg);opacity:0}
+  0%  {transform:translateY(60px)   scale(.5) rotate(-12deg);opacity:0}
+  8%  {opacity:.5}
+  90% {opacity:.35}
+  100%{transform:translateY(-115vh) scale(1.4) rotate(-12deg);opacity:0}
 }
-/* Fewer, lighter rockets on mobile */
 .r1{left:10%; animation-duration:9s;  animation-delay:0s;   font-size:1.8rem}
 .r2{left:35%; animation-duration:14s; animation-delay:4s;   font-size:1.2rem}
-.r3{left:60%; animation-duration:10s; animation-delay:7s;   font-size:2.4rem}
+.r3{left:60%; animation-duration:10s; animation-delay:7s;   font-size:2.2rem}
 .r4{left:82%; animation-duration:16s; animation-delay:2s;   font-size:1.5rem}
 .r5{left:94%; animation-duration:12s; animation-delay:5.5s; font-size:1.3rem}
 
-/* ─────────────────────────────────────────
-   PAGE REVEAL
-───────────────────────────────────────── */
-.rev{opacity:0;transform:translateY(24px);animation:revUp .7s cubic-bezier(.23,1,.32,1) forwards}
+/* =============================================
+   PAGE LOAD REVEAL — translateY + opacity only
+============================================= */
+.rev{opacity:0;transform:translateY(22px);animation:revUp .65s cubic-bezier(.23,1,.32,1) forwards}
 @keyframes revUp{to{opacity:1;transform:translateY(0)}}
-.d1{animation-delay:.1s}.d2{animation-delay:.22s}.d3{animation-delay:.34s}
-.d4{animation-delay:.46s}.d5{animation-delay:.58s}.d6{animation-delay:.72s}
+.d1{animation-delay:.08s}.d2{animation-delay:.18s}.d3{animation-delay:.28s}
+.d4{animation-delay:.38s}.d5{animation-delay:.50s}.d6{animation-delay:.62s}
 
-/* ─────────────────────────────────────────
+/* =============================================
    LAYOUT
-───────────────────────────────────────── */
-header{position:relative;z-index:10;padding:40px 16px 0;text-align:center}
+============================================= */
+header{position:relative;z-index:10;padding:36px 16px 0;text-align:center}
 
-/* ─────────────────────────────────────────
-   NAV
-───────────────────────────────────────── */
+/* =============================================
+   NAV  — backdrop-filter only on this small pill
+============================================= */
 .nav{
   display:flex;justify-content:space-between;align-items:center;
-  max-width:1000px;margin:0 auto 56px;
-  padding:11px 20px;
-  background:rgba(255,255,255,0.035);
+  max-width:960px;margin:0 auto 48px;
+  padding:11px 18px;
+  background:rgba(255,255,255,.035);
   border:1px solid var(--border);
   border-radius:100px;
-  backdrop-filter:blur(12px);
-  -webkit-backdrop-filter:blur(12px);
-  animation:navIn .6s cubic-bezier(.23,1,.32,1) both;
+  /* backdrop-filter only on this small element — much cheaper than full-screen */
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+  animation:navIn .55s cubic-bezier(.23,1,.32,1) both;
 }
-@keyframes navIn{from{opacity:0;transform:translateY(-16px)}to{opacity:1;transform:translateY(0)}}
-
+@keyframes navIn{from{opacity:0;transform:translateY(-14px)}to{opacity:1;transform:translateY(0)}}
 .nav-logo{
   font-family:'Cinzel',serif;font-size:.82rem;
   letter-spacing:.2em;color:var(--violet);
   animation:glow 3s ease-in-out infinite alternate;
 }
 @keyframes glow{
-  from{text-shadow:0 0 6px rgba(167,139,250,.25)}
-  to  {text-shadow:0 0 18px rgba(167,139,250,.7),0 0 32px rgba(124,106,255,.3)}
+  from{text-shadow:0 0 5px rgba(167,139,250,.2)}
+  to  {text-shadow:0 0 16px rgba(167,139,250,.7),0 0 28px rgba(124,106,255,.3)}
 }
 .nav-badge{
-  font-family:'JetBrains Mono',monospace;font-size:.65rem;
+  font-family:'JetBrains Mono',monospace;font-size:.64rem;
   color:var(--muted);
   background:rgba(124,106,255,.07);
   border:1px solid rgba(124,106,255,.18);
@@ -199,29 +170,29 @@ header{position:relative;z-index:10;padding:40px 16px 0;text-align:center}
 .nav-dot{
   width:8px;height:8px;border-radius:50%;
   background:#22c55e;
-  box-shadow:0 0 8px #22c55e;
+  /* box-shadow on a tiny 8px element is fine */
+  box-shadow:0 0 7px #22c55e;
+  will-change:transform,opacity;
   animation:ping 2s ease-in-out infinite;
 }
 @keyframes ping{
-  0%,100%{transform:scale(1);  box-shadow:0 0 5px #22c55e}
-  50%    {transform:scale(1.4);box-shadow:0 0 12px #22c55e,0 0 24px rgba(34,197,94,.4)}
+  0%,100%{transform:scale(1);  opacity:1}
+  50%    {transform:scale(1.5);opacity:.6}
 }
 
-/* ─────────────────────────────────────────
-   HERO
-───────────────────────────────────────── */
+/* =============================================
+   HERO TITLE + GLITCH
+============================================= */
 .eyebrow{
   font-family:'JetBrains Mono',monospace;
-  font-size:.68rem;letter-spacing:.32em;
+  font-size:.67rem;letter-spacing:.32em;
   color:var(--accent);text-transform:uppercase;
-  margin-bottom:14px;opacity:.75;
+  margin-bottom:12px;opacity:.75;
 }
-
-/* Title with CSS glitch – uses data-text attribute */
-.title-wrap{display:inline-block;margin-bottom:16px;position:relative}
+.title-wrap{display:inline-block;margin-bottom:14px}
 h1{
   font-family:'Cinzel',serif;
-  font-size:clamp(3rem,12vw,8rem);
+  font-size:clamp(2.8rem,12vw,8rem);
   font-weight:900;line-height:.88;
   letter-spacing:-.02em;
   color:transparent;
@@ -229,132 +200,127 @@ h1{
   -webkit-background-clip:text;background-clip:text;
   display:inline-block;position:relative;
 }
-/* Glitch layers */
+/* Glitch: clip-path + transform only — zero repaint */
 h1::before,h1::after{
   content:attr(data-text);
   position:absolute;top:0;left:0;width:100%;
-  background:linear-gradient(135deg,#c4b5fd 0%,#818cf8 40%,#38bdf8 100%);
-  -webkit-background-clip:text;background-clip:text;color:transparent;
-  pointer-events:none;
+  background:inherit;-webkit-background-clip:text;background-clip:text;color:transparent;
+  pointer-events:none;will-change:transform,opacity;
 }
-h1::before{animation:glA 8s infinite;clip-path:polygon(0 22%,100% 22%,100% 40%,0 40%)}
-h1::after {animation:glB 8s infinite;clip-path:polygon(0 62%,100% 62%,100% 78%,0 78%)}
+h1::before{clip-path:polygon(0 22%,100% 22%,100% 40%,0 40%);animation:glA 9s infinite}
+h1::after {clip-path:polygon(0 62%,100% 62%,100% 78%,0 78%);animation:glB 9s infinite}
 @keyframes glA{
-  0%,86%,100%{transform:translateX(0);opacity:0}
-  88%{transform:translateX(-6px);opacity:.8}
-  90%{transform:translateX(4px);opacity:.5}
-  92%{transform:translateX(-3px);opacity:.7}
-  94%{transform:translateX(0);opacity:0}
+  0%,84%,100%{transform:translateX(0);opacity:0}
+  86%{transform:translateX(-6px);opacity:.8}
+  88%{transform:translateX(4px); opacity:.5}
+  90%{transform:translateX(-2px);opacity:.7}
+  92%{transform:translateX(0);   opacity:0}
 }
 @keyframes glB{
-  0%,86%,100%{transform:translateX(0);opacity:0}
-  88%{transform:translateX(6px);opacity:.7}
-  90%{transform:translateX(-5px);opacity:.4}
-  92%{transform:translateX(2px);opacity:.6}
-  94%{transform:translateX(0);opacity:0}
+  0%,84%,100%{transform:translateX(0);opacity:0}
+  86%{transform:translateX(6px); opacity:.7}
+  88%{transform:translateX(-5px);opacity:.4}
+  90%{transform:translateX(2px); opacity:.6}
+  92%{transform:translateX(0);   opacity:0}
 }
 
-/* ─────────────────────────────────────────
-   DEVICE CHIP
-───────────────────────────────────────── */
+/* =============================================
+   CHIP + MAINTAINER
+============================================= */
 .chip{
   display:inline-flex;align-items:center;gap:7px;
-  font-family:'JetBrains Mono',monospace;font-size:.8rem;
+  font-family:'JetBrains Mono',monospace;font-size:.78rem;
   color:var(--violet);
   background:rgba(124,106,255,.08);
-  border:1px solid rgba(124,106,255,.22);
-  padding:5px 16px;border-radius:30px;margin-bottom:5px;
-  transition:background .25s,box-shadow .25s;
+  border:1px solid rgba(124,106,255,.2);
+  padding:5px 15px;border-radius:30px;margin-bottom:4px;
+  transition:background .22s,opacity .22s;
 }
-.chip:hover{background:rgba(124,106,255,.14);box-shadow:0 0 16px rgba(124,106,255,.25)}
-.chip::before{content:'▸';font-size:.62rem}
-.maint{font-size:.82rem;color:var(--muted);margin-bottom:36px}
+.chip:active{background:rgba(124,106,255,.18);opacity:.8}
+.chip::before{content:'▸';font-size:.6rem}
+.maint{font-size:.8rem;color:var(--muted);margin-bottom:30px}
 
-/* ─────────────────────────────────────────
-   STAT STRIP
-───────────────────────────────────────── */
+/* =============================================
+   STAT STRIP  — scan uses translateX only
+============================================= */
 .stats{
   display:flex;justify-content:center;
-  max-width:300px;margin:0 auto 44px;
+  max-width:280px;margin:0 auto 36px;
   background:rgba(255,255,255,.03);
   border:1px solid var(--border);
-  border-radius:16px;overflow:hidden;
-  position:relative;
+  border-radius:14px;overflow:hidden;position:relative;
 }
-/* Scan sweep */
+/* Scan line: translateX only — GPU composited */
 .stats::before{
-  content:'';position:absolute;top:0;height:1px;width:50%;
-  background:linear-gradient(90deg,transparent,rgba(124,106,255,.6),transparent);
-  animation:sweep 2.2s linear infinite;
+  content:'';position:absolute;top:0;height:1px;width:40%;
+  background:linear-gradient(90deg,transparent,rgba(124,106,255,.65),transparent);
+  will-change:transform;
+  animation:scan 2s linear infinite;
 }
-@keyframes sweep{0%{left:-50%}100%{left:110%}}
-
+@keyframes scan{0%{transform:translateX(-100%)}100%{transform:translateX(350%)}}
 .si{
-  flex:1;padding:17px 12px;text-align:center;
+  flex:1;padding:16px 10px;text-align:center;
   border-right:1px solid var(--border);
-  transition:background .25s;
+  transition:background .2s;
 }
 .si:last-child{border-right:none}
-.si:hover{background:rgba(124,106,255,.06)}
+.si:active{background:rgba(124,106,255,.07)}
 .sn{
-  font-family:'Cinzel',serif;font-size:1.35rem;font-weight:700;
+  font-family:'Cinzel',serif;font-size:1.3rem;font-weight:700;
   color:var(--violet);display:block;
   animation:glow 4s ease-in-out infinite alternate;
 }
-.sl{font-size:.65rem;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-top:2px;display:block}
+.sl{font-size:.62rem;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-top:2px;display:block}
 
-/* ─────────────────────────────────────────
-   BUTTONS
-───────────────────────────────────────── */
-.btns{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-bottom:72px}
+/* =============================================
+   BUTTONS  — shimmer uses transform only
+============================================= */
+.btns{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-bottom:60px}
 .btn{
   display:inline-flex;align-items:center;gap:9px;
-  padding:13px 24px;
-  font-family:'Outfit',sans-serif;font-size:.9rem;font-weight:600;
-  border-radius:13px;text-decoration:none;color:#fff;
+  padding:13px 22px;
+  font-family:'Outfit',sans-serif;font-size:.88rem;font-weight:600;
+  border-radius:12px;text-decoration:none;color:#fff;
   cursor:pointer;border:1px solid transparent;
   letter-spacing:.02em;position:relative;overflow:hidden;
-  /* Use transform for GPU compositing, avoid heavy box-shadow transitions */
-  transition:transform .3s cubic-bezier(.23,1,.32,1),box-shadow .3s,background .2s;
+  /* Only transform transitions — no box-shadow transition */
+  transition:transform .28s cubic-bezier(.23,1,.32,1),opacity .2s;
   will-change:transform;
   -webkit-tap-highlight-color:transparent;
 }
-/* Shimmer sweep (transform only — no repaints) */
+/* Shimmer: transform only */
 .btn::before{
   content:'';position:absolute;
-  top:-50%;left:-80%;
-  width:55%;height:200%;
-  background:linear-gradient(120deg,transparent,rgba(255,255,255,.18),transparent);
-  transform:skewX(-20deg) translateX(0);
-  transition:transform .5s ease;
+  top:-50%;left:-80%;width:55%;height:200%;
+  background:linear-gradient(120deg,transparent,rgba(255,255,255,.16),transparent);
+  transform:skewX(-20deg) translateX(-100%);
+  will-change:transform;
+  transition:transform .45s ease;
 }
-.btn:hover::before{transform:skewX(-20deg) translateX(400%)}
+.btn:hover::before{transform:skewX(-20deg) translateX(460%)}
 .btn:hover{transform:translateY(-3px) scale(1.02)}
-.btn:active{transform:translateY(0) scale(.98)}
+.btn:active{transform:translateY(0) scale(.97);opacity:.85}
 
 .bp{
   background:linear-gradient(135deg,#5b21b6,#7c3aed);
   border-color:rgba(124,106,255,.4);
-  box-shadow:0 0 22px rgba(109,40,217,.4),0 4px 16px rgba(0,0,0,.4);
+  /* Static shadow — not animated */
+  box-shadow:0 2px 20px rgba(109,40,217,.45);
 }
-.bp:hover{box-shadow:0 0 42px rgba(124,106,255,.6),0 8px 28px rgba(0,0,0,.5)}
 .bs{
   background:linear-gradient(135deg,#075985,#0ea5e9);
   border-color:rgba(56,189,248,.3);
-  box-shadow:0 0 22px rgba(14,165,233,.3),0 4px 16px rgba(0,0,0,.4);
+  box-shadow:0 2px 20px rgba(14,165,233,.35);
 }
-.bs:hover{box-shadow:0 0 42px rgba(14,165,233,.55),0 8px 28px rgba(0,0,0,.5)}
 .bg{
-  background:rgba(255,255,255,.04);
+  background:rgba(255,255,255,.05);
   border-color:var(--border);
-  box-shadow:0 4px 14px rgba(0,0,0,.3);
 }
-.bg:hover{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.13)}
 
-/* ─────────────────────────────────────────
-   SECTION DIVIDER
-───────────────────────────────────────── */
-.divider{position:relative;text-align:center;margin:0 auto 40px;max-width:1000px}
+/* =============================================
+   DIVIDER
+============================================= */
+.divider{position:relative;text-align:center;margin:0 auto 32px;max-width:960px}
 .divider::before{
   content:'';position:absolute;top:50%;left:0;
   width:100%;height:1px;
@@ -362,120 +328,118 @@ h1::after {animation:glB 8s infinite;clip-path:polygon(0 62%,100% 62%,100% 78%,0
 }
 .divider span{
   position:relative;z-index:1;
-  font-family:'Cinzel',serif;font-size:1rem;
+  font-family:'Cinzel',serif;font-size:.95rem;
   letter-spacing:.22em;color:var(--violet);
-  background:var(--bg);padding:0 20px;
+  background:var(--bg);padding:0 18px;
   animation:glow 3s ease-in-out infinite alternate;
 }
 
-/* ─────────────────────────────────────────
+/* =============================================
    SCREENSHOTS
-───────────────────────────────────────── */
-.ss{position:relative;z-index:10;padding:0 16px 72px}
+============================================= */
+.ss{position:relative;z-index:10;padding:0 14px 60px}
 .grid{
   display:grid;
   grid-template-columns:repeat(2,1fr);
-  gap:18px;max-width:900px;margin:0 auto;
+  gap:14px;max-width:860px;margin:0 auto;
 }
-@media(min-width:640px){.grid{grid-template-columns:repeat(4,1fr);gap:24px}}
+@media(min-width:580px){.grid{grid-template-columns:repeat(4,1fr);gap:20px}}
 
 .pw{
-  opacity:0;transform:translateY(20px);
-  animation:revUp .7s cubic-bezier(.23,1,.32,1) forwards;
+  opacity:0;transform:translateY(18px);
+  animation:revUp .65s cubic-bezier(.23,1,.32,1) forwards;
+  will-change:transform,opacity;
 }
-.pw:nth-child(1){animation-delay:.65s}
-.pw:nth-child(2){animation-delay:.78s}
-.pw:nth-child(3){animation-delay:.91s}
-.pw:nth-child(4){animation-delay:1.04s}
+.pw:nth-child(1){animation-delay:.62s}
+.pw:nth-child(2){animation-delay:.74s}
+.pw:nth-child(3){animation-delay:.86s}
+.pw:nth-child(4){animation-delay:.98s}
 
 .pf{
-  border-radius:32px;overflow:hidden;
-  border:5px solid rgba(255,255,255,.07);
-  box-shadow:0 0 0 1px rgba(124,106,255,.1),0 20px 44px rgba(0,0,0,.65);
-  aspect-ratio:9/19.5;background:#0d111f;
+  border-radius:28px;overflow:hidden;
+  border:4px solid rgba(255,255,255,.07);
+  /* Static shadow — not animated */
+  box-shadow:0 16px 40px rgba(0,0,0,.6);
+  aspect-ratio:9/19.5;background:#0c1020;
   position:relative;
-  transition:transform .4s cubic-bezier(.23,1,.32,1),box-shadow .4s;
+  transition:transform .35s cubic-bezier(.23,1,.32,1);
   will-change:transform;
 }
-/* Hover only on non-touch */
-@media(hover:hover){
+/* Hover only on real pointer devices */
+@media(hover:hover) and (pointer:fine){
   .pf:hover{
     transform:translateY(-10px) scale(1.03);
-    box-shadow:0 0 0 1px rgba(124,106,255,.35),0 40px 70px rgba(0,0,0,.7),0 0 36px rgba(124,106,255,.16);
+    /* Static shadow change — no transition on shadow */
+    box-shadow:0 30px 60px rgba(0,0,0,.7);
   }
 }
-/* Subtle shimmer overlay */
+/* Touch tap feedback */
+.pf:active{transform:scale(.97)}
+/* Subtle top-left highlight — no animation */
 .pf::after{
-  content:'';position:absolute;inset:0;border-radius:28px;
-  background:linear-gradient(135deg,rgba(255,255,255,.055) 0%,transparent 55%);
+  content:'';position:absolute;inset:0;border-radius:24px;
+  background:linear-gradient(135deg,rgba(255,255,255,.05) 0%,transparent 50%);
   pointer-events:none;
 }
-.pf img{width:100%;height:100%;object-fit:cover;border-radius:28px;display:block}
+.pf img{width:100%;height:100%;object-fit:cover;border-radius:24px;display:block}
 .pl{
-  text-align:center;margin-top:10px;
-  font-size:.68rem;color:var(--muted);
+  text-align:center;margin-top:8px;
+  font-size:.66rem;color:var(--muted);
   letter-spacing:.12em;text-transform:uppercase;
 }
 
-/* ─────────────────────────────────────────
+/* =============================================
    FOOTER
-───────────────────────────────────────── */
+============================================= */
 footer{
   position:relative;z-index:10;text-align:center;
-  padding:28px 16px 44px;border-top:1px solid var(--border);
+  padding:24px 16px 40px;border-top:1px solid var(--border);
 }
 .fw{
   display:inline-flex;align-items:center;gap:7px;
-  font-family:'JetBrains Mono',monospace;font-size:.72rem;
+  font-family:'JetBrains Mono',monospace;font-size:.7rem;
   color:#fbbf24;background:rgba(251,191,36,.07);
   border:1px solid rgba(251,191,36,.18);
-  padding:7px 18px;border-radius:8px;margin-bottom:16px;
+  padding:7px 16px;border-radius:8px;margin-bottom:14px;
+  /* opacity only pulse — compositor */
   animation:wPulse 2.5s ease-in-out infinite;
+  will-change:opacity;
 }
-@keyframes wPulse{50%{box-shadow:0 0 14px rgba(251,191,36,.14)}}
-.fc{font-size:.76rem;color:var(--muted)}
+@keyframes wPulse{0%,100%{opacity:1}50%{opacity:.7}}
+.fc{font-size:.74rem;color:var(--muted)}
 .fc span{color:var(--violet)}
 
-/* ─────────────────────────────────────────
+/* =============================================
    SCROLLBAR
-───────────────────────────────────────── */
+============================================= */
 ::-webkit-scrollbar{width:3px}
 ::-webkit-scrollbar-track{background:var(--bg)}
 ::-webkit-scrollbar-thumb{background:rgba(124,106,255,.3);border-radius:2px}
 
-/* ─────────────────────────────────────────
-   MOBILE PERF: disable heavy effects
-───────────────────────────────────────── */
-@media(max-width:640px){
-  /* Reduce aurora blur */
-  .ab{filter:blur(36px)!important}
-  /* Simpler nav */
-  .nav{padding:10px 14px}
+/* =============================================
+   MOBILE — hide nav badge to save space
+============================================= */
+@media(max-width:480px){
   .nav-badge{display:none}
-  /* Single col grid already handled above */
+  .nav{margin-bottom:38px}
+  h1{font-size:clamp(2.6rem,14vw,4rem)}
 }
 </style>
 </head>
 <body>
 
-<!-- STARS -->
+<!-- STARS (static CSS) -->
 <div class="stars"></div>
 
-<!-- AURORA -->
-<div class="aurora">
-  <div class="ab"></div>
-  <div class="ab"></div>
-  <div class="ab"></div>
-</div>
-
-<!-- SHOOTING STARS -->
+<!-- SHOOTING STARS (CSS transform only) -->
 <div class="shooters">
-  <div class="s"></div>
-  <div class="s"></div>
-  <div class="s"></div>
+  <div class="s s1"></div>
+  <div class="s s2"></div>
+  <div class="s s3"></div>
+  <div class="s s4"></div>
 </div>
 
-<!-- ROCKETS -->
+<!-- ROCKETS (CSS transform only) -->
 <div class="rc">
   <div class="r r1">🚀</div>
   <div class="r r2">🚀</div>
@@ -503,7 +467,6 @@ footer{
   </div>
   <p class="maint rev d3">Maintained by <strong style="color:#c4b5fd">dev Rohan</strong></p>
 
-  <!-- STAT STRIP -->
   <div class="stats rev d4">
     <div class="si">
       <span class="sn">A16</span>
@@ -515,25 +478,24 @@ footer{
     </div>
   </div>
 
-  <!-- BUTTONS -->
   <div class="btns rev d5">
     <a href="https://drive.google.com/file/d/1asdIHIubBIwIuU72uadV2s0AhjAXvcHc/view?usp=sharing"
        target="_blank" rel="noopener noreferrer" class="btn bp">
-      <svg width="17" height="17" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
           d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
       </svg>
       Download Latest Build
     </a>
     <a href="https://t.me/screenshotsxaga" target="_blank" rel="noopener noreferrer" class="btn bs">
-      <svg width="17" height="17" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
           d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z"/>
       </svg>
       Join Community
     </a>
     <a href="https://github.com/itsrohan17" target="_blank" rel="noopener noreferrer" class="btn bg">
-      <svg width="17" height="17" fill="currentColor" viewBox="0 0 24 24">
+      <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
         <path fill-rule="evenodd" clip-rule="evenodd"
           d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.336-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.564 9.564 0 0112 6.844c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.161 22 16.416 22 12c0-5.523-4.477-10-10-10z"/>
       </svg>
@@ -547,15 +509,15 @@ footer{
   <div class="divider rev d6"><span>Device Screenshots</span></div>
   <div class="grid">
     <div class="pw">
-      <div class="pf"><img src="screenshots/home.png" alt="Lunaris UI" loading="lazy"></div>
+      <div class="pf"><img src="screenshots/home.png"     alt="Lunaris UI" loading="lazy"></div>
       <p class="pl">Lunaris UI</p>
     </div>
     <div class="pw">
-      <div class="pf"><img src="screenshots/lunaris.png" alt="Lunaris UI" loading="lazy"></div>
+      <div class="pf"><img src="screenshots/lunaris.png"  alt="Lunaris UI" loading="lazy"></div>
       <p class="pl">Lunaris UI</p>
     </div>
     <div class="pw">
-      <div class="pf"><img src="screenshots/music.png" alt="Lunaris UI" loading="lazy"></div>
+      <div class="pf"><img src="screenshots/music.png"    alt="Lunaris UI" loading="lazy"></div>
       <p class="pl">Lunaris UI</p>
     </div>
     <div class="pw">
@@ -572,112 +534,59 @@ footer{
 
 <script>
 (function(){
-  /* ── Detect mobile/touch once ── */
-  const isMobile = window.innerWidth < 768 || navigator.maxTouchPoints > 0;
+  const touch = navigator.maxTouchPoints > 0;
 
-  /* ── Magnetic buttons — desktop only ── */
-  if(!isMobile){
+  /* Desktop-only: magnetic buttons + 3D card tilt + cursor glow */
+  if(!touch){
+
+    /* Magnetic buttons */
     document.querySelectorAll('.btn').forEach(b=>{
       b.addEventListener('mousemove',e=>{
         const r=b.getBoundingClientRect();
-        const dx=e.clientX-(r.left+r.width/2);
-        const dy=e.clientY-(r.top +r.height/2);
-        b.style.transform=`translateY(-3px) scale(1.02) translate(${dx*.12}px,${dy*.12}px)`;
+        const dx=(e.clientX-r.left-r.width/2)*.1;
+        const dy=(e.clientY-r.top -r.height/2)*.1;
+        b.style.transform=`translateY(-3px) scale(1.02) translate(${dx}px,${dy}px)`;
       });
       b.addEventListener('mouseleave',()=>{b.style.transform=''});
     });
 
-    /* ── 3D phone tilt — desktop only ── */
+    /* 3D phone tilt — transform only */
     document.querySelectorAll('.pf').forEach(f=>{
       f.addEventListener('mousemove',e=>{
         const r=f.getBoundingClientRect();
         const x=(e.clientX-r.left)/r.width -.5;
-        const y=(e.clientY-r.top) /r.height-.5;
+        const y=(e.clientY-r.top )/r.height-.5;
         f.style.transform=`translateY(-10px) scale(1.03) rotateY(${x*12}deg) rotateX(${-y*12}deg)`;
-        f.style.boxShadow=`0 0 0 1px rgba(124,106,255,.4),0 45px 75px rgba(0,0,0,.7),${x*-16}px ${y*-16}px 40px rgba(124,106,255,.12)`;
       });
-      f.addEventListener('mouseleave',()=>{f.style.transform='';f.style.boxShadow=''});
+      f.addEventListener('mouseleave',()=>{f.style.transform=''});
     });
 
-    /* ── Cursor glow ── */
+    /* Cursor glow — opacity + left/top (no layout thrash using fixed pos) */
     const g=document.createElement('div');
     Object.assign(g.style,{
       position:'fixed',pointerEvents:'none',zIndex:'9999',
-      width:'280px',height:'280px',borderRadius:'50%',
+      width:'260px',height:'260px',borderRadius:'50%',
       background:'radial-gradient(circle,rgba(124,106,255,.055) 0%,transparent 70%)',
       transform:'translate(-50%,-50%)',
-      transition:'opacity .3s',
-      top:'0',left:'0',opacity:'0'
+      opacity:'0',transition:'opacity .3s',
+      top:'0',left:'0'
     });
     document.body.appendChild(g);
+    let gx=0,gy=0;
     document.addEventListener('mousemove',e=>{
-      g.style.left=e.clientX+'px';g.style.top=e.clientY+'px';g.style.opacity='1';
-    });
+      gx=e.clientX;gy=e.clientY;
+      g.style.left=gx+'px';g.style.top=gy+'px';g.style.opacity='1';
+    },{passive:true});
     document.addEventListener('mouseleave',()=>{g.style.opacity='0'});
   }
 
-  /* ── Touch ripple on buttons (mobile feel) ── */
-  if(isMobile){
-    document.querySelectorAll('.btn').forEach(btn=>{
-      btn.addEventListener('touchstart',()=>{btn.style.transform='scale(.97)'},{ passive:true});
-      btn.addEventListener('touchend', ()=>{btn.style.transform=''},{ passive:true});
+  /* Mobile: simple scale press feedback */
+  if(touch){
+    document.querySelectorAll('.btn').forEach(b=>{
+      b.addEventListener('touchstart',()=>{b.style.transform='scale(.96)'},{ passive:true});
+      b.addEventListener('touchend',  ()=>{b.style.transform=''},         { passive:true});
     });
   }
-
-  /* ── Lightweight canvas: shooting-star trail (max 40 particles, only drawn if visible) ── */
-  // On mobile we skip the heavy canvas entirely and rely on CSS shooting stars
-  if(isMobile) return;
-
-  const c=document.createElement('canvas');
-  Object.assign(c.style,{position:'fixed',inset:'0',zIndex:'0',pointerEvents:'none',opacity:'.45'});
-  document.body.prepend(c);
-  const cx=c.getContext('2d');
-  let W,H;
-  function rs(){W=c.width=innerWidth;H=c.height=innerHeight}
-  addEventListener('resize',rs);rs();
-
-  const COLS=['rgba(167,139,250,','rgba(56,189,248,','rgba(255,255,255,'];
-  const pts=Array.from({length:60},()=>({
-    x:Math.random()*W, y:Math.random()*H,
-    vx:(Math.random()-.5)*.15, vy:-(Math.random()*.3+.06),
-    s:Math.random()*1.4+.2,
-    a:Math.random()*.5+.08, td:1, ts:Math.random()*.015+.004,
-    col:COLS[Math.floor(Math.random()*COLS.length)]
-  }));
-
-  let sf=[];let fr=0;
-  function loop(){
-    cx.clearRect(0,0,W,H);fr++;
-    if(fr%260===0) sf.push({
-      x:Math.random()*W,y:Math.random()*H*.45,
-      len:80+Math.random()*80,spd:7+Math.random()*7,
-      ang:Math.PI/5+(Math.random()-.5)*.3,
-      life:0,max:50+Math.random()*40,a:0,done:false
-    });
-    sf=sf.filter(s=>{
-      s.life++;
-      s.a=s.life<8?s.life/8:s.life>s.max-8?(s.max-s.life)/8:1;
-      s.x+=Math.cos(s.ang)*s.spd; s.y+=Math.sin(s.ang)*s.spd;
-      if(s.life>=s.max){s.done=true;return false}
-      const tx=s.x-Math.cos(s.ang)*s.len, ty=s.y-Math.sin(s.ang)*s.len;
-      const gr=cx.createLinearGradient(tx,ty,s.x,s.y);
-      gr.addColorStop(0,'rgba(255,255,255,0)');
-      gr.addColorStop(1,`rgba(200,180,255,${s.a*.8})`);
-      cx.beginPath();cx.moveTo(tx,ty);cx.lineTo(s.x,s.y);
-      cx.strokeStyle=gr;cx.lineWidth=1.4;cx.stroke();
-      return true;
-    });
-    pts.forEach(p=>{
-      p.x+=p.vx;p.y+=p.vy;
-      p.a+=p.ts*p.td;
-      if(p.a>.6||p.a<.04) p.td*=-1;
-      if(p.y<-8){p.x=Math.random()*W;p.y=H+8}
-      cx.beginPath();cx.arc(p.x,p.y,p.s,0,Math.PI*2);
-      cx.fillStyle=p.col+p.a+')';cx.fill();
-    });
-    requestAnimationFrame(loop);
-  }
-  loop();
 })();
 </script>
 </body>
