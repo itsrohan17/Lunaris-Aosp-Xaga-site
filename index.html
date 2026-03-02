@@ -4,70 +4,620 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lunaris AOSP XAGA</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Outfit:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #04091a;
+            --surface: rgba(255,255,255,0.04);
+            --border: rgba(255,255,255,0.07);
+            --accent: #7c6aff;
+            --accent2: #38bdf8;
+            --accent3: #a78bfa;
+            --text: #e8e0ff;
+            --muted: #5e6a8a;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* CANVAS */
+        #particle-canvas { position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: 0.6; }
+
+        /* AURORA */
+        .aurora { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+        .aurora-blob {
+            position: absolute; border-radius: 50%;
+            filter: blur(90px);
+            animation: auroraFloat ease-in-out infinite;
+        }
+        .aurora-blob:nth-child(1) {
+            width: 700px; height: 500px; top: -200px; left: -150px;
+            background: radial-gradient(ellipse, rgba(99,60,220,0.22), transparent 70%);
+            animation-duration: 18s; opacity: 0.7;
+        }
+        .aurora-blob:nth-child(2) {
+            width: 600px; height: 600px; top: 30%; right: -200px;
+            background: radial-gradient(ellipse, rgba(30,100,220,0.18), transparent 70%);
+            animation-duration: 22s; animation-delay: -6s; opacity: 0.6;
+        }
+        .aurora-blob:nth-child(3) {
+            width: 500px; height: 400px; bottom: -100px; left: 30%;
+            background: radial-gradient(ellipse, rgba(124,106,255,0.14), transparent 70%);
+            animation-duration: 16s; animation-delay: -10s; opacity: 0.5;
+        }
+        .aurora-blob:nth-child(4) {
+            width: 350px; height: 350px; top: 60%; left: 8%;
+            background: radial-gradient(ellipse, rgba(56,189,248,0.1), transparent 70%);
+            animation-duration: 25s; animation-delay: -3s; opacity: 0.4;
+        }
+        @keyframes auroraFloat {
+            0%   { transform: translate(0,0) scale(1) rotate(0deg); }
+            33%  { transform: translate(40px,-60px) scale(1.1) rotate(5deg); }
+            66%  { transform: translate(-30px,30px) scale(0.95) rotate(-3deg); }
+            100% { transform: translate(0,0) scale(1) rotate(0deg); }
+        }
+
+        /* FLOATING ORBS */
+        .orbs { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+        .orb {
+            position: absolute; border-radius: 50%;
+            border: 1px solid rgba(167,139,250,0.12);
+            animation: orbDrift ease-in-out infinite;
+        }
+        .orb::after {
+            content: ''; position: absolute; inset: 30%; border-radius: 50%;
+            background: radial-gradient(circle, rgba(124,106,255,0.07), transparent);
+        }
+        .orb:nth-child(1) { width:180px; height:180px; top:10%;  left:4%;   animation-duration:20s; }
+        .orb:nth-child(2) { width:100px; height:100px; top:50%;  right:7%;  animation-duration:15s; animation-delay:-5s; }
+        .orb:nth-child(3) { width:250px; height:250px; bottom:12%; left:14%; animation-duration:25s; animation-delay:-8s; }
+        .orb:nth-child(4) { width:70px;  height:70px;  top:24%;  right:24%; animation-duration:12s; animation-delay:-2s; border-color:rgba(56,189,248,0.15); }
+        @keyframes orbDrift {
+            0%   { transform: translateY(0px) rotate(0deg); }
+            50%  { transform: translateY(-35px) rotate(180deg); }
+            100% { transform: translateY(0px) rotate(360deg); }
+        }
+
+        /* SCANLINE */
+        .scanline {
+            position: fixed; inset: 0; z-index: 2; pointer-events: none;
+            background: repeating-linear-gradient(to bottom, transparent 0px, transparent 3px, rgba(0,0,0,0.025) 3px, rgba(0,0,0,0.025) 4px);
+        }
+
+        /* ROCKETS */
+        .rocket-container { position: fixed; inset: 0; z-index: 1; pointer-events: none; }
+        .rocket { position: absolute; bottom: -120px; opacity: 0; animation: flyUp linear infinite; }
+        @keyframes flyUp {
+            0%   { transform: translateY(100px) scale(0.5) rotate(-12deg); opacity: 0; }
+            8%   { opacity: 0.6; }
+            92%  { opacity: 0.4; }
+            100% { transform: translateY(-125vh) scale(1.6) rotate(-12deg); opacity: 0; }
+        }
+        .rocket-1 { left: 8%;  animation-duration: 8s;  animation-delay: 0s;   font-size: 2.4rem; }
+        .rocket-2 { left: 28%; animation-duration: 13s; animation-delay: 3.5s; font-size: 1.4rem; }
+        .rocket-3 { left: 53%; animation-duration: 9s;  animation-delay: 6s;   font-size: 3rem; }
+        .rocket-4 { left: 74%; animation-duration: 15s; animation-delay: 1s;   font-size: 1.8rem; }
+        .rocket-5 { left: 93%; animation-duration: 11s; animation-delay: 4.5s; font-size: 1.6rem; }
+
+        /* PAGE REVEAL */
+        .reveal {
+            opacity: 0; transform: translateY(28px);
+            animation: revealUp 0.8s cubic-bezier(0.23,1,0.32,1) forwards;
+        }
+        @keyframes revealUp { to { opacity: 1; transform: translateY(0); } }
+        .d1 { animation-delay: 0.1s; } .d2 { animation-delay: 0.25s; }
+        .d3 { animation-delay: 0.4s; } .d4 { animation-delay: 0.55s; }
+        .d5 { animation-delay: 0.7s; } .d6 { animation-delay: 0.85s; }
+
+        /* NAV */
+        header { position: relative; z-index: 10; padding: 50px 24px 0; text-align: center; }
+        .nav-strip {
+            display: flex; justify-content: space-between; align-items: center;
+            max-width: 1100px; margin: 0 auto 70px;
+            padding: 13px 26px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            backdrop-filter: blur(16px);
+            animation: navSlideIn 0.7s cubic-bezier(0.23,1,0.32,1) both;
+        }
+        @keyframes navSlideIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .nav-logo {
+            font-family: 'Cinzel', serif; font-size: 0.9rem;
+            letter-spacing: 0.2em; color: var(--accent3);
+            animation: logoGlow 3s ease-in-out infinite alternate;
+        }
+        @keyframes logoGlow {
+            from { text-shadow: 0 0 8px rgba(167,139,250,0.3); }
+            to   { text-shadow: 0 0 22px rgba(167,139,250,0.7), 0 0 40px rgba(124,106,255,0.3); }
+        }
+        .nav-badge {
+            font-family: 'JetBrains Mono', monospace; font-size: 0.72rem;
+            color: var(--muted);
+            background: rgba(124,106,255,0.08);
+            border: 1px solid rgba(124,106,255,0.18);
+            padding: 4px 12px; border-radius: 20px; letter-spacing: 0.07em;
+        }
+        .nav-dot {
+            width: 8px; height: 8px; border-radius: 50%;
+            background: #22c55e;
+            box-shadow: 0 0 10px #22c55e, 0 0 20px rgba(34,197,94,0.4);
+            animation: pingPulse 2s ease-in-out infinite;
+        }
+        @keyframes pingPulse {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 6px #22c55e; }
+            50%       { transform: scale(1.4); box-shadow: 0 0 14px #22c55e, 0 0 28px rgba(34,197,94,0.5); }
+        }
+
+        /* EYEBROW */
+        .hero-eyebrow {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.73rem; letter-spacing: 0.34em;
+            color: var(--accent); text-transform: uppercase;
+            margin-bottom: 18px; opacity: 0.75;
+        }
+
+        /* TITLE + GLITCH */
+        .h1-wrap { position: relative; display: inline-block; margin-bottom: 18px; }
+        h1 {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(3.8rem, 10.5vw, 8.5rem);
+            font-weight: 900; line-height: 0.88;
+            letter-spacing: -0.02em;
+            color: transparent;
+            background: linear-gradient(135deg, #c4b5fd 0%, #818cf8 40%, #38bdf8 100%);
+            -webkit-background-clip: text; background-clip: text;
+            position: relative; display: inline-block;
+        }
+        h1::before, h1::after {
+            content: attr(data-text);
+            position: absolute; top: 0; left: 0; width: 100%;
+            background: linear-gradient(135deg, #c4b5fd 0%, #818cf8 40%, #38bdf8 100%);
+            -webkit-background-clip: text; background-clip: text;
+            color: transparent;
+        }
+        h1::before {
+            clip-path: polygon(0 28%, 100% 28%, 100% 46%, 0 46%);
+            animation: glitchBefore 7s infinite;
+        }
+        h1::after {
+            clip-path: polygon(0 60%, 100% 60%, 100% 76%, 0 76%);
+            animation: glitchAfter 7s infinite;
+        }
+        @keyframes glitchBefore {
+            0%, 88%, 100% { transform: translateX(0); opacity: 0; }
+            90% { transform: translateX(-6px); opacity: 0.8; }
+            92% { transform: translateX(5px); opacity: 0.5; }
+            94% { transform: translateX(-3px); opacity: 0.7; }
+            96% { transform: translateX(0); opacity: 0; }
+        }
+        @keyframes glitchAfter {
+            0%, 88%, 100% { transform: translateX(0); opacity: 0; }
+            90% { transform: translateX(6px); opacity: 0.7; }
+            92% { transform: translateX(-4px); opacity: 0.4; }
+            94% { transform: translateX(2px); opacity: 0.6; }
+            96% { transform: translateX(0); opacity: 0; }
+        }
+
+        /* CHIP */
+        .device-chip {
+            display: inline-flex; align-items: center; gap: 8px;
+            font-family: 'JetBrains Mono', monospace; font-size: 0.85rem;
+            color: #a78bfa;
+            background: rgba(124,106,255,0.08);
+            border: 1px solid rgba(124,106,255,0.22);
+            padding: 6px 18px; border-radius: 30px; margin-bottom: 6px;
+            transition: all 0.3s;
+        }
+        .device-chip:hover { background: rgba(124,106,255,0.16); box-shadow: 0 0 20px rgba(124,106,255,0.28); }
+        .device-chip::before { content: '▸'; font-size: 0.68rem; }
+        .maintainer { font-size: 0.85rem; color: var(--muted); margin-bottom: 44px; }
+
+        /* STAT STRIP */
+        .stat-strip {
+            display: flex; justify-content: center;
+            max-width: 340px; margin: 0 auto 56px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border);
+            border-radius: 18px; overflow: hidden;
+            position: relative;
+        }
+        .stat-strip::before {
+            content: ''; position: absolute; top: 0; height: 1px; width: 60%;
+            background: linear-gradient(90deg, transparent, rgba(124,106,255,0.55), transparent);
+            animation: scanSlide 2.5s linear infinite;
+        }
+        @keyframes scanSlide {
+            0%   { left: -60%; }
+            100% { left: 110%; }
+        }
+        .stat-item {
+            flex: 1; padding: 20px 20px; text-align: center;
+            border-right: 1px solid var(--border);
+            transition: background 0.3s;
+        }
+        .stat-item:last-child { border-right: none; }
+        .stat-item:hover { background: rgba(124,106,255,0.07); }
+        .stat-num {
+            font-family: 'Cinzel', serif; font-size: 1.5rem; font-weight: 700;
+            color: var(--accent3); display: block;
+            animation: statGlow 4s ease-in-out infinite alternate;
+        }
+        @keyframes statGlow {
+            from { text-shadow: none; }
+            to   { text-shadow: 0 0 14px rgba(167,139,250,0.55); }
+        }
+        .stat-label {
+            font-size: 0.68rem; color: var(--muted);
+            letter-spacing: 0.1em; text-transform: uppercase;
+            margin-top: 3px; display: block;
+        }
+
+        /* BUTTONS */
+        .btn-group { display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; margin-bottom: 90px; }
+        .btn {
+            display: inline-flex; align-items: center; gap: 10px;
+            padding: 14px 28px;
+            font-family: 'Outfit', sans-serif; font-size: 0.95rem; font-weight: 600;
+            border-radius: 14px; text-decoration: none; color: #fff;
+            cursor: pointer;
+            transition: all 0.35s cubic-bezier(0.23,1,0.32,1);
+            border: 1px solid transparent;
+            letter-spacing: 0.02em;
+            position: relative; overflow: hidden;
+        }
+        /* shimmer sweep */
+        .btn::before {
+            content: ''; position: absolute;
+            top: -50%; left: -75%;
+            width: 50%; height: 200%;
+            background: linear-gradient(120deg, transparent, rgba(255,255,255,0.2), transparent);
+            transform: skewX(-20deg);
+            transition: left 0.55s ease;
+        }
+        .btn:hover::before { left: 140%; }
+        .btn:hover { transform: translateY(-4px) scale(1.02); }
+        .btn:active { transform: translateY(-1px) scale(0.99); }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #5b21b6, #7c3aed);
+            border-color: rgba(124,106,255,0.4);
+            box-shadow: 0 0 28px rgba(109,40,217,0.4), 0 4px 20px rgba(0,0,0,0.4);
+        }
+        .btn-primary:hover { box-shadow: 0 0 55px rgba(124,106,255,0.6), 0 10px 35px rgba(0,0,0,0.5); }
+        .btn-sky {
+            background: linear-gradient(135deg, #075985, #0ea5e9);
+            border-color: rgba(56,189,248,0.3);
+            box-shadow: 0 0 28px rgba(14,165,233,0.3), 0 4px 20px rgba(0,0,0,0.4);
+        }
+        .btn-sky:hover { box-shadow: 0 0 55px rgba(14,165,233,0.55), 0 10px 35px rgba(0,0,0,0.5); }
+        .btn-ghost {
+            background: rgba(255,255,255,0.04);
+            border-color: var(--border);
+            box-shadow: 0 4px 18px rgba(0,0,0,0.3);
+        }
+        .btn-ghost:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.14); }
+
+        /* DIVIDER */
+        .section-divider {
+            position: relative; text-align: center; margin: 0 auto 46px; max-width: 1100px;
+        }
+        .section-divider::before {
+            content: ''; position: absolute; top: 50%; left: 0;
+            width: 100%; height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(124,106,255,0.3), rgba(56,189,248,0.2), transparent);
+        }
+        .section-divider span {
+            position: relative; z-index: 1;
+            font-family: 'Cinzel', serif; font-size: 1.05rem;
+            letter-spacing: 0.22em; color: var(--accent3);
+            background: var(--bg); padding: 0 24px;
+            animation: logoGlow 3s ease-in-out infinite alternate;
+        }
+
+        /* SCREENSHOTS */
+        .screenshots-section { position: relative; z-index: 10; padding: 0 24px 80px; }
+        .screenshots-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+            gap: 28px; max-width: 1000px; margin: 0 auto;
+        }
+        .phone-wrap { animation: revealUp 0.9s cubic-bezier(0.23,1,0.32,1) both; }
+        .phone-wrap:nth-child(1) { animation-delay: 0.65s; }
+        .phone-wrap:nth-child(2) { animation-delay: 0.8s; }
+        .phone-wrap:nth-child(3) { animation-delay: 0.95s; }
+        .phone-wrap:nth-child(4) { animation-delay: 1.1s; }
+        .phone-frame {
+            border-radius: 40px; overflow: hidden;
+            border: 5px solid rgba(255,255,255,0.07);
+            box-shadow: 0 0 0 1px rgba(124,106,255,0.12), 0 30px 60px rgba(0,0,0,0.65);
+            aspect-ratio: 9 / 19.5; background: #0d111f;
+            position: relative;
+            transition: transform 0.45s cubic-bezier(0.23,1,0.32,1), box-shadow 0.45s;
+            cursor: pointer; transform-style: preserve-3d;
+        }
+        .phone-frame::after {
+            content: ''; position: absolute; inset: 0; border-radius: 36px;
+            background: linear-gradient(135deg, rgba(255,255,255,0.06) 0%, transparent 50%);
+            opacity: 0; transition: opacity 0.4s;
+        }
+        .phone-frame:hover::after { opacity: 1; }
+        .phone-frame img { width: 100%; height: 100%; object-fit: cover; border-radius: 36px; display: block; }
+        .phone-label {
+            text-align: center; margin-top: 12px;
+            font-size: 0.72rem; color: var(--muted);
+            letter-spacing: 0.12em; text-transform: uppercase;
+        }
+
+        /* FOOTER */
+        footer {
+            position: relative; z-index: 10; text-align: center;
+            padding: 30px 24px 48px; border-top: 1px solid var(--border);
+        }
+        .footer-warning {
+            display: inline-flex; align-items: center; gap: 8px;
+            font-family: 'JetBrains Mono', monospace; font-size: 0.76rem;
+            color: #fbbf24; background: rgba(251,191,36,0.07);
+            border: 1px solid rgba(251,191,36,0.18);
+            padding: 8px 20px; border-radius: 8px; margin-bottom: 18px;
+            animation: warnPulse 2.5s ease-in-out infinite;
+        }
+        @keyframes warnPulse {
+            0%, 100% { box-shadow: none; }
+            50%       { box-shadow: 0 0 18px rgba(251,191,36,0.14); }
+        }
+        .footer-credit { font-size: 0.78rem; color: var(--muted); }
+        .footer-credit span { color: var(--accent3); }
+
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: var(--bg); }
+        ::-webkit-scrollbar-thumb { background: rgba(124,106,255,0.3); border-radius: 2px; }
+
+        @media (max-width: 640px) {
+            h1 { font-size: 3.6rem; }
+            .nav-strip { padding: 11px 16px; }
+            .screenshots-grid { grid-template-columns: 1fr 1fr; gap: 14px; }
+            .stat-strip { max-width: 100%; }
+        }
+    </style>
 </head>
-<body class="flex items-center justify-center min-h-screen bg-slate-900 selection:bg-purple-500 selection:text-white py-16">
+<body>
 
-    <div class="rocket-container">
-        <div class="rocket rocket-1">🚀</div>
-        <div class="rocket rocket-2">🚀</div>
-        <div class="rocket rocket-3">🚀</div>
-        <div class="rocket rocket-4">🚀</div>
-        <div class="rocket rocket-5">🚀</div>
+<canvas id="particle-canvas"></canvas>
+
+<div class="aurora">
+    <div class="aurora-blob"></div>
+    <div class="aurora-blob"></div>
+    <div class="aurora-blob"></div>
+    <div class="aurora-blob"></div>
+</div>
+
+<div class="orbs">
+    <div class="orb"></div>
+    <div class="orb"></div>
+    <div class="orb"></div>
+    <div class="orb"></div>
+</div>
+
+<div class="scanline"></div>
+
+<div class="rocket-container">
+    <div class="rocket rocket-1">🚀</div>
+    <div class="rocket rocket-2">🚀</div>
+    <div class="rocket rocket-3">🚀</div>
+    <div class="rocket rocket-4">🚀</div>
+    <div class="rocket rocket-5">🚀</div>
+</div>
+
+<header>
+    <nav class="nav-strip">
+        <span class="nav-logo">◉ LUNARIS</span>
+        <span class="nav-badge">BUILD 2026 · XAGA</span>
+        <div class="nav-dot"></div>
+    </nav>
+
+    <p class="hero-eyebrow reveal d1">Custom Android · Open Source</p>
+
+    <div class="h1-wrap reveal d2">
+        <h1 data-text="LUNARIS&#10;AOSP">LUNARIS<br>AOSP</h1>
     </div>
 
-    <div class="max-w-5xl w-full p-8 text-center">
-        <h1 class="text-5xl sm:text-6xl font-extrabold mb-6 tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400 pb-2">
-            Lunaris AOSP XAGA
-        </h1>
-        <p class="text-xl text-slate-300 mb-3">Device: <span class="font-mono bg-slate-800 px-3 py-1.5 rounded-md text-purple-300 shadow-inner">Redmi K50i</span></p>
-        <p class="text-md text-slate-400 mb-12">Maintained by dev Rohan</p>
+    <div class="reveal d3">
+        <div class="device-chip">Redmi K50i (xaga)</div>
+    </div>
+    <p class="maintainer reveal d3">Maintained by <strong style="color:#c4b5fd">dev Rohan</strong></p>
 
-        <div class="flex flex-col sm:flex-row gap-6 justify-center items-center">
-            
-            <a href="https://drive.google.com/file/d/1asdIHIubBIwIuU72uadV2s0AhjAXvcHc/view?usp=sharing" target="_blank" rel="noopener noreferrer"
-               class="w-full sm:w-auto px-8 py-4 bg-purple-600 hover:bg-purple-500 text-white font-semibold rounded-xl shadow-[0_0_20px_rgba(147,51,234,0.4)] transition-all duration-300 transform hover:-translate-y-1 flex items-center justify-center gap-3">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
-                Download Latest Build
-            </a>
-
-            <a href="https://t.me/screenshotsxaga" target="_blank" rel="noopener noreferrer"
-               class="w-full sm:w-auto px-8 py-4 bg-sky-500 hover:bg-sky-400 text-white font-semibold rounded-xl shadow-[0_0_20px_rgba(14,165,233,0.4)] transition-all duration-300 transform hover:-translate-y-1 flex items-center justify-center gap-3">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z"></path></svg>
-                Join Community
-            </a>
-
-            <a href="https://github.com/itsrohan17" target="_blank" rel="noopener noreferrer"
-               class="w-full sm:w-auto px-8 py-4 bg-slate-700 hover:bg-slate-600 text-white font-semibold rounded-xl shadow-[0_0_20px_rgba(51,65,85,0.4)] transition-all duration-300 transform hover:-translate-y-1 flex items-center justify-center gap-3">
-                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.336-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.564 9.564 0 0112 6.844c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.161 22 16.416 22 12c0-5.523-4.477-10-10-10z"></path></svg>
-                itsrohan17
-            </a>
-
+    <div class="stat-strip reveal d4">
+        <div class="stat-item">
+            <span class="stat-num">A16</span>
+            <span class="stat-label">Android Ver</span>
         </div>
-
-        <div class="mt-20">
-            <h2 class="text-3xl font-bold mb-10 text-slate-300">Device Screenshots</h2>
-            
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-10 max-w-3xl mx-auto">
-                <div class="rounded-[2.5rem] overflow-hidden border-[6px] border-slate-800 shadow-2xl transition-transform duration-300 hover:scale-105 bg-black flex items-center justify-center aspect-[9/19.5]">
-                    <img src="screenshots/home.png" alt="Lunaris Home Screen" class="w-full h-full object-cover rounded-[2rem]">
-                </div>
-                <div class="rounded-[2.5rem] overflow-hidden border-[6px] border-slate-800 shadow-2xl transition-transform duration-300 hover:scale-105 bg-black flex items-center justify-center aspect-[9/19.5]">
-                    <img src="screenshots/lunaris.png" alt="Lunaris Status Screen" class="w-full h-full object-cover rounded-[2rem]">
-                </div>
-                <div class="rounded-[2.5rem] overflow-hidden border-[6px] border-slate-800 shadow-2xl transition-transform duration-300 hover:scale-105 bg-black flex items-center justify-center aspect-[9/19.5]">
-                    <img src="screenshots/music.png" alt="Lunaris Music Player" class="w-full h-full object-cover rounded-[2rem]">
-                </div>
-                <div class="rounded-[2.5rem] overflow-hidden border-[6px] border-slate-800 shadow-2xl transition-transform duration-300 hover:scale-105 bg-black flex items-center justify-center aspect-[9/19.5]">
-                    <img src="screenshots/settings.png" alt="Lunaris Settings" class="w-full h-full object-cover rounded-[2rem]">
-                </div>
-            </div>
-        </div>
-        
-        <div class="mt-20 text-sm text-slate-500 border-t border-slate-800 pt-8">
-            <p>Make sure to clean flash if coming from a different ROM.</p>
+        <div class="stat-item">
+            <span class="stat-num">LOS</span>
+            <span class="stat-label">Base</span>
         </div>
     </div>
+
+    <div class="btn-group reveal d5">
+        <a href="https://drive.google.com/file/d/1asdIHIubBIwIuU72uadV2s0AhjAXvcHc/view?usp=sharing"
+           target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+            </svg>
+            Download Latest Build
+        </a>
+        <a href="https://t.me/screenshotsxaga" target="_blank" rel="noopener noreferrer" class="btn btn-sky">
+            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z"/>
+            </svg>
+            Join Community
+        </a>
+        <a href="https://github.com/itsrohan17" target="_blank" rel="noopener noreferrer" class="btn btn-ghost">
+            <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.336-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.564 9.564 0 0112 6.844c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.161 22 16.416 22 12c0-5.523-4.477-10-10-10z"/>
+            </svg>
+            itsrohan17
+        </a>
+    </div>
+</header>
+
+<section class="screenshots-section">
+    <div class="section-divider reveal d6"><span>Device Screenshots</span></div>
+    <div class="screenshots-grid">
+        <div class="phone-wrap">
+            <div class="phone-frame"><img src="screenshots/home.png" alt="Lunaris UI"></div>
+            <p class="phone-label">Lunaris UI</p>
+        </div>
+        <div class="phone-wrap">
+            <div class="phone-frame"><img src="screenshots/lunaris.png" alt="Lunaris UI"></div>
+            <p class="phone-label">Lunaris UI</p>
+        </div>
+        <div class="phone-wrap">
+            <div class="phone-frame"><img src="screenshots/music.png" alt="Lunaris UI"></div>
+            <p class="phone-label">Lunaris UI</p>
+        </div>
+        <div class="phone-wrap">
+            <div class="phone-frame"><img src="screenshots/settings.png" alt="Lunaris UI"></div>
+            <p class="phone-label">Lunaris UI</p>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <div class="footer-warning">⚠ &nbsp;Clean flash required when coming from a different ROM</div>
+    <p class="footer-credit">Built with ♥ for <span>XAGA</span> · Lunaris AOSP</p>
+</footer>
+
+<script>
+(function () {
+    // ── PARTICLE CANVAS ──
+    const canvas = document.getElementById('particle-canvas');
+    const ctx = canvas.getContext('2d');
+    let W, H;
+
+    function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+    window.addEventListener('resize', resize); resize();
+
+    const COLORS = ['rgba(167,139,250,', 'rgba(56,189,248,', 'rgba(255,255,255,', 'rgba(196,181,253,'];
+
+    class Particle {
+        constructor(init) {
+            this.x = Math.random() * (W || 800);
+            this.y = init ? Math.random() * (H || 600) : (H || 600) + 10;
+            this.vy = -(Math.random() * 0.35 + 0.08);
+            this.vx = (Math.random() - 0.5) * 0.18;
+            this.size = Math.random() * 1.6 + 0.2;
+            this.alpha = Math.random() * 0.55 + 0.08;
+            this.color = COLORS[Math.floor(Math.random() * COLORS.length)];
+            this.td = 1; this.ts = Math.random() * 0.018 + 0.004;
+        }
+        update() {
+            this.x += this.vx; this.y += this.vy;
+            this.alpha += this.ts * this.td;
+            if (this.alpha > 0.65 || this.alpha < 0.04) this.td *= -1;
+            if (this.y < -10) { Object.assign(this, new Particle(false)); }
+        }
+        draw() {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fillStyle = this.color + this.alpha + ')';
+            ctx.fill();
+        }
+    }
+
+    class Shooter {
+        constructor() {
+            this.x = Math.random() * (W || 800);
+            this.y = Math.random() * ((H || 600) * 0.5);
+            this.len = Math.random() * 110 + 55;
+            this.speed = Math.random() * 9 + 6;
+            this.alpha = 0; this.angle = Math.PI / 5 + (Math.random() - 0.5) * 0.35;
+            this.life = 0; this.maxLife = 55 + Math.random() * 45; this.done = false;
+        }
+        update() {
+            this.life++;
+            this.alpha = this.life < 10 ? this.life / 10 : this.life > this.maxLife - 10 ? (this.maxLife - this.life) / 10 : 1;
+            this.x += Math.cos(this.angle) * this.speed;
+            this.y += Math.sin(this.angle) * this.speed;
+            if (this.life >= this.maxLife) this.done = true;
+        }
+        draw() {
+            const tx = this.x - Math.cos(this.angle) * this.len;
+            const ty = this.y - Math.sin(this.angle) * this.len;
+            const g = ctx.createLinearGradient(tx, ty, this.x, this.y);
+            g.addColorStop(0, 'rgba(255,255,255,0)');
+            g.addColorStop(1, `rgba(200,180,255,${this.alpha * 0.85})`);
+            ctx.beginPath(); ctx.moveTo(tx, ty); ctx.lineTo(this.x, this.y);
+            ctx.strokeStyle = g; ctx.lineWidth = 1.5; ctx.stroke();
+        }
+    }
+
+    const particles = Array.from({length: 130}, (_, i) => new Particle(true));
+    let shooters = []; let frame = 0;
+
+    function loop() {
+        ctx.clearRect(0, 0, W, H);
+        frame++;
+        if (frame % 220 === 0) shooters.push(new Shooter());
+        shooters = shooters.filter(s => !s.done);
+        shooters.forEach(s => { s.update(); s.draw(); });
+        particles.forEach(p => { p.update(); p.draw(); });
+        requestAnimationFrame(loop);
+    }
+    loop();
+
+    // ── MAGNETIC BUTTONS ──
+    document.querySelectorAll('.btn').forEach(btn => {
+        btn.addEventListener('mousemove', e => {
+            const r = btn.getBoundingClientRect();
+            const dx = e.clientX - (r.left + r.width / 2);
+            const dy = e.clientY - (r.top  + r.height / 2);
+            btn.style.transform = `translateY(-4px) scale(1.02) translate(${dx * 0.15}px, ${dy * 0.15}px)`;
+        });
+        btn.addEventListener('mouseleave', () => { btn.style.transform = ''; });
+    });
+
+    // ── 3D PHONE TILT ──
+    document.querySelectorAll('.phone-frame').forEach(frame => {
+        frame.addEventListener('mousemove', e => {
+            const r = frame.getBoundingClientRect();
+            const x = (e.clientX - r.left) / r.width  - 0.5;
+            const y = (e.clientY - r.top)  / r.height - 0.5;
+            frame.style.transform = `translateY(-14px) scale(1.03) rotateY(${x * 14}deg) rotateX(${-y * 14}deg)`;
+            frame.style.boxShadow = `0 0 0 1px rgba(124,106,255,0.4), 0 55px 90px rgba(0,0,0,0.7), ${x * -20}px ${y * -20}px 50px rgba(124,106,255,0.12)`;
+        });
+        frame.addEventListener('mouseleave', () => {
+            frame.style.transform = ''; frame.style.boxShadow = '';
+        });
+    });
+
+    // ── CURSOR GLOW ──
+    const glow = document.createElement('div');
+    Object.assign(glow.style, {
+        position: 'fixed', pointerEvents: 'none', zIndex: '9999',
+        width: '300px', height: '300px', borderRadius: '50%',
+        background: 'radial-gradient(circle, rgba(124,106,255,0.06) 0%, transparent 70%)',
+        transform: 'translate(-50%, -50%)',
+        transition: 'transform 0.1s, opacity 0.3s',
+        top: '0', left: '0', opacity: '0'
+    });
+    document.body.appendChild(glow);
+    document.addEventListener('mousemove', e => {
+        glow.style.left = e.clientX + 'px';
+        glow.style.top  = e.clientY + 'px';
+        glow.style.opacity = '1';
+    });
+    document.addEventListener('mouseleave', () => { glow.style.opacity = '0'; });
+})();
+</script>
 </body>
 </html>
