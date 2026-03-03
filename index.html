@@ -31,6 +31,54 @@ body{
 /* ── PARTICLE CANVAS ── */
 #pc{position:fixed;inset:0;z-index:0;pointer-events:none}
 
+/* ── BIG LUNAR MOON ── */
+.moon{
+  position:fixed;
+  top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  width:min(75vw,600px);
+  height:min(75vw,600px);
+  border-radius:50%;
+  z-index:0;pointer-events:none;
+  /* Red/crimson moon base */
+  background:radial-gradient(circle at 38% 36%,
+    rgba(180,30,30,.18) 0%,
+    rgba(140,20,20,.13) 30%,
+    rgba(100,10,10,.08) 55%,
+    transparent 75%
+  );
+  /* Outer glow halo */
+  box-shadow:
+    0 0 80px  rgba(200,40,40,.08),
+    0 0 160px rgba(180,30,30,.06),
+    0 0 280px rgba(150,20,20,.04);
+  animation:moonPulse 8s ease-in-out infinite alternate;
+  will-change:opacity,transform;
+}
+/* Crater texture layer */
+.moon::before{
+  content:'';position:absolute;inset:0;border-radius:50%;
+  background:
+    radial-gradient(circle at 28% 32%, rgba(255,255,255,.03) 0%, transparent 8%),
+    radial-gradient(circle at 65% 25%, rgba(255,255,255,.02) 0%, transparent 6%),
+    radial-gradient(circle at 48% 60%, rgba(255,255,255,.02) 0%, transparent 10%),
+    radial-gradient(circle at 72% 68%, rgba(255,255,255,.015) 0%, transparent 7%),
+    radial-gradient(circle at 20% 70%, rgba(255,255,255,.02) 0%, transparent 9%);
+}
+/* Edge rim light */
+.moon::after{
+  content:'';position:absolute;inset:0;border-radius:50%;
+  background:radial-gradient(circle at 30% 30%,
+    rgba(255,120,100,.06) 0%,
+    transparent 55%
+  );
+  border:1px solid rgba(200,60,60,.06);
+}
+@keyframes moonPulse{
+  0%  {opacity:.7; transform:translate(-50%,-50%) scale(1)}
+  100%{opacity:1;  transform:translate(-50%,-50%) scale(1.03)}
+}
+
 /* ── BG GRADIENT ── */
 body::before{
   content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
@@ -50,9 +98,22 @@ body::before{
 @keyframes shoot{0%{opacity:0;transform:translateX(0) rotate(18deg)}6%{opacity:1}80%{opacity:.7}100%{opacity:0;transform:translateX(130vw) rotate(18deg)}}
 
 /* ── ROCKETS ── */
-.rc{position:fixed;inset:0;z-index:1;pointer-events:none}
-.r{position:absolute;bottom:-80px;opacity:0;will-change:transform,opacity;animation:flyUp linear infinite}
-@keyframes flyUp{0%{transform:translateY(60px) scale(.5) rotate(-12deg);opacity:0}8%{opacity:.5}90%{opacity:.35}100%{transform:translateY(-115vh) scale(1.4) rotate(-12deg);opacity:0}}
+.rc{position:fixed;inset:0;z-index:1;pointer-events:none;transform:translateZ(0)}
+.r{
+  position:absolute;bottom:-80px;opacity:0;
+  will-change:transform,opacity;
+  animation:flyUp linear infinite;
+  /* Force own compositor layer */
+  transform:translateZ(0);
+  backface-visibility:hidden;
+  -webkit-backface-visibility:hidden;
+}
+@keyframes flyUp{
+  0%  {transform:translateZ(0) translateY(60px)   scale(.5) rotate(-12deg);opacity:0}
+  8%  {opacity:.5}
+  90% {opacity:.35}
+  100%{transform:translateZ(0) translateY(-115vh) scale(1.4) rotate(-12deg);opacity:0}
+}
 .r1{left:10%;animation-duration:9s;animation-delay:0s;font-size:1.8rem}
 .r2{left:35%;animation-duration:14s;animation-delay:4s;font-size:1.2rem}
 .r3{left:60%;animation-duration:10s;animation-delay:7s;font-size:2.2rem}
@@ -378,6 +439,9 @@ footer{position:relative;z-index:10;text-align:center;padding:24px 16px 40px;bor
 
 <!-- PARTICLE CANVAS -->
 <canvas id="pc"></canvas>
+
+<!-- BIG LUNAR MOON -->
+<div class="moon"></div>
 
 <!-- SHOOTING STARS -->
 <div class="shooters">
@@ -746,6 +810,18 @@ footer{position:relative;z-index:10;text-align:center;padding:24px 16px 40px;bor
     requestAnimationFrame(loop);
   }
   loop();
+
+  /* ── ROCKET SCROLL FIX — prevent animation skip during scroll ── */
+  let scrollTimer;
+  const rockets = document.querySelectorAll('.r');
+  window.addEventListener('scroll', () => {
+    // Keep animations running — just hint to browser these are active
+    rockets.forEach(r => { r.style.willChange = 'transform, opacity'; });
+    clearTimeout(scrollTimer);
+    scrollTimer = setTimeout(() => {
+      rockets.forEach(r => { r.style.willChange = 'transform, opacity'; });
+    }, 150);
+  }, {passive: true});
 
   /* ── TAB SWITCHER ── */
   window.showTab = function(id, btn){
