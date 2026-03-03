@@ -1,30 +1,90 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="A brief description of the website for SEO purposes.">
-    <meta name="keywords" content="keyword1, keyword2, keyword3">
-    <meta name="author" content="itsrohan17">
-    <link rel="stylesheet" href="styles.css">
-    <title>Lunaris AOSP Xaga Site</title>
+  <!-- Meta Tags for Charset & Viewport -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="Lunaris AOSP - A custom Android ROM for Xaga devices with stunning visuals and optimized performance">
+  <meta name="keywords" content="AOSP, ROM, Xaga, Lunaris, Custom ROM, Android">
+  <meta name="author" content="Rohan">
+  <meta name="theme-color" content="#04091a">
+  
+  <!-- Open Graph Meta Tags for Social Sharing -->
+  <meta property="og:title" content="Lunaris AOSP XAGA">
+  <meta property="og:description" content="A custom Android ROM for Xaga devices with stunning visuals and optimized performance">
+  <meta property="og:type" content="website">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  
+  <!-- Google Fonts Preconnect -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Outfit:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  
+  <!-- External CSS -->
+  <link rel="stylesheet" href="style.css">
+  
+  <title>Lunaris AOSP XAGA</title>
 </head>
 <body>
-    <header>
-        <h1>Welcome to Lunaris AOSP Xaga</h1>
+  <!-- Particle Canvas -->
+  <canvas id="pc" aria-hidden="true"></canvas>
+  
+  <!-- Main Content -->
+  <main>
+    <!-- Lunar Moon Background -->
+    <div class="moon" aria-hidden="true"></div>
+    
+    <!-- Rocket Animation Container -->
+    <div class="rocket-container" aria-hidden="true">
+      <div class="rocket rocket-1" role="img" aria-label="flying rocket">🚀</div>
+      <div class="rocket rocket-2" role="img" aria-label="flying rocket">🚀</div>
+      <div class="rocket rocket-3" role="img" aria-label="flying rocket">🚀</div>
+      <div class="rocket rocket-4" role="img" aria-label="flying rocket">🚀</div>
+      <div class="rocket rocket-5" role="img" aria-label="flying rocket">🚀</div>
+    </div>
+    
+    <!-- Header Section -->
+    <header class="header">
+      <section class="hero">
+        <h1>Lunaris AOSP</h1>
+        <p class="tagline">Experience the Future of Android</p>
+      </section>
     </header>
-    <main>
-        <section>
-            <h2>About Us</h2>
-            <p>Information about the project and its goals.</p>
-        </section>
-        <section>
-            <h2>Contact</h2>
-            <p>Contact information goes here.</p>
-        </section>
-    </main>
-    <footer>
-        <p>&copy; 2026 Lunaris AOSP Xaga. All Rights Reserved.</p>
+    
+    <!-- Navigation -->
+    <nav class="navigation" aria-label="Main navigation">
+      <ul>
+        <li><a href="#features">Features</a></li>
+        <li><a href="#download">Download</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+    
+    <!-- Features Section -->
+    <section id="features" class="features">
+      <h2>Key Features</h2>
+      <!-- Add your features content here -->
+    </section>
+    
+    <!-- Download Section -->
+    <section id="download" class="download">
+      <h2>Get Started</h2>
+      <!-- Add your download links here -->
+    </section>
+    
+    <!-- Footer -->
+    <footer class="footer">
+      <p>&copy; 2026 Lunaris AOSP. All rights reserved.</p>
+      <nav aria-label="Footer navigation">
+        <a href="#privacy">Privacy Policy</a>
+        <a href="#terms">Terms of Service</a>
+      </nav>
     </footer>
+  </main>
 </body>
 </html>
