@@ -505,6 +505,79 @@ footer{position:relative;z-index:10;text-align:center;padding:24px 16px 40px;bor
   .nav{margin-bottom:38px}
   h1{font-size:clamp(2.6rem,14vw,4rem)}
 }
+
+/* ── 1. GPU-ACCELERATED CARD TRANSITIONS ── */
+.feat,.tl-card,.terminal,.gh-stat{
+  transition:
+    transform 0.4s cubic-bezier(0.22,1,0.36,1),
+    box-shadow 0.4s cubic-bezier(0.22,1,0.36,1),
+    border-color 0.3s ease,
+    opacity 0.4s ease;
+  will-change:transform;
+}
+
+/* ── 2. SCROLL REVEAL — sections slide up as you scroll ── */
+.scroll-reveal{
+  opacity:0;
+  transform:translateY(30px);
+  transition:opacity 0.8s cubic-bezier(0.16,1,0.3,1),
+             transform 0.8s cubic-bezier(0.16,1,0.3,1);
+}
+.scroll-reveal.active{
+  opacity:1;
+  transform:translateY(0);
+}
+
+/* ── 3. SKELETON LOADER for GitHub stats ── */
+.skeleton{
+  display:inline-block;
+  min-width:40px;height:14px;
+  background:#1a1f35;
+  background-image:linear-gradient(to right,#1a1f35 0%,#2a2f4a 20%,#1a1f35 40%,#1a1f35 100%);
+  background-size:400px 100%;
+  border-radius:4px;
+  animation:shimmer 1.5s infinite linear;
+  vertical-align:middle;
+}
+@keyframes shimmer{
+  0%  {background-position:-400px 0}
+  100%{background-position:400px 0}
+}
+
+/* ── 4. CUSTOM CURSOR (desktop only) ── */
+@media(hover:hover) and (pointer:fine){
+  body{cursor:none}
+  .cursor-dot{
+    width:8px;height:8px;
+    background:#fff;
+    position:fixed;pointer-events:none;
+    border-radius:50%;z-index:99999;
+    transform:translate(-50%,-50%);
+    transition:transform 0.08s ease,background 0.2s ease;
+    will-change:transform;
+  }
+  .cursor-ring{
+    width:32px;height:32px;
+    border:2px solid rgba(0,212,255,.7);
+    position:fixed;pointer-events:none;
+    border-radius:50%;z-index:99998;
+    transform:translate(-50%,-50%);
+    transition:transform 0.18s cubic-bezier(0.16,1,0.3,1),
+               width 0.25s ease,height 0.25s ease,
+               border-color 0.2s ease,opacity 0.2s ease;
+    will-change:transform;
+  }
+  /* Ring expands on hoverable elements */
+  .cursor-ring.hover{
+    width:48px;height:48px;
+    border-color:rgba(167,139,250,.9);
+    opacity:.8;
+  }
+  .cursor-dot.hover{
+    background:var(--violet);
+    transform:translate(-50%,-50%) scale(1.5);
+  }
+}
 </style>
 </head>
 <body>
@@ -514,6 +587,10 @@ footer{position:relative;z-index:10;text-align:center;padding:24px 16px 40px;bor
 
 <!-- BIG LUNAR MOON -->
 <div class="moon"></div>
+
+<!-- CUSTOM CURSOR (desktop) -->
+<div class="cursor-dot" id="cur-dot"></div>
+<div class="cursor-ring" id="cur-ring"></div>
 
 <!-- SHOOTING STARS -->
 <div class="shooters">
@@ -552,15 +629,15 @@ footer{position:relative;z-index:10;text-align:center;padding:24px 16px 40px;bor
   <div class="gh-stats rev d4" id="gh-stats">
     <div class="gh-stat">
       <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/></svg>
-      <span>Latest: </span><span class="gh-stat-val" id="gh-ver">v3.7</span>
+      <span>Latest: </span><span class="gh-stat-val" id="gh-ver"><span class="skeleton"></span></span>
     </div>
     <div class="gh-stat">
       <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-      <span>Downloads: </span><span class="gh-stat-val" id="gh-dl">—</span>
+      <span>Downloads: </span><span class="gh-stat-val" id="gh-dl"><span class="skeleton"></span></span>
     </div>
     <div class="gh-stat">
       <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-      <span>Released: </span><span class="gh-stat-val" id="gh-date">19 Feb 2026</span>
+      <span>Released: </span><span class="gh-stat-val" id="gh-date"><span class="skeleton"></span></span>
     </div>
   </div>
 
@@ -585,7 +662,7 @@ footer{position:relative;z-index:10;text-align:center;padding:24px 16px 40px;bor
 </header>
 
 <!-- FEATURES -->
-<section class="features">
+<section class="features scroll-reveal">
   <div class="features-grid">
     <div class="feat rev d6">
       <div class="feat-inner">
@@ -630,7 +707,7 @@ footer{position:relative;z-index:10;text-align:center;padding:24px 16px 40px;bor
 </div>
 
 <!-- SCREENSHOTS -->
-<section class="ss">
+<section class="ss scroll-reveal">
   <div class="divider rev d6"><span>Device Screenshots</span></div>
   <div class="grid">
     <div class="pw"><div class="pf"><img src="screenshots/home.png" alt="Lunaris UI" loading="lazy"></div><p class="pl">Lunaris UI</p></div>
@@ -643,7 +720,7 @@ footer{position:relative;z-index:10;text-align:center;padding:24px 16px 40px;bor
 </section>
 
 <!-- FLASH GUIDE -->
-<section class="terminal-section">
+<section class="terminal-section scroll-reveal">
   <div class="divider rev d6" style="margin-bottom:36px"><span>Flash Instructions</span></div>
 
   <!-- PREREQUISITES -->
@@ -798,7 +875,7 @@ footer{position:relative;z-index:10;text-align:center;padding:24px 16px 40px;bor
 </section>
 
 <!-- CHANGELOG TIMELINE -->
-<section class="timeline-section">
+<section class="timeline-section scroll-reveal">
   <div class="divider rev d6" style="margin-bottom:36px"><span>Changelog</span></div>
   <div class="timeline">
 
@@ -921,6 +998,36 @@ footer{position:relative;z-index:10;text-align:center;padding:24px 16px 40px;bor
     });
   };
 
+  /* ── SCROLL REVEAL — sections slide up as you scroll ── */
+  const revealObs = new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){ e.target.classList.add('active'); revealObs.unobserve(e.target); }
+    });
+  },{threshold:0.08});
+  document.querySelectorAll('.scroll-reveal').forEach(el=>revealObs.observe(el));
+
+  /* ── CUSTOM CURSOR (desktop only) ── */
+  if(!isMobile){
+    const dot  = document.getElementById('cur-dot');
+    const ring = document.getElementById('cur-ring');
+    if(dot && ring){
+      let mx=0,my=0;
+      document.addEventListener('mousemove',e=>{
+        mx=e.clientX; my=e.clientY;
+        dot.style.left  = mx+'px'; dot.style.top  = my+'px';
+        ring.style.left = mx+'px'; ring.style.top = my+'px';
+      },{passive:true});
+      /* Expand ring on interactive elements */
+      const hoverEls = 'a,button,.btn,.feat,.pf,.cmd-copy,.mtab';
+      document.querySelectorAll(hoverEls).forEach(el=>{
+        el.addEventListener('mouseenter',()=>{ ring.classList.add('hover'); dot.classList.add('hover'); });
+        el.addEventListener('mouseleave',()=>{ ring.classList.remove('hover'); dot.classList.remove('hover'); });
+      });
+      document.addEventListener('mouseleave',()=>{ dot.style.opacity='0'; ring.style.opacity='0'; });
+      document.addEventListener('mouseenter',()=>{ dot.style.opacity='1'; ring.style.opacity='1'; });
+    }
+  }
+
   /* ── TIMELINE SCROLL REVEAL ── */
   const obs = new IntersectionObserver(entries=>{
     entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('visible'); });
@@ -928,18 +1035,23 @@ footer{position:relative;z-index:10;text-align:center;padding:24px 16px 40px;bor
   document.querySelectorAll('.tl-item').forEach(el=>obs.observe(el));
 
   /* ── GITHUB API — fetch latest release stats ── */
+  const setVal = (id, val) => { const el=document.getElementById(id); if(el) el.innerHTML=val; };
   fetch('https://api.github.com/repos/itsrohan17/android_device_xiaomi_xaga/releases/latest')
     .then(r=>r.json()).then(d=>{
-      if(d.tag_name){ document.getElementById('gh-ver').textContent = d.tag_name; }
+      setVal('gh-ver', d.tag_name || 'v3.7');
       if(d.published_at){
-        const dt = new Date(d.published_at);
-        document.getElementById('gh-date').textContent = dt.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
-      }
+        const dt=new Date(d.published_at);
+        setVal('gh-date', dt.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}));
+      } else { setVal('gh-date','19 Feb 2026'); }
       if(d.assets){
-        const total = d.assets.reduce((s,a)=>s+a.download_count,0);
-        document.getElementById('gh-dl').textContent = total > 0 ? total.toLocaleString() : '—';
-      }
-    }).catch(()=>{}); /* Silently fail — static fallbacks remain */
+        const total=d.assets.reduce((s,a)=>s+a.download_count,0);
+        setVal('gh-dl', total>0 ? total.toLocaleString() : '—');
+      } else { setVal('gh-dl','—'); }
+    }).catch(()=>{
+      setVal('gh-ver','v3.7');
+      setVal('gh-date','19 Feb 2026');
+      setVal('gh-dl','—');
+    });
 
   /* ── DESKTOP EXTRAS ── */
   if(!isMobile){
