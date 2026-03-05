@@ -100,6 +100,14 @@
   loop();
 
   /* =============================================
+     SMOOTH SCROLL TO SECTION
+  ============================================= */
+  window.smoothScrollTo = function (id) {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
+  /* =============================================
      ROCKET SCROLL FIX
      Prevent animation skip during scroll
   ============================================= */
@@ -190,7 +198,7 @@
   fetch('https://api.github.com/repos/itsrohan17/android_device_xiaomi_xaga/releases/latest')
     .then(r => r.json())
     .then(d => {
-      setVal('gh-ver',  d.tag_name || 'v3.7');
+      setVal('gh-ver',  d.tag_name || 'v3.8');
 
       if (d.published_at) {
         const dt = new Date(d.published_at);
@@ -208,7 +216,7 @@
     })
     .catch(() => {
       /* Fallback static values if API fails */
-      setVal('gh-ver',  'v3.7');
+      setVal('gh-ver',  'v3.8');
       setVal('gh-date', '19 Feb 2026');
       setVal('gh-dl',   '—');
     });

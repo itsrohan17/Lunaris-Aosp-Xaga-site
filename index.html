@@ -74,9 +74,10 @@
     </div>
 
     <div class="btns rev d5">
-      <a href="https://drive.google.com/drive/folders/1gffwSkKVnd3_7eYUnXcdh2PdtbeQVJ0w?usp=sharing" target="_blank" rel="noopener noreferrer" class="btn bp">
+      <a href="#download-section" class="btn bp" onclick="smoothScrollTo('download-section')">
         <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-        Download Latest Build
+        Download
+        <span class="dl-arrow">↓</span>
       </a>
       <a href="https://t.me/screenshotsxaga" target="_blank" rel="noopener noreferrer" class="btn bs">
         <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z"/></svg>
@@ -92,6 +93,53 @@
       </a>
     </div>
   </header>
+
+  <!-- DOWNLOAD SECTION -->
+  <section class="dl-section scroll-reveal" id="download-section">
+    <div class="divider rev d6" style="margin-bottom:32px"><span>Downloads</span></div>
+    <div class="dl-grid">
+
+      <!-- v3.8 — Latest -->
+      <div class="dl-card dl-latest">
+        <div class="dl-badge-wrap">
+          <span class="dl-ver-badge new">✦ Latest</span>
+        </div>
+        <div class="dl-icon">🚀</div>
+        <div class="dl-ver">Lunaris v3.8</div>
+        <div class="dl-device">Redmi K50i · xaga</div>
+        <ul class="dl-tags">
+          <li>Android 16</li>
+          <li>LineageOS</li>
+          <li>Stable</li>
+        </ul>
+        <a href="#" onclick="return false;" class="btn bp dl-btn dl-soon">
+          <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          Coming Soon
+        </a>
+      </div>
+
+      <!-- v3.7 — Stable -->
+      <div class="dl-card">
+        <div class="dl-badge-wrap">
+          <span class="dl-ver-badge stable">Stable</span>
+        </div>
+        <div class="dl-icon">🌙</div>
+        <div class="dl-ver">Lunaris v3.7</div>
+        <div class="dl-device">Redmi K50i · xaga</div>
+        <ul class="dl-tags">
+          <li>Android 16</li>
+          <li>LineageOS</li>
+          <li>Stable</li>
+        </ul>
+        <a href="https://drive.google.com/file/d/1asdIHIubBIwIuU72uadV2s0AhjAXvcHc/view?usp=drive_link"
+           target="_blank" rel="noopener noreferrer" class="btn bg dl-btn">
+          <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+          Download v3.7
+        </a>
+      </div>
+
+    </div>
+  </section>
 
   <!-- FEATURES -->
   <section class="features scroll-reveal">
@@ -189,10 +237,7 @@
             <div class="prompt-title">2. Boot / Root Selection</div>
             <div class="boot-grid">
               <div class="boot-opt"><span class="boot-num">1</span><div><span class="boot-name">Stock Boot</span><span class="boot-desc">No root. Best for banking apps.</span></div></div>
-              <div class="boot-opt"><span class="boot-num">2</span><div><span class="boot-name">KernelSU</span><span class="boot-desc">Stable kernel-level root.</span></div></div>
-              <div class="boot-opt"><span class="boot-num">3</span><div><span class="boot-name">KernelSU Next</span><span class="boot-desc">Community fork, newer patches.</span></div></div>
-              <div class="boot-opt"><span class="boot-num">4</span><div><span class="boot-name">Magisk Alpha</span><span class="boot-desc">Bleeding-edge Magisk modules.</span></div></div>
-              <div class="boot-opt"><span class="boot-num">5</span><div><span class="boot-name">SuKiSu Ultra</span><span class="boot-desc">Advanced KSU for power users.</span></div></div>
+              <div class="boot-opt"><span class="boot-num">2</span><div><span class="boot-name">KernelSU Next</span><span class="boot-desc">Community fork, newer patches.</span></div></div>
             </div>
           </div>
         </div>
@@ -219,7 +264,7 @@
             <div class="step"><span class="step-n">3</span><span>Double-click <kbd>Install_Lunaris.bat</kbd> inside the extracted folder</span></div>
             <div class="step"><span class="step-n">4</span><span>Type <kbd>1</kbd> and press Enter to start the installer</span></div>
             <div class="step"><span class="step-n">5</span><span>Choose your <strong>Data Wipe</strong> option (Y / N) when prompted</span></div>
-            <div class="step"><span class="step-n">6</span><span>Choose your <strong>Root option</strong> (1–5) when prompted</span></div>
+            <div class="step"><span class="step-n">6</span><span>Choose your <strong>Root option</strong> (1–2) when prompted</span></div>
             <div class="step"><span class="step-n">7</span><span>Wait — the script flashes all partitions and reboots automatically ✅</span></div>
           </div>
         </div>
@@ -307,13 +352,31 @@
   <section class="timeline-section scroll-reveal">
     <div class="divider rev d6" style="margin-bottom:36px"><span>Changelog</span></div>
     <div class="timeline">
+
       <div class="tl-item">
         <div class="tl-dot latest"></div>
         <div class="tl-card">
           <div class="tl-header">
+            <span class="tl-version">v3.8</span>
+            <span class="tl-date">Mar 2026</span>
+            <span class="tl-badge latest">Latest</span>
+          </div>
+          <ul class="tl-changes">
+            <li>Add support custom clock color</li>
+            <li>Separate clock face weather switch</li>
+            <li>Notch ring charging indicator support</li>
+            <li>Add notch ring color mode</li>
+            <li>Redesign ongoing music chip like OneUI music chip</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-card">
+          <div class="tl-header">
             <span class="tl-version">v3.7</span>
             <span class="tl-date">19 Feb 2026</span>
-            <span class="tl-badge latest">Latest</span>
           </div>
           <ul class="tl-changes">
             <li>Added Lunaris Dolby</li>
@@ -328,6 +391,7 @@
           </a>
         </div>
       </div>
+
     </div>
   </section>
 
