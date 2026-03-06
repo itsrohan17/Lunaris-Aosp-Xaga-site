@@ -100,6 +100,71 @@
   loop();
 
   /* =============================================
+     COMMUNITY POPUP
+  ============================================= */
+  window.toggleCommunity = function (e) {
+    e.stopPropagation();
+    const popup = document.getElementById('community-popup');
+    const btn   = document.getElementById('comm-btn');
+    const rect  = btn.getBoundingClientRect();
+    const W     = 240;
+    let left    = rect.left + rect.width / 2 - W / 2;
+    if (left < 8) left = 8;
+    if (left + W > window.innerWidth - 8) left = window.innerWidth - W - 8;
+    popup.style.top  = (rect.bottom + 8) + 'px';
+    popup.style.left = left + 'px';
+    popup.classList.toggle('open');
+  };
+  document.addEventListener('click', function (e) {
+    const btn   = document.getElementById('comm-btn');
+    const popup = document.getElementById('community-popup');
+    if (popup && btn && !btn.contains(e.target) && !popup.contains(e.target)) {
+      popup.classList.remove('open');
+    }
+  });
+
+  /* =============================================
+     DL38 POPUP — v3.8 download mirrors
+     Opens ABOVE the button since it's near bottom of page
+  ============================================= */
+  window.toggleDl38 = function (e) {
+    e.stopPropagation();
+    const popup = document.getElementById('dl38-popup');
+    const btn   = document.getElementById('dl38-btn');
+    const rect  = btn.getBoundingClientRect();
+    const W     = 240;
+    const pH    = 190;
+    let left    = rect.left + rect.width / 2 - W / 2;
+    if (left < 8) left = 8;
+    if (left + W > window.innerWidth - 8) left = window.innerWidth - W - 8;
+    popup.style.top  = (rect.top - pH - 8) + 'px';
+    popup.style.left = left + 'px';
+    popup.classList.toggle('open');
+  };
+
+  window.copyChecksum = function () {
+    const hash = 'f1253703c02c9a8f29ef2aacdf60cc3288ffd45cfa2c4b4987b6bb7b59f8f82b';
+    const btn  = document.querySelector('.dl-checksum-copy');
+    navigator.clipboard.writeText(hash).catch(() => {
+      const ta = document.createElement('textarea');
+      ta.value = hash; document.body.appendChild(ta); ta.select();
+      document.execCommand('copy'); document.body.removeChild(ta);
+    });
+    if (btn) {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+    }
+  };
+  document.addEventListener('click', function (e) {
+    const btn38 = document.getElementById('dl38-btn');
+    const pop38 = document.getElementById('dl38-popup');
+    if (pop38 && btn38 && !btn38.contains(e.target) && !pop38.contains(e.target)) {
+      pop38.classList.remove('open');
+    }
+  });
+
+  /* =============================================
      SMOOTH SCROLL TO SECTION
   ============================================= */
   window.smoothScrollTo = function (id) {
@@ -204,7 +269,7 @@
         const dt = new Date(d.published_at);
         setVal('gh-date', dt.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }));
       } else {
-        setVal('gh-date', '19 Feb 2026');
+        setVal('gh-date', '6 Mar 2026');
       }
 
       if (d.assets) {
@@ -217,7 +282,7 @@
     .catch(() => {
       /* Fallback static values if API fails */
       setVal('gh-ver',  'v3.8');
-      setVal('gh-date', '19 Feb 2026');
+      setVal('gh-date', '6 Mar 2026');
       setVal('gh-dl',   '—');
     });
 

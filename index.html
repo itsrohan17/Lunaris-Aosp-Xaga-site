@@ -79,67 +79,26 @@
         Download
         <span class="dl-arrow">↓</span>
       </a>
-      <a href="https://t.me/screenshotsxaga" target="_blank" rel="noopener noreferrer" class="btn bs">
-        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z"/></svg>
-        Join Community
-      </a>
+      <div class="community-wrap">
+        <button class="btn bs" id="comm-btn" onclick="toggleCommunity(event)">
+          <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z"/></svg>
+          Join Community
+        </button>
+      </div>
       <a href="https://github.com/itsrohan17" target="_blank" rel="noopener noreferrer" class="btn bg">
         <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.336-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.564 9.564 0 0112 6.844c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.161 22 16.416 22 12c0-5.523-4.477-10-10-10z"/></svg>
         itsrohan17
       </a>
-      <a href="https://telegra.ph/Changelogs-Lunaris-37-17022026-02-19" target="_blank" rel="noopener noreferrer" class="btn bcl">
+      <a href="#changelog-section" class="btn bcl" onclick="smoothScrollTo('changelog-section')">
         <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
         Changelogs
       </a>
+      <a href="#flash-section" class="btn bg" onclick="smoothScrollTo('flash-section')">
+        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+        Flashing Guide
+      </a>
     </div>
   </header>
-
-  <!-- DOWNLOAD SECTION -->
-  <section class="dl-section scroll-reveal" id="download-section">
-    <div class="divider rev d6" style="margin-bottom:32px"><span>Downloads</span></div>
-    <div class="dl-grid">
-
-      <!-- v3.8 — Latest -->
-      <div class="dl-card dl-latest">
-        <div class="dl-badge-wrap">
-          <span class="dl-ver-badge new">✦ Latest</span>
-        </div>
-        <div class="dl-icon">🚀</div>
-        <div class="dl-ver">Lunaris v3.8</div>
-        <div class="dl-device">Redmi K50i · xaga</div>
-        <ul class="dl-tags">
-          <li>Android 16</li>
-          <li>LineageOS</li>
-          <li>Stable</li>
-        </ul>
-        <a href="#" onclick="return false;" class="btn bp dl-btn dl-soon">
-          <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-          Coming Soon
-        </a>
-      </div>
-
-      <!-- v3.7 — Stable -->
-      <div class="dl-card">
-        <div class="dl-badge-wrap">
-          <span class="dl-ver-badge stable">Stable</span>
-        </div>
-        <div class="dl-icon">🌙</div>
-        <div class="dl-ver">Lunaris v3.7</div>
-        <div class="dl-device">Redmi K50i · xaga</div>
-        <ul class="dl-tags">
-          <li>Android 16</li>
-          <li>LineageOS</li>
-          <li>Stable</li>
-        </ul>
-        <a href="https://drive.google.com/file/d/1asdIHIubBIwIuU72uadV2s0AhjAXvcHc/view?usp=drive_link"
-           target="_blank" rel="noopener noreferrer" class="btn bg dl-btn">
-          <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-          Download v3.7
-        </a>
-      </div>
-
-    </div>
-  </section>
 
   <!-- FEATURES -->
   <section class="features scroll-reveal">
@@ -200,7 +159,7 @@
   </section>
 
   <!-- FLASH GUIDE -->
-  <section class="terminal-section scroll-reveal">
+  <section class="terminal-section scroll-reveal" id="flash-section">
     <div class="divider rev d6" style="margin-bottom:36px"><span>Flash Instructions</span></div>
 
     <!-- Prerequisites -->
@@ -349,7 +308,7 @@
   </section>
 
   <!-- CHANGELOG -->
-  <section class="timeline-section scroll-reveal">
+  <section class="timeline-section scroll-reveal" id="changelog-section">
     <div class="divider rev d6" style="margin-bottom:36px"><span>Changelog</span></div>
     <div class="timeline">
 
@@ -358,7 +317,7 @@
         <div class="tl-card">
           <div class="tl-header">
             <span class="tl-version">v3.8</span>
-            <span class="tl-date">Mar 2026</span>
+            <span class="tl-date">6 Mar 2026</span>
             <span class="tl-badge latest">Latest</span>
           </div>
           <ul class="tl-changes">
@@ -368,6 +327,10 @@
             <li>Add notch ring color mode</li>
             <li>Redesign ongoing music chip like OneUI music chip</li>
           </ul>
+          <a href="https://telegra.ph/Changelogs-Lunaris-37-17022026-02-19" target="_blank" class="tl-link">
+            <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+            Full changelog on Telegraph
+          </a>
         </div>
       </div>
 
@@ -395,11 +358,117 @@
     </div>
   </section>
 
+  <!-- DOWNLOAD SECTION -->
+  <section class="dl-section scroll-reveal" id="download-section">
+    <div class="divider rev d6" style="margin-bottom:32px"><span>Downloads</span></div>
+    <div class="dl-grid">
+
+      <!-- v3.8 — Latest -->
+      <div class="dl-card dl-latest">
+        <div class="dl-badge-wrap">
+          <span class="dl-ver-badge new">✦ Latest</span>
+        </div>
+        <div class="dl-icon">🚀</div>
+        <div class="dl-ver">Lunaris v3.8</div>
+        <div class="dl-device">Redmi K50i · xaga</div>
+        <ul class="dl-tags">
+          <li>Android 16</li>
+          <li>LineageOS</li>
+          <li>Stable</li>
+        </ul>
+        <button class="btn bp dl-btn" id="dl38-btn" onclick="toggleDl38(event)">
+          <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+          Download v3.8
+          <span class="dl-arrow">↓</span>
+        </button>
+      </div>
+
+      <!-- v3.7 — Stable -->
+      <div class="dl-card">
+        <div class="dl-badge-wrap">
+          <span class="dl-ver-badge stable">Stable</span>
+        </div>
+        <div class="dl-icon">🌙</div>
+        <div class="dl-ver">Lunaris v3.7</div>
+        <div class="dl-device">Redmi K50i · xaga</div>
+        <ul class="dl-tags">
+          <li>Android 16</li>
+          <li>LineageOS</li>
+          <li>Stable</li>
+        </ul>
+        <a href="https://drive.google.com/file/d/1asdIHIubBIwIuU72uadV2s0AhjAXvcHc/view?usp=drive_link"
+           target="_blank" rel="noopener noreferrer" class="btn bg dl-btn">
+          <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+          Download v3.7
+        </a>
+      </div>
+
+    </div>
+  </section>
+
   <!-- FOOTER -->
   <footer>
     <div class="fw">⚠ &nbsp;Clean flash required when coming from a different ROM</div>
     <p class="fc">Built with ♥ for <span>XAGA</span> · Lunaris AOSP</p>
   </footer>
+
+  <!-- COMMUNITY POPUP -->
+  <div class="community-popup" id="community-popup">
+    <a href="https://t.me/screenshotsxaga" target="_blank" rel="noopener noreferrer" class="comm-item">
+      <div class="comm-icon">
+        <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z"/></svg>
+      </div>
+      <div class="comm-text">
+        <span class="comm-title">GG Builds</span>
+        <span class="comm-sub">Screenshots &amp; updates</span>
+      </div>
+      <svg class="comm-arrow" width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+    </a>
+    <div class="comm-divider"></div>
+    <a href="https://t.me/XAGASupport" target="_blank" rel="noopener noreferrer" class="comm-item">
+      <div class="comm-icon comm-icon-support">
+        <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+      </div>
+      <div class="comm-text">
+        <span class="comm-title">XAGA Support</span>
+        <span class="comm-sub">Help &amp; troubleshooting</span>
+      </div>
+      <svg class="comm-arrow" width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+    </a>
+  </div>
+
+  <!-- DL38 POPUP — download mirrors for v3.8 -->
+  <div class="community-popup" id="dl38-popup">
+    <div class="comm-popup-label">⬇ Choose mirror</div>
+    <a href="https://drive.usercontent.google.com/download?id=1_caPSR7IFrYbSn84t2uakOdltH_6XNYL&export=download&authuser=0"
+       target="_blank" rel="noopener noreferrer" class="comm-item">
+      <div class="comm-icon">
+        <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+      </div>
+      <div class="comm-text">
+        <span class="comm-title">Google Drive</span>
+        <span class="comm-sub">Recommended mirror</span>
+      </div>
+      <svg class="comm-arrow" width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+    </a>
+    <div class="comm-divider"></div>
+    <a href="https://gofile.io/d/VHr9Gr" target="_blank" rel="noopener noreferrer" class="comm-item">
+      <div class="comm-icon comm-icon-support">
+        <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+      </div>
+      <div class="comm-text">
+        <span class="comm-title">GoFile</span>
+        <span class="comm-sub">Temporary mirror</span>
+      </div>
+      <svg class="comm-arrow" width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+    </a>
+    <div class="comm-divider"></div>
+    <div class="dl-checksum">
+      <span class="dl-checksum-label">SHA-256</span>
+      <span class="dl-checksum-val" id="checksum-val" title="Click to copy" onclick="copyChecksum()">f1253703c02c9a8f29ef2aacdf60cc3288ffd45cfa2c4b4987b6bb7b59f8f82b</span>
+      <button class="dl-checksum-copy" onclick="copyChecksum()">Copy</button>
+    </div>
+  </div>
 
   <script src="script.js"></script>
 </body>
