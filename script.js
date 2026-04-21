@@ -263,13 +263,13 @@
   fetch('https://api.github.com/repos/itsrohan17/android_device_xiaomi_xaga/releases/latest')
     .then(r => r.json())
     .then(d => {
-      setVal('gh-ver',  d.tag_name || 'v3.8 Hotfix');
+      setVal('gh-ver',  d.tag_name || 'v3.9');
 
       if (d.published_at) {
         const dt = new Date(d.published_at);
         setVal('gh-date', dt.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }));
       } else {
-        setVal('gh-date', '23 Mar 2026');
+        setVal('gh-date', 'Apr 2026');
       }
 
       if (d.assets) {
@@ -282,7 +282,7 @@
     .catch(() => {
       /* Fallback static values if API fails */
       setVal('gh-ver',  'v3.8');
-      setVal('gh-date', '23 Mar 2026');
+      setVal('gh-date', 'Apr 2026');
       setVal('gh-dl',   '—');
     });
 
