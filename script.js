@@ -1,15 +1,17 @@
 /* =============================================
-   LUNARIS AOSP — XAGA (REFINED & COMPLETE)
+   LUNARIS AOSP — PREMIUM REFINED (COMPLETE)
    script.js
 ============================================= */
 
 (function () {
   const isMobile = window.innerWidth < 768 || navigator.maxTouchPoints > 0;
 
-  /* ── ELEGANT STARFIELD CANVAS ── */
+  /* ── ELEGANT PARALLAX STARFIELD CANVAS ── */
   const canvas = document.getElementById('pc');
   const ctx    = canvas.getContext('2d');
   let W, H;
+  let targetX = 0, targetY = 0;
+  let currentX = 0, currentY = 0;
 
   function resize() {
     W = canvas.width  = innerWidth;
@@ -17,6 +19,13 @@
   }
   addEventListener('resize', resize, { passive: true });
   resize();
+
+  if (!isMobile) {
+    document.addEventListener('mousemove', (e) => {
+      targetX = (e.clientX - W / 2) * 0.05;
+      targetY = (e.clientY - H / 2) * 0.05;
+    });
+  }
 
   const COUNT = isMobile ? 50 : 150;
   const pts = Array.from({ length: COUNT }, () => ({
@@ -27,39 +36,42 @@
     s:   Math.random() * 1.5 + 0.5,
     a:   Math.random() * 0.5 + 0.1,
     td:  1,
-    ts:  Math.random() * 0.005 + 0.001
+    ts:  Math.random() * 0.005 + 0.001,
+    depth: Math.random() * 0.8 + 0.2
   }));
 
   function loop() {
     ctx.clearRect(0, 0, W, H);
+    currentX += (targetX - currentX) * 0.05;
+    currentY += (targetY - currentY) * 0.05;
     
     pts.forEach(p => {
       p.x += p.vx;
       p.y += p.vy;
       p.a += p.ts * p.td;
-      
       if (p.a > 0.8 || p.a < 0.1) p.td *= -1;
-      
       if (p.x > W) p.x = 0;
       if (p.x < 0) p.x = W;
       if (p.y > H) p.y = 0;
       if (p.y < 0) p.y = H;
       
+      const drawX = p.x + (currentX * p.depth);
+      const drawY = p.y + (currentY * p.depth);
       ctx.beginPath();
-      ctx.arc(p.x, p.y, p.s, 0, Math.PI * 2);
+      ctx.arc(drawX, drawY, p.s, 0, Math.PI * 2);
       ctx.fillStyle = `rgba(255, 255, 255, ${p.a})`;
       ctx.fill();
     });
-
     requestAnimationFrame(loop);
   }
   loop();
 
-  /* ── COMMUNITY POPUP ── */
+  /* ── POPUPS & CHECKSUM (RESTORED) ── */
   window.toggleCommunity = function (e) {
     e.stopPropagation();
     const popup = document.getElementById('community-popup');
     const btn   = document.getElementById('comm-btn');
+    if(!popup || !btn) return;
     const rect  = btn.getBoundingClientRect();
     const W     = 240;
     let left    = rect.left + rect.width / 2 - W / 2;
@@ -69,19 +81,12 @@
     popup.style.left = left + 'px';
     popup.classList.toggle('open');
   };
-  document.addEventListener('click', function (e) {
-    const btn   = document.getElementById('comm-btn');
-    const popup = document.getElementById('community-popup');
-    if (popup && btn && !btn.contains(e.target) && !popup.contains(e.target)) {
-      popup.classList.remove('open');
-    }
-  });
 
-  /* ── DL38 POPUP ── */
   window.toggleDl38 = function (e) {
     e.stopPropagation();
     const popup = document.getElementById('dl38-popup');
     const btn   = document.getElementById('dl38-btn');
+    if(!popup || !btn) return;
     const rect  = btn.getBoundingClientRect();
     const W     = 240;
     const pH    = 190;
@@ -107,8 +112,13 @@
       setTimeout(() => { btn.textContent = 'Copy'; btn.style.color = ''; }, 2000);
     }
   };
-  
+
   document.addEventListener('click', function (e) {
+    const btnComm = document.getElementById('comm-btn');
+    const popComm = document.getElementById('community-popup');
+    if (popComm && btnComm && !btnComm.contains(e.target) && !popComm.contains(e.target)) {
+      popComm.classList.remove('open');
+    }
     const btn38 = document.getElementById('dl38-btn');
     const pop38 = document.getElementById('dl38-popup');
     if (pop38 && btn38 && !btn38.contains(e.target) && !pop38.contains(e.target)) {
@@ -116,7 +126,7 @@
     }
   });
 
-  /* ── TAB SWITCHER ── */
+  /* ── TAB SWITCHER & COPY COMMAND ── */
   window.showTab = function (id, btn) {
     ['win', 'linux', 'termux'].forEach(t => {
       const el = document.getElementById('tab-' + t);
@@ -126,7 +136,6 @@
     btn.classList.add('active');
   };
 
-  /* ── COPY COMMAND ── */
   window.copyCmd = function (btn, text) {
     const done = () => {
       btn.textContent = 'Copied!';
@@ -135,31 +144,66 @@
     };
     if (navigator.clipboard) {
       navigator.clipboard.writeText(text).then(done).catch(() => fallbackCopy(text, done));
-    } else {
-      fallbackCopy(text, done);
-    }
+    } else { fallbackCopy(text, done); }
   };
   function fallbackCopy(text, cb) {
     const ta = document.createElement('textarea');
     ta.value = text; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); cb();
   }
 
-  /* ── SCROLL REVEAL ── */
+ /* ── SCREENSHOT GALLERY LOGIC ── */
+  window.filterGallery = function(category) {
+    // Safely get the event target
+    const target = window.event ? window.event.target : null;
+    
+    if (target) {
+      const btns = document.querySelectorAll('.filter-btn');
+      btns.forEach(btn => btn.classList.remove('active'));
+      target.classList.add('active');
+    }
+
+    const items = document.querySelectorAll('.ss-carousel .pw');
+    items.forEach(item => {
+      if (category === 'all' || item.getAttribute('data-cat') === category) {
+        item.style.display = 'block';
+        setTimeout(() => item.style.opacity = '1', 50);
+      } else {
+        item.style.opacity = '0';
+        setTimeout(() => item.style.display = 'none', 300);
+      }
+    });
+  };
+
+  /* ── LIGHTBOX MODAL ── */
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImg = document.getElementById('lightbox-img');
+
+  window.openModal = function(src) {
+    if(!lightbox) return;
+    lightboxImg.src = src;
+    lightbox.classList.add('show');
+    document.body.style.overflow = 'hidden'; 
+  };
+  window.closeModal = function() {
+    if(!lightbox) return;
+    lightbox.classList.remove('show');
+    document.body.style.overflow = 'auto';
+  };
+  document.addEventListener('keydown', function(event) {
+    if (event.key === "Escape") closeModal();
+  });
+
+  /* ── SCROLL & OBSERVERS ── */
   window.smoothScrollTo = function (id) {
     const el = document.getElementById(id);
     if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
-
   const revealObs = new IntersectionObserver(entries => {
     entries.forEach(e => {
-      if (e.isIntersecting) {
-        e.target.classList.add('active');
-        revealObs.unobserve(e.target);
-      }
+      if (e.isIntersecting) { e.target.classList.add('active'); revealObs.unobserve(e.target); }
     });
   }, { threshold: 0.08 });
   document.querySelectorAll('.scroll-reveal').forEach(el => revealObs.observe(el));
-
   const tlObs = new IntersectionObserver(entries => {
     entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
   }, { threshold: 0.15 });
@@ -200,7 +244,7 @@
           ring.style.top  = e.clientY + 'px';
         }, 40);
       }, { passive: true });
-      document.querySelectorAll('a, button, .btn, .feat, .pf, .mtab').forEach(el => {
+      document.querySelectorAll('a, button, .btn, .filter-btn, .pf, .lightbox-close, .mtab, .cmd-copy').forEach(el => {
         el.addEventListener('mouseenter', () => { ring.style.width = '48px'; ring.style.height = '48px'; ring.style.borderColor = 'rgba(139, 92, 246, 0.8)'; dot.style.background = '#8b5cf6'; });
         el.addEventListener('mouseleave', () => { ring.style.width = '32px'; ring.style.height = '32px'; ring.style.borderColor = 'rgba(255,255,255,0.4)'; dot.style.background = '#fff'; });
       });

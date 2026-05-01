@@ -6,20 +6,140 @@
   <title>Lunaris AOSP · XAGA</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  
+  <style>
+    /* =============================================
+       LUNARIS AOSP — PREMIUM REFINED (INLINE CSS)
+    ============================================= */
+    :root {
+      --bg: #03050a;
+      --bg-gradient: radial-gradient(circle at top, #0d1126 0%, #03050a 70%);
+      --border: rgba(255, 255, 255, 0.06);
+      --violet: #a78bfa;
+      --accent: #8b5cf6;
+      --sky: #38bdf8;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --glass: rgba(255, 255, 255, 0.03);
+      --glass-border: rgba(255, 255, 255, 0.08);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Outfit', sans-serif; background: var(--bg); background-image: var(--bg-gradient); color: var(--text); overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+    .ambient-glow { position: fixed; top: -20vh; left: 50%; transform: translateX(-50%); width: 120vw; height: 100vh; background: radial-gradient(circle, rgba(139, 92, 246, 0.12) 0%, transparent 60%); z-index: 0; pointer-events: none; filter: blur(90px); animation: nebulaBreathe 12s ease-in-out infinite alternate; will-change: transform; }
+    @keyframes nebulaBreathe { 0% { transform: translateX(-50%) scale(1); opacity: 0.8; } 100% { transform: translateX(-48%) scale(1.05); opacity: 1; } }
+    #pc { position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: 0.7; }
+    .rev { opacity: 0; transform: translateY(20px); animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+    .d1 { animation-delay: 0.1s; } .d2 { animation-delay: 0.2s; } .d3 { animation-delay: 0.3s; } .d4 { animation-delay: 0.4s; } .d5 { animation-delay: 0.5s; } .d6 { animation-delay: 0.6s; }
+    header { position: relative; z-index: 10; padding: 24px 16px 0; text-align: center; }
+    .nav { display: inline-flex; justify-content: space-between; align-items: center; margin: 0 auto 48px; padding: 10px 20px; background: var(--glass); border: 1px solid var(--glass-border); border-radius: 100px; backdrop-filter: blur(16px); box-shadow: 0 4px 24px rgba(0,0,0,0.2); gap: 16px; }
+    .nav-logo { font-weight: 800; font-size: 0.9rem; letter-spacing: 0.1em; color: var(--text); }
+    .nav-badge { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: var(--muted); }
+    .nav-dot { width: 6px; height: 6px; border-radius: 50%; background: #10b981; box-shadow: 0 0 8px #10b981; }
+    .hero-content { margin-top: 40px; }
+    .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; letter-spacing: 0.2em; color: var(--violet); text-transform: uppercase; margin-bottom: 16px; }
+    h1 { font-size: clamp(3rem, 10vw, 6.5rem); font-weight: 800; line-height: 1; letter-spacing: -0.03em; background: linear-gradient(135deg, #fff 0%, #c4b5fd 50%, #818cf8 100%); -webkit-background-clip: text; background-clip: text; color: transparent; margin-bottom: 24px; }
+    .chip { display: inline-flex; align-items: center; gap: 8px; font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.2); padding: 6px 16px; border-radius: 30px; margin-bottom: 12px; color: var(--violet); }
+    .maint { font-size: 0.9rem; color: var(--muted); margin-bottom: 40px; }
+    .stats { display: inline-flex; margin: 0 auto 32px; background: var(--glass); border: 1px solid var(--glass-border); border-radius: 16px; overflow: hidden; backdrop-filter: blur(10px); }
+    .si { padding: 16px 24px; border-right: 1px solid var(--glass-border); text-align: center; }
+    .si:last-child { border-right: none; }
+    .sn { font-weight: 700; font-size: 1.4rem; color: var(--text); display: block; }
+    .sl { font-size: 0.65rem; color: var(--muted); letter-spacing: 0.05em; text-transform: uppercase; }
+    .gh-stats { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-bottom: 48px; }
+    .gh-stat { display: flex; align-items: center; gap: 8px; background: transparent; border: 1px solid var(--border); border-radius: 30px; padding: 6px 14px; font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--muted); }
+    .gh-stat-val { color: var(--text); font-weight: 500; }
+    .btns { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-bottom: 80px; position: relative; z-index: 20; }
+    .btn { position: relative; display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px; font-weight: 500; font-size: 0.9rem; border-radius: 12px; text-decoration: none; color: #fff; border: 1px solid transparent; cursor: pointer; overflow: hidden; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); }
+    .btn:hover { transform: translateY(-3px); }
+    .btn:active { transform: translateY(1px); }
+    .btn::after { content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent); transform: skewX(-20deg); transition: 0.6s ease; }
+    .btn:hover::after { left: 150%; }
+    .bp { background: #8b5cf6; border-color: #a78bfa; box-shadow: 0 4px 14px rgba(139,92,246,0.2); }
+    .bp:hover { box-shadow: 0 8px 24px rgba(139,92,246,0.6); border-color: #ddd6fe; }
+    .bs { background: #2563eb; border-color: #60a5fa; box-shadow: 0 4px 14px rgba(37,99,235,0.2); }
+    .bs:hover { box-shadow: 0 8px 24px rgba(37,99,235,0.6); border-color: #bfdbfe; }
+    .bg { background: var(--glass); border-color: var(--glass-border); backdrop-filter: blur(10px); }
+    .bg:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.2); box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
+    .bcl { background: #059669; border-color: #34d399; box-shadow: 0 4px 14px rgba(5,150,105,0.2); }
+    .bcl:hover { box-shadow: 0 8px 24px rgba(5,150,105,0.6); border-color: #a7f3d0; }
+    .divider { position: relative; text-align: center; margin: 0 auto 40px; max-width: 960px; }
+    .divider::before { content: ''; position: absolute; top: 50%; left: 0; width: 100%; height: 1px; background: linear-gradient(90deg, transparent, rgba(139,92,246,0.4), transparent); }
+    .divider span { position: relative; z-index: 1; font-weight: 600; font-size: 0.95rem; letter-spacing: 0.1em; color: var(--violet); background: var(--bg); padding: 0 18px; text-transform: uppercase; }
+    .features { position: relative; z-index: 10; padding: 0 16px 56px; }
+    .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; max-width: 900px; margin: 0 auto; }
+    @media (max-width: 768px) { .features-grid { grid-template-columns: 1fr; } }
+    .feat { padding: 32px 24px; background: var(--glass); border: 1px solid var(--glass-border); border-radius: 20px; text-align: left; backdrop-filter: blur(12px); transition: all 0.3s ease; }
+    .feat:hover { transform: translateY(-4px); border-color: rgba(139,92,246,0.4); background: rgba(255,255,255,0.05); box-shadow: 0 10px 30px rgba(139,92,246,0.1); }
+    .feat-icon { font-size: 1.8rem; margin-bottom: 16px; display: block; }
+    .feat-title { font-weight: 600; font-size: 1.1rem; color: var(--text); margin-bottom: 8px; display: block; }
+    .feat-desc { font-size: 0.9rem; color: var(--muted); line-height: 1.6; }
+    .ss { position: relative; z-index: 10; padding: 0 14px 60px; }
+    .ss-filters { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-bottom: 32px; }
+    .filter-btn { background: var(--glass); border: 1px solid var(--glass-border); color: var(--muted); padding: 8px 18px; border-radius: 20px; font-family: 'Outfit', sans-serif; font-size: 0.85rem; cursor: pointer; transition: all 0.3s ease; }
+    .filter-btn:hover { background: rgba(139,92,246,0.1); color: var(--text); }
+    .filter-btn.active { background: rgba(139,92,246,0.2); border-color: var(--violet); color: var(--violet); font-weight: 600; }
+    .carousel-container { max-width: 1000px; margin: 0 auto; position: relative; }
+    .ss-carousel { display: flex; gap: 24px; overflow-x: auto; padding: 10px 10px 40px; scroll-snap-type: x mandatory; scroll-behavior: smooth; scrollbar-width: thin; scrollbar-color: var(--violet) var(--bg); }
+    .ss-carousel::-webkit-scrollbar { height: 6px; }
+    .ss-carousel::-webkit-scrollbar-track { background: var(--bg); border-radius: 10px; }
+    .ss-carousel::-webkit-scrollbar-thumb { background: var(--violet); border-radius: 10px; }
+    .pw { flex: 0 0 auto; width: 220px; scroll-snap-align: center; transition: opacity 0.4s ease, transform 0.4s ease; }
+    .pf { border-radius: 20px; border: 1px solid var(--glass-border); transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); overflow: hidden; aspect-ratio: 9/19.5; background: #0c1020; position: relative; cursor: pointer; }
+    .pf::after { content: '🔍'; position: absolute; inset: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; font-size: 2rem; opacity: 0; transition: opacity 0.3s; }
+    .pf:hover { transform: scale(1.05) translateY(-5px); border-color: var(--violet); box-shadow: 0 20px 40px rgba(139,92,246,0.2); }
+    .pf:hover::after { opacity: 1; }
+    .pf img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s; }
+    .pf:hover img { transform: scale(1.02); }
+    .pl { text-align: center; margin-top: 12px; font-size: 0.75rem; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; font-weight: 500; }
+    @media (max-width: 600px) { .pw { width: 180px; } }
+    .lightbox { display: none; position: fixed; z-index: 999999; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(3, 5, 10, 0.95); backdrop-filter: blur(10px); align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s ease; }
+    .lightbox.show { display: flex; opacity: 1; }
+    .lightbox-content { max-height: 90vh; max-width: 90vw; border-radius: 24px; border: 1px solid var(--glass-border); box-shadow: 0 20px 60px rgba(0,0,0,0.8); transform: scale(0.95); transition: transform 0.3s ease; }
+    .lightbox.show .lightbox-content { transform: scale(1); }
+    .lightbox-close { position: absolute; top: 20px; right: 30px; color: #fff; font-size: 40px; font-weight: 300; cursor: pointer; transition: color 0.3s; }
+    .lightbox-close:hover { color: var(--violet); }
+    .premium-footer { position: relative; z-index: 10; background: rgba(5, 8, 20, 0.6); border-top: 1px solid var(--glass-border); padding: 60px 20px 30px; margin-top: 40px; }
+    .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 40px; max-width: 1000px; margin: 0 auto 40px; }
+    @media (max-width: 768px) { .footer-grid { grid-template-columns: 1fr; text-align: center; } }
+    .footer-col h4 { font-weight: 600; font-size: 0.95rem; color: var(--text); margin-bottom: 20px; letter-spacing: 0.05em; text-transform: uppercase; }
+    .footer-col a { display: block; color: var(--muted); text-decoration: none; font-size: 0.85rem; margin-bottom: 12px; transition: color 0.2s, padding-left 0.2s; }
+    .footer-col a:hover { color: var(--violet); padding-left: 5px; }
+    .brand-col .footer-logo { font-weight: 800; font-size: 1.2rem; letter-spacing: 0.1em; color: var(--text); display: block; margin-bottom: 12px; }
+    .brand-col .footer-desc { color: var(--muted); font-size: 0.85rem; line-height: 1.6; max-width: 300px; }
+    @media (max-width: 768px) { .brand-col .footer-desc { margin: 0 auto; } }
+    .footer-bottom { max-width: 1000px; margin: 0 auto; border-top: 1px solid var(--glass-border); padding-top: 24px; display: flex; flex-direction: column; align-items: center; gap: 16px; }
+    .device-info { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: var(--muted); background: var(--glass); padding: 10px 24px; border-radius: 30px; border: 1px solid var(--glass-border); }
+    .info-label { color: var(--violet); text-transform: uppercase; letter-spacing: 0.1em; margin-right: 4px; }
+    .dot-sep { color: rgba(255,255,255,0.2); }
+    .copyright { font-size: 0.75rem; color: var(--muted); }
+    .community-popup { position: fixed; width: 240px; background: rgba(10,12,28,0.95); border: 1px solid rgba(139,92,246,0.3); border-radius: 16px; padding: 8px; z-index: 999999; box-shadow: 0 20px 60px rgba(0,0,0,0.8); opacity: 0; pointer-events: none; transform: scale(0.96); transition: opacity 0.2s, transform 0.2s; backdrop-filter: blur(10px); }
+    .community-popup.open { opacity: 1; pointer-events: all; transform: scale(1); }
+    .comm-item { display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 10px; text-decoration: none; cursor: pointer; transition: background 0.2s; }
+    .comm-item:hover { background: rgba(139,92,246,0.1); }
+    .comm-icon { width: 36px; height: 36px; border-radius: 10px; background: #2563eb; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #fff; }
+    .comm-icon.comm-icon-support { background: #8b5cf6; }
+    .comm-text { display: flex; flex-direction: column; gap: 2px; flex: 1; }
+    .comm-title { font-weight: 600; font-size: 0.85rem; color: var(--text); }
+    .comm-sub { font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; color: var(--muted); }
+    .comm-divider { height: 1px; background: var(--glass-border); margin: 4px 8px; }
+    .skeleton { display: inline-block; min-width: 40px; height: 14px; background: #1e293b; border-radius: 4px; }
+    ::-webkit-scrollbar { width: 8px; } ::-webkit-scrollbar-track { background: var(--bg); } ::-webkit-scrollbar-thumb { background: rgba(139,92,246,0.5); border-radius: 10px; } ::-webkit-scrollbar-thumb:hover { background: rgba(139,92,246,0.8); }
+    @media (hover: hover) and (pointer: fine) { body { cursor: none; } .cursor-dot { width: 8px; height: 8px; background: #fff; position: fixed; pointer-events: none; border-radius: 50%; z-index: 99999; transform: translate(-50%, -50%); transition: background 0.2s; } .cursor-ring { width: 32px; height: 32px; border: 2px solid rgba(255,255,255,0.4); position: fixed; pointer-events: none; border-radius: 50%; z-index: 99998; transform: translate(-50%, -50%); transition: width 0.2s, height 0.2s, border-color 0.2s; } }
+  </style>
+
 </head>
 <body>
 
   <canvas id="pc"></canvas>
-
-  <div class="ambient-glow"></div>
-
+  <div class="ambient-glow" id="nebula"></div>
   <div class="cursor-dot" id="cur-dot"></div>
   <div class="cursor-ring" id="cur-ring"></div>
 
   <header>
     <nav class="nav scroll-reveal">
-      <span class="nav-logo">LUNARIS</span>
+      <a href="index.html" style="text-decoration:none;"><span class="nav-logo">LUNARIS</span></a>
       <span class="nav-badge">BUILD 2026 · XAGA</span>
       <div class="nav-dot"></div>
     </nav>
@@ -46,16 +166,12 @@
           <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
           <span>Downloads: </span><span class="gh-stat-val" id="gh-dl"><span class="skeleton"></span></span>
         </div>
-        <div class="gh-stat">
-          <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-          <span>Released: </span><span class="gh-stat-val" id="gh-date"><span class="skeleton"></span></span>
-        </div>
       </div>
 
       <div class="btns rev d5">
-        <a href="#download-section" class="btn bp" onclick="smoothScrollTo('download-section')">
+        <a href="downloads.html" class="btn bp">
           <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-          Download
+          Download ROM
         </a>
         <div class="community-wrap">
           <button class="btn bs" id="comm-btn" onclick="toggleCommunity(event)">
@@ -63,15 +179,17 @@
             Join Community
           </button>
         </div>
+        
         <a href="https://github.com/itsrohan17" target="_blank" rel="noopener noreferrer" class="btn bg">
           <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.336-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.564 9.564 0 0112 6.844c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.161 22 16.416 22 12c0-5.523-4.477-10-10-10z"/></svg>
           itsrohan17
         </a>
-        <a href="#changelog-section" class="btn bcl" onclick="smoothScrollTo('changelog-section')">
+
+        <a href="changelog.html" class="btn bcl">
           <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
           Changelogs
         </a>
-        <a href="#flash-section" class="btn bg" onclick="smoothScrollTo('flash-section')">
+        <a href="guide.html" class="btn bg">
           <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
           Flashing Guide
         </a>
@@ -105,358 +223,65 @@
     </div>
   </section>
 
-  <section class="ss scroll-reveal" style="padding-top: 40px;">
-    <div class="divider rev d6"><span>Device Screenshots</span></div>
-    <div class="grid">
-      <div class="pw"><div class="pf"><img src="screenshots/home.png" alt="Home Screen" loading="lazy"></div><p class="pl">Home Screen</p></div>
-      <div class="pw"><div class="pf"><img src="screenshots/lunaris.png" alt="Lunaris UI" loading="lazy"></div><p class="pl">Lunaris UI</p></div>
-      <div class="pw"><div class="pf"><img src="screenshots/music.png" alt="Music Player" loading="lazy"></div><p class="pl">Music Player</p></div>
-      <div class="pw"><div class="pf"><img src="screenshots/settings.png" alt="Settings" loading="lazy"></div><p class="pl">Settings</p></div>
-      <div class="pw"><div class="pf"><img src="screenshots/appdrawer.png" alt="App Drawer" loading="lazy"></div><p class="pl">App Drawer</p></div>
-      <div class="pw"><div class="pf"><img src="screenshots/homescreen.png" alt="Homescreen" loading="lazy"></div><p class="pl">Homescreen</p></div>
-    </div>
-  </section>
-
-  <section class="terminal-section scroll-reveal" id="flash-section">
-    <div class="divider rev d6" style="margin-bottom:36px"><span>Flash Instructions</span></div>
-
-    <div class="terminal-wrap rev" style="animation-delay:.5s;max-width:700px;margin:0 auto 24px">
-      <div class="terminal">
-        <div class="terminal-bar">
-          <div class="t-dot r"></div><div class="t-dot y"></div><div class="t-dot g"></div>
-          <span class="t-title">⚠️ Prerequisites</span>
-        </div>
-        <div class="cmd-list" style="padding:14px 16px">
-          <div class="prereq-list">
-            <div class="prereq-item">✅ Unlocked bootloader</div>
-            <div class="prereq-item">✅ PC (Windows/Linux) <em>or</em> secondary Android phone + OTG cable with Termux</div>
-            <div class="prereq-item">✅ Device booted into Fastboot Mode — hold <kbd>Vol Down + Power</kbd> until Fastboot logo appears</div>
-          </div>
-        </div>
-      </div>
+  <section class="ss scroll-reveal" style="padding-top: 40px; padding-bottom: 80px;">
+    <div class="divider rev d6"><span>Gallery</span></div>
+    
+    <div class="ss-filters rev d6">
+      <button class="filter-btn active" onclick="filterGallery('all')">All</button>
+      <button class="filter-btn" onclick="filterGallery('home')">Home</button>
+      <button class="filter-btn" onclick="filterGallery('ui')">UI</button>
+      <button class="filter-btn" onclick="filterGallery('settings')">Settings</button>
     </div>
 
-    <div class="terminal-wrap rev" style="animation-delay:.6s;max-width:700px;margin:0 auto 24px">
-      <div class="terminal">
-        <div class="terminal-bar">
-          <div class="t-dot r"></div><div class="t-dot y"></div><div class="t-dot g"></div>
-          <span class="t-title">❓ Understanding Installer Prompts</span>
-        </div>
-        <div class="cmd-list" style="padding:14px 16px">
-          <div class="prompt-block">
-            <div class="prompt-title">1. Data Wipe Prompt</div>
-            <div class="prompt-row clean"><span class="prompt-key">[Y] Clean Flash</span> — Formats user data. Use when coming from MIUI, HyperOS, or another ROM. <strong style="color:#fbbf24">⚠️ Erases all data — back up first!</strong></div>
-            <div class="prompt-row dirty"><span class="prompt-key">[N] Dirty Flash</span> — Keeps data intact. Use only when updating from an older Lunaris version.</div>
-          </div>
-          <div class="prompt-block" style="margin-top:14px">
-            <div class="prompt-title">2. Boot / Root Selection</div>
-            <div class="boot-grid">
-              <div class="boot-opt"><span class="boot-num">1</span><div><span class="boot-name">Stock Boot</span><span class="boot-desc">No root. Best for banking apps.</span></div></div>
-              <div class="boot-opt"><span class="boot-num">2</span><div><span class="boot-name">KernelSU Next</span><span class="boot-desc">Community fork, newer patches.</span></div></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="terminal-wrap rev" style="animation-delay:.7s;max-width:700px;margin:0 auto">
-      <div class="method-tabs">
-        <button class="mtab active" onclick="showTab('win',this)">💻 Windows</button>
-        <button class="mtab" onclick="showTab('linux',this)">🐧 Linux</button>
-        <button class="mtab" onclick="showTab('termux',this)">📱 Termux</button>
-      </div>
-
-      <div class="terminal" id="tab-win">
-        <div class="terminal-bar">
-          <div class="t-dot r"></div><div class="t-dot y"></div><div class="t-dot g"></div>
-          <span class="t-title">Install_Lunaris.bat — Windows</span>
-        </div>
-        <div class="cmd-list">
-          <div class="step-list">
-            <div class="step"><span class="step-n">1</span><span>Extract the Lunaris 3.7 ZIP into a folder on your PC</span></div>
-            <div class="step"><span class="step-n">2</span><span>Boot K50i into Fastboot Mode and connect to PC via USB</span></div>
-            <div class="step"><span class="step-n">3</span><span>Double-click <kbd>Install_Lunaris.bat</kbd> inside the extracted folder</span></div>
-            <div class="step"><span class="step-n">4</span><span>Type <kbd>1</kbd> and press Enter to start the installer</span></div>
-            <div class="step"><span class="step-n">5</span><span>Choose your <strong>Data Wipe</strong> option (Y / N) when prompted</span></div>
-            <div class="step"><span class="step-n">6</span><span>Choose your <strong>Root option</strong> (1–2) when prompted</span></div>
-            <div class="step"><span class="step-n">7</span><span>Wait — the script flashes all partitions and reboots automatically ✅</span></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="terminal" id="tab-linux" style="display:none">
-        <div class="terminal-bar">
-          <div class="t-dot r"></div><div class="t-dot y"></div><div class="t-dot g"></div>
-          <span class="t-title">linux_installation.sh — Linux</span>
-        </div>
-        <div class="cmd-list">
-          <div class="step-list">
-            <div class="step"><span class="step-n">1</span><span>Extract the Lunaris 3.7 ZIP into a folder on your PC</span></div>
-            <div class="step"><span class="step-n">2</span><span>Boot K50i into Fastboot Mode and connect to PC via USB</span></div>
-            <div class="step"><span class="step-n">3</span><span>Right-click the extracted folder → <kbd>Open in Terminal</kbd></span></div>
-          </div>
-          <div class="cmd-section-label" style="margin-top:4px">// Make script executable</div>
-          <div class="cmd-row">
-            <span class="cmd-prompt">$</span>
-            <span class="cmd-text">chmod +x linux_installation.sh</span>
-            <button class="cmd-copy" onclick="copyCmd(this,'chmod +x linux_installation.sh')">Copy</button>
-          </div>
-          <div class="cmd-section-label">// Run with sudo</div>
-          <div class="cmd-row">
-            <span class="cmd-prompt">$</span>
-            <span class="cmd-text">sudo ./linux_installation.sh</span>
-            <button class="cmd-copy" onclick="copyCmd(this,'sudo ./linux_installation.sh')">Copy</button>
-          </div>
-          <div class="step-list" style="margin-top:10px">
-            <div class="step"><span class="step-n">6</span><span>Follow on-screen menus to select Wipe and Root options</span></div>
-            <div class="step"><span class="step-n">7</span><span>Device reboots automatically when done ✅</span></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="terminal" id="tab-termux" style="display:none">
-        <div class="terminal-bar">
-          <div class="t-dot r"></div><div class="t-dot y"></div><div class="t-dot g"></div>
-          <span class="t-title">install_termux.sh — Mobile to Mobile</span>
-        </div>
-        <div class="cmd-list">
-          <div class="step-list">
-            <div class="step"><span class="step-n">1</span><span>Install <strong>Termux</strong> on your host (secondary) Android phone</span></div>
-            <div class="step"><span class="step-n">2</span><span>Open Termux and install Android tools:</span></div>
-          </div>
-          <div class="cmd-row">
-            <span class="cmd-prompt">$</span>
-            <span class="cmd-text">pkg install android-tools</span>
-            <button class="cmd-copy" onclick="copyCmd(this,'pkg install android-tools')">Copy</button>
-          </div>
-          <div class="cmd-row">
-            <span class="cmd-prompt">$</span>
-            <span class="cmd-text">termux-setup-storage</span>
-            <button class="cmd-copy" onclick="copyCmd(this,'termux-setup-storage')">Copy</button>
-          </div>
-          <div class="step-list" style="margin-top:10px">
-            <div class="step"><span class="step-n">4</span><span>Extract Lunaris 3.7 ZIP to host phone's internal storage</span></div>
-            <div class="step"><span class="step-n">5</span><span>Boot K50i into Fastboot Mode, connect via <strong>OTG cable</strong></span></div>
-            <div class="step"><span class="step-n">6</span><span>Navigate to the extracted folder:</span></div>
-          </div>
-          <div class="cmd-row">
-            <span class="cmd-prompt">$</span>
-            <span class="cmd-text">cd /sdcard/Download/Lunaris_Folder</span>
-            <button class="cmd-copy" onclick="copyCmd(this,'cd /sdcard/Download/Lunaris_Folder')">Copy</button>
-          </div>
-          <div class="cmd-row">
-            <span class="cmd-prompt">$</span>
-            <span class="cmd-text">chmod +x install_termux.sh</span>
-            <button class="cmd-copy" onclick="copyCmd(this,'chmod +x install_termux.sh')">Copy</button>
-          </div>
-          <div class="cmd-row">
-            <span class="cmd-prompt">$</span>
-            <span class="cmd-text">./install_termux.sh</span>
-            <button class="cmd-copy" onclick="copyCmd(this,'./install_termux.sh')">Copy</button>
-          </div>
-          <div class="step-list" style="margin-top:10px">
-            <div class="step"><span class="step-n">9</span><span>Follow on-screen menus. If Termux asks USB permission → tap <strong>OK</strong> ✅</span></div>
-          </div>
-        </div>
+    <div class="carousel-container">
+      <div class="ss-carousel" id="ss-carousel">
+        <div class="pw" data-cat="home"><div class="pf"><img src="screenshots/home.png" alt="Home" onclick="openModal(this.src)" loading="lazy"></div><p class="pl">Home</p></div>
+        <div class="pw" data-cat="ui"><div class="pf"><img src="screenshots/lunaris.png" alt="Lunaris UI" onclick="openModal(this.src)" loading="lazy"></div><p class="pl">Lunaris UI</p></div>
+        <div class="pw" data-cat="ui"><div class="pf"><img src="screenshots/music.png" alt="Music" onclick="openModal(this.src)" loading="lazy"></div><p class="pl">Music Player</p></div>
+        <div class="pw" data-cat="settings"><div class="pf"><img src="screenshots/settings.png" alt="Settings" onclick="openModal(this.src)" loading="lazy"></div><p class="pl">Settings</p></div>
+        <div class="pw" data-cat="home"><div class="pf"><img src="screenshots/appdrawer.png" alt="App Drawer" onclick="openModal(this.src)" loading="lazy"></div><p class="pl">App Drawer</p></div>
+        <div class="pw" data-cat="home"><div class="pf"><img src="screenshots/homescreen.png" alt="Homescreen" onclick="openModal(this.src)" loading="lazy"></div><p class="pl">Homescreen</p></div>
       </div>
     </div>
   </section>
 
-  <section class="timeline-section scroll-reveal" id="changelog-section">
-    <div class="divider rev d6" style="margin-bottom:36px"><span>Changelog</span></div>
-    <div class="timeline">
+  <div id="lightbox" class="lightbox" onclick="closeModal()">
+    <span class="lightbox-close">&times;</span>
+    <img class="lightbox-content" id="lightbox-img">
+  </div>
 
-      <div class="tl-item">
-        <div class="tl-dot latest"></div>
-        <div class="tl-card">
-          <div class="tl-header">
-            <span class="tl-version">v3.9</span>
-            <span class="tl-date">Apr 2026</span>
-            <span class="tl-badge latest">Latest</span>
-          </div>
-          <ul class="tl-changes">
-            <li>Fixed audio service using 100% prime core (battery drain &amp; heating)</li>
-            <li>Fixed statsD unnecessary CPU usage</li>
-            <li>Fixed ongoing chip media art visibility for Spotify</li>
-            <li>Fixed AiMode Button in Pixel-style searchbar</li>
-            <li>Fixed left statusbar logo touching statusbar clock</li>
-            <li>Fixed dynamic bar download/upload progress &amp; glitches</li>
-            <li>Fixed Switch Tensor feature handling</li>
-            <li>Fixed rounded corners in wallpaper picker preview</li>
-            <li>Fixed broken mobile network reset button</li>
-            <li>Fixed video wallpaper &amp; custom UDFPS icons after system restart</li>
-            <li>Prevented custom clock font from resetting after long idle</li>
-            <li>Cleaned up PixelPropsUtils issues</li>
-            <li>Resolved minor color customization &amp; Launcher bugs</li>
-          </ul>
-          <a href="https://github.com/itsrohan17/Lunaris-Aosp-xaga-/blob/main/CHANGELOG.md" target="_blank" class="tl-link">
-            <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-            Full changelog on GitHub
-          </a>
-        </div>
+  <footer class="premium-footer scroll-reveal">
+    <div class="footer-grid">
+      <div class="footer-col brand-col">
+        <span class="footer-logo">LUNARIS AOSP</span>
+        <p class="footer-desc">A premium, high-performance custom Android experience crafted meticulously for the Redmi K50i.</p>
       </div>
-
-      <div class="tl-item">
-        <div class="tl-dot"></div>
-        <div class="tl-card">
-          <div class="tl-header">
-            <span class="tl-version">v3.8 Hotfix</span>
-            <span class="tl-date">23 Mar 2026</span>
-          </div>
-          <ul class="tl-changes">
-            <li>Add battery indicator in notch ring</li>
-            <li>Allow change custom clock size</li>
-            <li>Music progress ring in notch ring</li>
-            <li>Introduce appdrawer styles</li>
-            <li>Improved performance</li>
-          </ul>
-          <a href="https://github.com/itsrohan17/Lunaris-Aosp-xaga-/blob/main/CHANGELOG.md" target="_blank" class="tl-link">
-            <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-            Full changelog on GitHub
-          </a>
-        </div>
+      <div class="footer-col">
+        <h4>Navigation</h4>
+        <a href="downloads.html">Downloads</a>
+        <a href="changelog.html">Changelogs</a>
+        <a href="guide.html">Flashing Guide</a>
       </div>
-
-      <div class="tl-item">
-        <div class="tl-dot"></div>
-        <div class="tl-card">
-          <div class="tl-header">
-            <span class="tl-version">v3.8</span>
-            <span class="tl-date">6 Mar 2026</span>
-          </div>
-          <ul class="tl-changes">
-            <li>Add support custom clock color</li>
-            <li>Separate clock face weather switch</li>
-            <li>Notch ring charging indicator support</li>
-            <li>Add notch ring color mode</li>
-            <li>Redesign ongoing music chip like OneUI music chip</li>
-          </ul>
-          <a href="https://github.com/itsrohan17/Lunaris-Aosp-xaga-/blob/main/CHANGELOG.md" target="_blank" class="tl-link">
-            <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-            Full changelog on GitHub
-          </a>
-        </div>
+      <div class="footer-col">
+        <h4>Community & Source</h4>
+        <a href="https://github.com/Lunaris-AOSP" target="_blank">Source Code (Lunaris)</a>
+        <a href="https://github.com/itsrohan17" target="_blank">Maintainer (itsrohan17)</a>
+        <a href="https://t.me/screenshotsxaga" target="_blank">Telegram Updates</a>
+        <a href="https://t.me/XAGASupport" target="_blank">Report a Bug / Support</a>
       </div>
-
-      <div class="tl-item">
-        <div class="tl-dot"></div>
-        <div class="tl-card">
-          <div class="tl-header">
-            <span class="tl-version">v3.7</span>
-            <span class="tl-date">19 Feb 2026</span>
-          </div>
-          <ul class="tl-changes">
-            <li>Added Lunaris Dolby</li>
-            <li>Added Xiaomi touch for better touch in gaming</li>
-            <li>Added ViperFX</li>
-            <li>Improved multitasking</li>
-            <li>More improvements</li>
-          </ul>
-          <a href="https://github.com/itsrohan17/Lunaris-Aosp-xaga-/blob/main/CHANGELOG.md" target="_blank" class="tl-link">
-            <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-            Full changelog on GitHub
-          </a>
-        </div>
-      </div>
-
     </div>
-  </section>
-
-  <section class="dl-section scroll-reveal" id="download-section">
-    <div class="divider rev d6" style="margin-bottom:32px"><span>Downloads</span></div>
-    <div class="dl-grid dl-grid-3">
-
-      <div class="dl-card dl-latest">
-        <div class="dl-badge-wrap">
-          <span class="dl-ver-badge new">✦ Latest</span>
-        </div>
-        <div class="dl-icon">⚡</div>
-        <div class="dl-ver">Lunaris v3.9</div>
-        <div class="dl-device">Redmi K50i · xaga</div>
-        <ul class="dl-tags">
-          <li>Android 16</li>
-          <li>LineageOS</li>
-          <li>Stable</li>
-        </ul>
-        <ul class="dl-changelog">
-          <li>Fixed audio service 100% prime core drain</li>
-          <li>Fixed statsD CPU usage</li>
-          <li>Fixed Spotify ongoing chip art</li>
-          <li>Fixed dynamic bar glitches</li>
-          <li>Fixed clock font reset after idle</li>
-          <li>13 bug fixes total</li>
-        </ul>
-        <div class="dl-btn-group">
-          <a href="https://drive.google.com/file/d/1EjHQTIiWe0vtI8l74qbs0nRO5-8o7Qqz/view?usp=sharing"
-             target="_blank" rel="noopener noreferrer" class="btn bp dl-btn">
-            <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-            Fastboot
-          </a>
-          <a href="https://drive.google.com/file/d/1BkWv1nDxqdkf0-jHh6uD3Gym888BVAp-/view?usp=sharing"
-             target="_blank" rel="noopener noreferrer" class="btn bg dl-btn dl-btn-stock">
-            <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
-            Stock Boot
-          </a>
-        </div>
+    <div class="footer-bottom">
+      <div class="device-info">
+        <span><span class="info-label">Device</span> xaga (Redmi K50i)</span>
+        <span class="dot-sep">•</span>
+        <span><span class="info-label">Android</span> 16</span>
+        <span class="dot-sep">•</span>
+        <span><span class="info-label">Last Build</span> Apr 2026</span>
+        <span class="dot-sep">•</span>
+        <span><span class="info-label">Maintainer</span> dev Rohan</span>
       </div>
-
-      <div class="dl-card">
-        <div class="dl-badge-wrap">
-          <span class="dl-ver-badge stable">Stable</span>
-        </div>
-        <div class="dl-icon">🔥</div>
-        <div class="dl-ver">Lunaris v3.8 Hotfix</div>
-        <div class="dl-device">Redmi K50i · xaga</div>
-        <ul class="dl-tags">
-          <li>Android 16</li>
-          <li>LineageOS</li>
-          <li>Hotfix</li>
-        </ul>
-        <ul class="dl-changelog">
-          <li>Allow change custom clock size</li>
-          <li>Music progress ring in notch ring</li>
-          <li>Introduce appdrawer styles</li>
-          <li>Improved performance</li>
-        </ul>
-        <div class="dl-btn-group">
-          <a href="https://drive.google.com/file/d/1FjdQH7ipy_rUh6Z9jBQGl-F9DJ3YkURL/view?usp=sharing"
-             target="_blank" rel="noopener noreferrer" class="btn bg dl-btn">
-            <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-            Fastboot
-          </a>
-          <a href="https://drive.google.com/file/d/1Af5SgJFnTj05Tl0uDDQTQTEt-AdJojUy/view?usp=sharing"
-             target="_blank" rel="noopener noreferrer" class="btn bg dl-btn dl-btn-stock">
-            <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
-            Stock Boot
-          </a>
-        </div>
-      </div>
-
-      <div class="dl-card">
-        <div class="dl-badge-wrap">
-          <span class="dl-ver-badge stable">Stable</span>
-        </div>
-        <div class="dl-icon">🚀</div>
-        <div class="dl-ver">Lunaris v3.8</div>
-        <div class="dl-device">Redmi K50i · xaga</div>
-        <ul class="dl-tags">
-          <li>Android 16</li>
-          <li>LineageOS</li>
-          <li>Stable</li>
-        </ul>
-        <button class="btn bg dl-btn" id="dl38-btn" onclick="toggleDl38(event)" style="margin-top: 15px;">
-          <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-          Download v3.8
-          <span class="dl-arrow">↓</span>
-        </button>
-      </div>
-
+      <p class="copyright">© 2026 Lunaris AOSP. All rights reserved.</p>
     </div>
-  </section>
-
-  <footer>
-    <div class="fw">⚠ &nbsp;Clean flash required when coming from a different ROM</div>
-    <p class="fc">Built with ♥ for <span>XAGA</span> · Lunaris AOSP</p>
   </footer>
 
   <div class="community-popup" id="community-popup">
@@ -464,57 +289,128 @@
       <div class="comm-icon">
         <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z"/></svg>
       </div>
-      <div class="comm-text">
-        <span class="comm-title">GG Builds</span>
-        <span class="comm-sub">Screenshots &amp; updates</span>
-      </div>
-      <svg class="comm-arrow" width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+      <div class="comm-text"><span class="comm-title">GG Builds</span><span class="comm-sub">Screenshots &amp; updates</span></div>
     </a>
     <div class="comm-divider"></div>
     <a href="https://t.me/XAGASupport" target="_blank" rel="noopener noreferrer" class="comm-item">
       <div class="comm-icon comm-icon-support">
         <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
       </div>
-      <div class="comm-text">
-        <span class="comm-title">XAGA Support</span>
-        <span class="comm-sub">Help &amp; troubleshooting</span>
-      </div>
-      <svg class="comm-arrow" width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+      <div class="comm-text"><span class="comm-title">XAGA Support</span><span class="comm-sub">Help &amp; troubleshooting</span></div>
     </a>
   </div>
 
-  <div class="community-popup" id="dl38-popup">
-    <div class="comm-popup-label">⬇ Choose mirror</div>
-    <a href="https://drive.usercontent.google.com/download?id=1_caPSR7IFrYbSn84t2uakOdltH_6XNYL&export=download&authuser=0"
-       target="_blank" rel="noopener noreferrer" class="comm-item">
-      <div class="comm-icon">
-        <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-      </div>
-      <div class="comm-text">
-        <span class="comm-title">Google Drive</span>
-        <span class="comm-sub">Recommended mirror</span>
-      </div>
-      <svg class="comm-arrow" width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-    </a>
-    <div class="comm-divider"></div>
-    <a href="https://gofile.io/d/VHr9Gr" target="_blank" rel="noopener noreferrer" class="comm-item">
-      <div class="comm-icon comm-icon-support">
-        <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-      </div>
-      <div class="comm-text">
-        <span class="comm-title">GoFile</span>
-        <span class="comm-sub">Temporary mirror</span>
-      </div>
-      <svg class="comm-arrow" width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-    </a>
-    <div class="comm-divider"></div>
-    <div class="dl-checksum">
-      <span class="dl-checksum-label">SHA-256</span>
-      <span class="dl-checksum-val" id="checksum-val" title="Click to copy" onclick="copyChecksum()">f1253703c02c9a8f29ef2aacdf60cc3288ffd45cfa2c4b4987b6bb7b59f8f82b</span>
-      <button class="dl-checksum-copy" onclick="copyChecksum()">Copy</button>
-    </div>
-  </div>
+  <script>
+    /* =============================================
+       LUNARIS AOSP — PREMIUM REFINED (INLINE JS)
+    ============================================= */
+    (function () {
+      const isMobile = window.innerWidth < 768 || navigator.maxTouchPoints > 0;
+      const canvas = document.getElementById('pc');
+      const ctx    = canvas.getContext('2d');
+      let W, H;
+      let targetX = 0, targetY = 0;
+      let currentX = 0, currentY = 0;
 
-  <script src="script.js"></script>
+      function resize() { W = canvas.width = innerWidth; H = canvas.height = innerHeight; }
+      addEventListener('resize', resize, { passive: true }); resize();
+
+      if (!isMobile) {
+        document.addEventListener('mousemove', (e) => {
+          targetX = (e.clientX - W / 2) * 0.05;
+          targetY = (e.clientY - H / 2) * 0.05;
+        });
+      }
+
+      const COUNT = isMobile ? 50 : 150;
+      const pts = Array.from({ length: COUNT }, () => ({
+        x: Math.random() * W, y: Math.random() * H, vx: (Math.random() - 0.5) * 0.1, vy: (Math.random() - 0.5) * 0.1 - 0.05, 
+        s: Math.random() * 1.5 + 0.5, a: Math.random() * 0.5 + 0.1, td: 1, ts: Math.random() * 0.005 + 0.001, depth: Math.random() * 0.8 + 0.2
+      }));
+
+      function loop() {
+        ctx.clearRect(0, 0, W, H);
+        currentX += (targetX - currentX) * 0.05; currentY += (targetY - currentY) * 0.05;
+        pts.forEach(p => {
+          p.x += p.vx; p.y += p.vy; p.a += p.ts * p.td;
+          if (p.a > 0.8 || p.a < 0.1) p.td *= -1;
+          if (p.x > W) p.x = 0; if (p.x < 0) p.x = W; if (p.y > H) p.y = 0; if (p.y < 0) p.y = H;
+          const drawX = p.x + (currentX * p.depth); const drawY = p.y + (currentY * p.depth);
+          ctx.beginPath(); ctx.arc(drawX, drawY, p.s, 0, Math.PI * 2); ctx.fillStyle = `rgba(255, 255, 255, ${p.a})`; ctx.fill();
+        });
+        requestAnimationFrame(loop);
+      }
+      loop();
+
+      window.toggleCommunity = function (e) {
+        e.stopPropagation();
+        const popup = document.getElementById('community-popup');
+        const btn   = document.getElementById('comm-btn');
+        if(!popup || !btn) return;
+        const rect  = btn.getBoundingClientRect();
+        const W     = 240;
+        let left    = rect.left + rect.width / 2 - W / 2;
+        if (left < 8) left = 8; if (left + W > window.innerWidth - 8) left = window.innerWidth - W - 8;
+        popup.style.top  = (rect.bottom + 8) + 'px'; popup.style.left = left + 'px'; popup.classList.toggle('open');
+      };
+
+      document.addEventListener('click', function (e) {
+        const btnComm = document.getElementById('comm-btn');
+        const popComm = document.getElementById('community-popup');
+        if (popComm && btnComm && !btnComm.contains(e.target) && !popComm.contains(e.target)) { popComm.classList.remove('open'); }
+      });
+
+      window.filterGallery = function(category) {
+        const target = window.event ? window.event.target : null;
+        if (target) {
+          const btns = document.querySelectorAll('.filter-btn');
+          btns.forEach(btn => btn.classList.remove('active'));
+          target.classList.add('active');
+        }
+        const items = document.querySelectorAll('.ss-carousel .pw');
+        items.forEach(item => {
+          if (category === 'all' || item.getAttribute('data-cat') === category) {
+            item.style.display = 'block'; setTimeout(() => item.style.opacity = '1', 50);
+          } else {
+            item.style.opacity = '0'; setTimeout(() => item.style.display = 'none', 300);
+          }
+        });
+      };
+
+      const lightbox = document.getElementById('lightbox');
+      const lightboxImg = document.getElementById('lightbox-img');
+      window.openModal = function(src) { if(!lightbox) return; lightboxImg.src = src; lightbox.classList.add('show'); document.body.style.overflow = 'hidden'; };
+      window.closeModal = function() { if(!lightbox) return; lightbox.classList.remove('show'); document.body.style.overflow = 'auto'; };
+      document.addEventListener('keydown', function(event) { if (event.key === "Escape") closeModal(); });
+
+      window.smoothScrollTo = function (id) { const el = document.getElementById(id); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' }); };
+      const revealObs = new IntersectionObserver(entries => { entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('active'); revealObs.unobserve(e.target); } }); }, { threshold: 0.08 });
+      document.querySelectorAll('.scroll-reveal').forEach(el => revealObs.observe(el));
+
+      const setVal = (id, val) => { const el = document.getElementById(id); if (el) el.innerHTML = val; };
+      fetch('https://api.github.com/repos/itsrohan17/android_device_xiaomi_xaga/releases/latest')
+        .then(r => r.json())
+        .then(d => {
+          setVal('gh-ver',  d.tag_name || 'v3.9');
+          if (d.published_at) { const dt = new Date(d.published_at); setVal('gh-date', dt.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })); } else { setVal('gh-date', 'Apr 2026'); }
+          if (d.assets) { const total = d.assets.reduce((s, a) => s + a.download_count, 0); setVal('gh-dl', total > 0 ? total.toLocaleString() : '—'); } else { setVal('gh-dl', '—'); }
+        })
+        .catch(() => { setVal('gh-ver', 'v3.8'); setVal('gh-date', 'Apr 2026'); setVal('gh-dl', '—'); });
+
+      if (!isMobile) {
+        const dot  = document.getElementById('cur-dot');
+        const ring = document.getElementById('cur-ring');
+        if (dot && ring) {
+          document.addEventListener('mousemove', e => { dot.style.left = e.clientX + 'px'; dot.style.top = e.clientY + 'px'; setTimeout(() => { ring.style.left = e.clientX + 'px'; ring.style.top = e.clientY + 'px'; }, 40); }, { passive: true });
+          document.querySelectorAll('a, button, .btn, .filter-btn, .pf, .lightbox-close, .mtab, .cmd-copy').forEach(el => {
+            el.addEventListener('mouseenter', () => { ring.style.width = '48px'; ring.style.height = '48px'; ring.style.borderColor = 'rgba(139, 92, 246, 0.8)'; dot.style.background = '#8b5cf6'; });
+            el.addEventListener('mouseleave', () => { ring.style.width = '32px'; ring.style.height = '32px'; ring.style.borderColor = 'rgba(255,255,255,0.4)'; dot.style.background = '#fff'; });
+          });
+          document.addEventListener('mouseleave', () => { dot.style.opacity = '0'; ring.style.opacity = '0'; });
+          document.addEventListener('mouseenter', () => { dot.style.opacity = '1'; ring.style.opacity = '1'; });
+        }
+      }
+    })();
+  </script>
 </body>
 </html>

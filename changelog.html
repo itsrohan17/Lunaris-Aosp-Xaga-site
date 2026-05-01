@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Changelogs · Lunaris AOSP</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  
+  <style>
+    :root { --bg: #03050a; --bg-gradient: radial-gradient(circle at top, #0d1126 0%, #03050a 70%); --border: rgba(255, 255, 255, 0.06); --violet: #a78bfa; --accent: #8b5cf6; --sky: #38bdf8; --text: #f8fafc; --muted: #94a3b8; --glass: rgba(255, 255, 255, 0.03); --glass-border: rgba(255, 255, 255, 0.08); }
+    * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Outfit', sans-serif; background: var(--bg); background-image: var(--bg-gradient); color: var(--text); overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+    .ambient-glow { position: fixed; top: -20vh; left: 50%; transform: translateX(-50%); width: 120vw; height: 100vh; background: radial-gradient(circle, rgba(139, 92, 246, 0.12) 0%, transparent 60%); z-index: 0; pointer-events: none; filter: blur(90px); animation: nebulaBreathe 12s ease-in-out infinite alternate; will-change: transform; }
+    @keyframes nebulaBreathe { 0% { transform: translateX(-50%) scale(1); opacity: 0.8; } 100% { transform: translateX(-48%) scale(1.05); opacity: 1; } }
+    #pc { position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: 0.7; }
+    .rev { opacity: 0; transform: translateY(20px); animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+    .d1 { animation-delay: 0.1s; } .d2 { animation-delay: 0.2s; } .d3 { animation-delay: 0.3s; }
+    header { position: relative; z-index: 10; padding: 24px 16px 0; text-align: center; }
+    .nav { display: inline-flex; justify-content: space-between; align-items: center; margin: 0 auto 48px; padding: 10px 20px; background: var(--glass); border: 1px solid var(--glass-border); border-radius: 100px; backdrop-filter: blur(16px); box-shadow: 0 4px 24px rgba(0,0,0,0.2); gap: 16px; }
+    .nav-logo { font-weight: 800; font-size: 0.9rem; letter-spacing: 0.1em; color: var(--text); }
+    .nav-badge { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: var(--muted); }
+    .nav-dot { width: 6px; height: 6px; border-radius: 50%; background: #10b981; box-shadow: 0 0 8px #10b981; }
+    .hero-content { margin-top: 40px; }
+    .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; letter-spacing: 0.2em; color: var(--violet); text-transform: uppercase; margin-bottom: 16px; }
+    h1 { font-size: clamp(2.5rem, 8vw, 4.5rem); font-weight: 800; line-height: 1; letter-spacing: -0.03em; background: linear-gradient(135deg, #fff 0%, #c4b5fd 50%, #818cf8 100%); -webkit-background-clip: text; background-clip: text; color: transparent; margin-bottom: 24px; }
+    .btns { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-bottom: 40px; position: relative; z-index: 20; }
+    .btn { position: relative; display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px; font-weight: 500; font-size: 0.9rem; border-radius: 12px; text-decoration: none; color: #fff; border: 1px solid transparent; cursor: pointer; overflow: hidden; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); }
+    .btn:hover { transform: translateY(-3px); }
+    .btn:active { transform: translateY(1px); }
+    .btn::after { content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent); transform: skewX(-20deg); transition: 0.6s ease; }
+    .btn:hover::after { left: 150%; }
+    .bg { background: var(--glass); border-color: var(--glass-border); backdrop-filter: blur(10px); }
+    .bg:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.2); box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
+    .timeline-section { position: relative; z-index: 10; padding: 0 16px 64px; }
+    .timeline { max-width: 680px; margin: 0 auto; position: relative; padding-left: 28px; }
+    .timeline::before { content: ''; position: absolute; left: 8px; top: 0; bottom: 0; width: 1px; background: linear-gradient(to bottom, rgba(139,92,246,0.5), transparent); }
+    .tl-item { position: relative; margin-bottom: 32px; opacity: 0; transform: translateX(-20px); transition: opacity 0.5s, transform 0.5s; }
+    .tl-item.visible { opacity: 1; transform: translateX(0); }
+    .tl-dot { position: absolute; left: -24px; top: 4px; width: 16px; height: 16px; border-radius: 50%; background: var(--violet); border: 2px solid rgba(255,255,255,0.1); }
+    .tl-dot.latest { box-shadow: 0 0 12px var(--violet); }
+    .tl-card { background: var(--glass); border: 1px solid var(--glass-border); border-radius: 16px; padding: 20px; backdrop-filter: blur(12px); transition: border-color 0.3s; }
+    .tl-item.visible .tl-card:hover { border-color: rgba(139,92,246,0.3); }
+    .tl-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; flex-wrap: wrap; }
+    .tl-version { font-weight: 700; font-size: 1.1rem; color: var(--violet); }
+    .tl-date { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--muted); }
+    .tl-badge { font-size: 0.65rem; padding: 3px 10px; border-radius: 20px; font-family: 'JetBrains Mono', monospace; }
+    .tl-badge.latest { background: rgba(16,185,129,0.15); border: 1px solid rgba(16,185,129,0.3); color: #34d399; }
+    .tl-changes { list-style: none; padding: 0; }
+    .tl-changes li { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: #a7f3d0; padding: 4px 0 4px 12px; position: relative; line-height: 1.5; border-left: 2px solid rgba(16,185,129,0.2); margin-bottom: 4px; }
+    .tl-changes li::before { content: '>'; position: absolute; left: -1px; color: rgba(16,185,129,0.8); font-weight: 700; font-size: 0.7rem; }
+    .tl-link { display: inline-flex; align-items: center; gap: 6px; margin-top: 12px; font-size: 0.8rem; color: var(--sky); text-decoration: none; opacity: 0.8; transition: opacity 0.2s; }
+    .tl-link:hover { opacity: 1; }
+    .premium-footer { position: relative; z-index: 10; background: rgba(5, 8, 20, 0.6); border-top: 1px solid var(--glass-border); padding: 60px 20px 30px; margin-top: 40px; }
+    .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 40px; max-width: 1000px; margin: 0 auto 40px; }
+    @media (max-width: 768px) { .footer-grid { grid-template-columns: 1fr; text-align: center; } }
+    .footer-col h4 { font-weight: 600; font-size: 0.95rem; color: var(--text); margin-bottom: 20px; letter-spacing: 0.05em; text-transform: uppercase; }
+    .footer-col a { display: block; color: var(--muted); text-decoration: none; font-size: 0.85rem; margin-bottom: 12px; transition: color 0.2s, padding-left 0.2s; }
+    .footer-col a:hover { color: var(--violet); padding-left: 5px; }
+    .brand-col .footer-logo { font-weight: 800; font-size: 1.2rem; letter-spacing: 0.1em; color: var(--text); display: block; margin-bottom: 12px; }
+    .brand-col .footer-desc { color: var(--muted); font-size: 0.85rem; line-height: 1.6; max-width: 300px; }
+    @media (max-width: 768px) { .brand-col .footer-desc { margin: 0 auto; } }
+    .footer-bottom { max-width: 1000px; margin: 0 auto; border-top: 1px solid var(--glass-border); padding-top: 24px; display: flex; flex-direction: column; align-items: center; gap: 16px; }
+    .device-info { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: var(--muted); background: var(--glass); padding: 10px 24px; border-radius: 30px; border: 1px solid var(--glass-border); }
+    .info-label { color: var(--violet); text-transform: uppercase; letter-spacing: 0.1em; margin-right: 4px; }
+    .dot-sep { color: rgba(255,255,255,0.2); }
+    .copyright { font-size: 0.75rem; color: var(--muted); }
+    ::-webkit-scrollbar { width: 8px; } ::-webkit-scrollbar-track { background: var(--bg); } ::-webkit-scrollbar-thumb { background: rgba(139,92,246,0.5); border-radius: 10px; } ::-webkit-scrollbar-thumb:hover { background: rgba(139,92,246,0.8); }
+    @media (hover: hover) and (pointer: fine) { body { cursor: none; } .cursor-dot { width: 8px; height: 8px; background: #fff; position: fixed; pointer-events: none; border-radius: 50%; z-index: 99999; transform: translate(-50%, -50%); transition: background 0.2s; } .cursor-ring { width: 32px; height: 32px; border: 2px solid rgba(255,255,255,0.4); position: fixed; pointer-events: none; border-radius: 50%; z-index: 99998; transform: translate(-50%, -50%); transition: width 0.2s, height 0.2s, border-color 0.2s; } }
+  </style>
+
+</head>
+<body>
+
+  <canvas id="pc"></canvas>
+  <div class="ambient-glow" id="nebula"></div>
+  <div class="cursor-dot" id="cur-dot"></div>
+  <div class="cursor-ring" id="cur-ring"></div>
+
+  <header>
+    <nav class="nav scroll-reveal">
+      <a href="index.html" style="text-decoration:none;"><span class="nav-logo">LUNARIS</span></a>
+      <span class="nav-badge">BUILD 2026 · XAGA</span>
+      <div class="nav-dot"></div>
+    </nav>
+    <div class="hero-content">
+      <p class="eyebrow rev d1">Release Notes</p>
+      <div class="title-wrap rev d2">
+        <h1 style="font-size: clamp(2.5rem, 8vw, 4.5rem);">CHANGELOGS</h1>
+      </div>
+      <div class="btns rev d3">
+        <a href="index.html" class="btn bg">
+          <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+          Back to Home
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <section class="timeline-section scroll-reveal" id="changelog-section">
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-dot latest"></div>
+        <div class="tl-card">
+          <div class="tl-header">
+            <span class="tl-version">v3.9</span>
+            <span class="tl-date">Apr 2026</span>
+            <span class="tl-badge latest">Latest</span>
+          </div>
+          <ul class="tl-changes">
+            <li>Fixed audio service using 100% prime core (battery drain &amp; heating)</li>
+            <li>Fixed statsD unnecessary CPU usage</li>
+            <li>Fixed ongoing chip media art visibility for Spotify</li>
+            <li>Fixed AiMode Button in Pixel-style searchbar</li>
+            <li>Fixed left statusbar logo touching statusbar clock</li>
+            <li>Fixed dynamic bar download/upload progress &amp; glitches</li>
+            <li>Fixed Switch Tensor feature handling</li>
+            <li>Fixed rounded corners in wallpaper picker preview</li>
+            <li>Fixed broken mobile network reset button</li>
+            <li>Fixed video wallpaper &amp; custom UDFPS icons after system restart</li>
+            <li>Prevented custom clock font from resetting after long idle</li>
+            <li>Cleaned up PixelPropsUtils issues</li>
+            <li>Resolved minor color customization &amp; Launcher bugs</li>
+          </ul>
+          <a href="https://github.com/itsrohan17/Lunaris-Aosp-xaga-/blob/main/CHANGELOG.md" target="_blank" class="tl-link">
+            <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+            Full changelog on GitHub
+          </a>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-card">
+          <div class="tl-header">
+            <span class="tl-version">v3.8 Hotfix</span>
+            <span class="tl-date">23 Mar 2026</span>
+          </div>
+          <ul class="tl-changes">
+            <li>Add battery indicator in notch ring</li>
+            <li>Allow change custom clock size</li>
+            <li>Music progress ring in notch ring</li>
+            <li>Introduce appdrawer styles</li>
+            <li>Improved performance</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-card">
+          <div class="tl-header">
+            <span class="tl-version">v3.8</span>
+            <span class="tl-date">6 Mar 2026</span>
+          </div>
+          <ul class="tl-changes">
+            <li>Add support custom clock color</li>
+            <li>Separate clock face weather switch</li>
+            <li>Notch ring charging indicator support</li>
+            <li>Add notch ring color mode</li>
+            <li>Redesign ongoing music chip like OneUI music chip</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-card">
+          <div class="tl-header">
+            <span class="tl-version">v3.7</span>
+            <span class="tl-date">19 Feb 2026</span>
+          </div>
+          <ul class="tl-changes">
+            <li>Added Lunaris Dolby</li>
+            <li>Added Xiaomi touch for better touch in gaming</li>
+            <li>Added ViperFX</li>
+            <li>Improved multitasking</li>
+            <li>More improvements</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="premium-footer scroll-reveal">
+    <div class="footer-grid">
+      <div class="footer-col brand-col">
+        <span class="footer-logo">LUNARIS AOSP</span>
+        <p class="footer-desc">A premium, high-performance custom Android experience crafted meticulously for the Redmi K50i.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Navigation</h4>
+        <a href="index.html">Home</a>
+        <a href="downloads.html">Downloads</a>
+        <a href="guide.html">Flashing Guide</a>
+      </div>
+      <div class="footer-col">
+        <h4>Community & Source</h4>
+        <a href="https://github.com/Lunaris-AOSP" target="_blank">Source Code (Lunaris)</a>
+        <a href="https://github.com/itsrohan17" target="_blank">Maintainer (itsrohan17)</a>
+        <a href="https://t.me/screenshotsxaga" target="_blank">Telegram Updates</a>
+        <a href="https://t.me/XAGASupport" target="_blank">Report a Bug / Support</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="device-info">
+        <span><span class="info-label">Device</span> xaga (Redmi K50i)</span>
+        <span class="dot-sep">•</span>
+        <span><span class="info-label">Android</span> 16</span>
+        <span class="dot-sep">•</span>
+        <span><span class="info-label">Last Build</span> Apr 2026</span>
+        <span class="dot-sep">•</span>
+        <span><span class="info-label">Maintainer</span> dev Rohan</span>
+      </div>
+      <p class="copyright">© 2026 Lunaris AOSP. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      const isMobile = window.innerWidth < 768 || navigator.maxTouchPoints > 0;
+      const canvas = document.getElementById('pc'); const ctx = canvas.getContext('2d');
+      let W, H, targetX = 0, targetY = 0, currentX = 0, currentY = 0;
+      function resize() { W = canvas.width = innerWidth; H = canvas.height = innerHeight; }
+      addEventListener('resize', resize, { passive: true }); resize();
+      if (!isMobile) { document.addEventListener('mousemove', (e) => { targetX = (e.clientX - W / 2) * 0.05; targetY = (e.clientY - H / 2) * 0.05; }); }
+      const COUNT = isMobile ? 50 : 150;
+      const pts = Array.from({ length: COUNT }, () => ({ x: Math.random() * W, y: Math.random() * H, vx: (Math.random() - 0.5) * 0.1, vy: (Math.random() - 0.5) * 0.1 - 0.05, s: Math.random() * 1.5 + 0.5, a: Math.random() * 0.5 + 0.1, td: 1, ts: Math.random() * 0.005 + 0.001, depth: Math.random() * 0.8 + 0.2 }));
+      function loop() {
+        ctx.clearRect(0, 0, W, H); currentX += (targetX - currentX) * 0.05; currentY += (targetY - currentY) * 0.05;
+        pts.forEach(p => {
+          p.x += p.vx; p.y += p.vy; p.a += p.ts * p.td;
+          if (p.a > 0.8 || p.a < 0.1) p.td *= -1;
+          if (p.x > W) p.x = 0; if (p.x < 0) p.x = W; if (p.y > H) p.y = 0; if (p.y < 0) p.y = H;
+          const drawX = p.x + (currentX * p.depth); const drawY = p.y + (currentY * p.depth);
+          ctx.beginPath(); ctx.arc(drawX, drawY, p.s, 0, Math.PI * 2); ctx.fillStyle = `rgba(255, 255, 255, ${p.a})`; ctx.fill();
+        });
+        requestAnimationFrame(loop);
+      } loop();
+      
+      const tlObs = new IntersectionObserver(entries => { entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }); }, { threshold: 0.15 });
+      document.querySelectorAll('.tl-item').forEach(el => tlObs.observe(el));
+      const revealObs = new IntersectionObserver(entries => { entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('active'); revealObs.unobserve(e.target); } }); }, { threshold: 0.08 });
+      document.querySelectorAll('.scroll-reveal').forEach(el => revealObs.observe(el));
+
+      if (!isMobile) {
+        const dot = document.getElementById('cur-dot'); const ring = document.getElementById('cur-ring');
+        if (dot && ring) {
+          document.addEventListener('mousemove', e => { dot.style.left = e.clientX + 'px'; dot.style.top = e.clientY + 'px'; setTimeout(() => { ring.style.left = e.clientX + 'px'; ring.style.top = e.clientY + 'px'; }, 40); }, { passive: true });
+          document.querySelectorAll('a, button, .btn').forEach(el => { el.addEventListener('mouseenter', () => { ring.style.width = '48px'; ring.style.height = '48px'; ring.style.borderColor = 'rgba(139, 92, 246, 0.8)'; dot.style.background = '#8b5cf6'; }); el.addEventListener('mouseleave', () => { ring.style.width = '32px'; ring.style.height = '32px'; ring.style.borderColor = 'rgba(255,255,255,0.4)'; dot.style.background = '#fff'; }); });
+          document.addEventListener('mouseleave', () => { dot.style.opacity = '0'; ring.style.opacity = '0'; }); document.addEventListener('mouseenter', () => { dot.style.opacity = '1'; ring.style.opacity = '1'; });
+        }
+      }
+    })();
+  </script>
+</body>
+</html>
