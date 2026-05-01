@@ -1,16 +1,12 @@
 /* =============================================
-   LUNARIS AOSP — XAGA
+   LUNARIS AOSP — XAGA (REFINED & COMPLETE)
    script.js
 ============================================= */
 
 (function () {
-
-  /* ── DETECT MOBILE ── */
   const isMobile = window.innerWidth < 768 || navigator.maxTouchPoints > 0;
 
-  /* =============================================
-     PARTICLE SYSTEM
-  ============================================= */
+  /* ── ELEGANT STARFIELD CANVAS ── */
   const canvas = document.getElementById('pc');
   const ctx    = canvas.getContext('2d');
   let W, H;
@@ -22,76 +18,36 @@
   addEventListener('resize', resize, { passive: true });
   resize();
 
-  const COUNT = isMobile ? 40 : 90;
-  const COLS  = ['rgba(167,139,250,', 'rgba(56,189,248,', 'rgba(255,255,255,'];
-
+  const COUNT = isMobile ? 50 : 150;
   const pts = Array.from({ length: COUNT }, () => ({
     x:   Math.random() * W,
     y:   Math.random() * H,
-    vx:  (Math.random() - .5) * .12,
-    vy:  -(Math.random() * .25 + .05),
-    s:   Math.random() * 1.3 + .2,
-    a:   Math.random() * .5 + .08,
+    vx:  (Math.random() - 0.5) * 0.1,
+    vy:  (Math.random() - 0.5) * 0.1 - 0.05, 
+    s:   Math.random() * 1.5 + 0.5,
+    a:   Math.random() * 0.5 + 0.1,
     td:  1,
-    ts:  Math.random() * .012 + .003,
-    col: COLS[Math.floor(Math.random() * COLS.length)]
+    ts:  Math.random() * 0.005 + 0.001
   }));
-
-  /* Shooting star trails */
-  let sf = [], fr = 0;
 
   function loop() {
     ctx.clearRect(0, 0, W, H);
-    fr++;
-
-    /* Add a new shooting star trail every 280 frames on desktop */
-    if (fr % 280 === 0 && !isMobile) {
-      sf.push({
-        x:    Math.random() * W,
-        y:    Math.random() * H * .4,
-        len:  70 + Math.random() * 80,
-        spd:  6  + Math.random() * 7,
-        ang:  Math.PI / 5 + (Math.random() - .5) * .3,
-        life: 0,
-        max:  50 + Math.random() * 40,
-        a:    0
-      });
-    }
-
-    sf = sf.filter(s => {
-      s.life++;
-      s.a = s.life < 8
-        ? s.life / 8
-        : s.life > s.max - 8
-          ? (s.max - s.life) / 8
-          : 1;
-      s.x += Math.cos(s.ang) * s.spd;
-      s.y += Math.sin(s.ang) * s.spd;
-      if (s.life >= s.max) return false;
-
-      const tx = s.x - Math.cos(s.ang) * s.len;
-      const ty = s.y - Math.sin(s.ang) * s.len;
-      const g  = ctx.createLinearGradient(tx, ty, s.x, s.y);
-      g.addColorStop(0, 'rgba(255,255,255,0)');
-      g.addColorStop(1, `rgba(200,180,255,${s.a * .8})`);
-      ctx.beginPath();
-      ctx.moveTo(tx, ty);
-      ctx.lineTo(s.x, s.y);
-      ctx.strokeStyle = g;
-      ctx.lineWidth   = 1.4;
-      ctx.stroke();
-      return true;
-    });
-
+    
     pts.forEach(p => {
       p.x += p.vx;
       p.y += p.vy;
       p.a += p.ts * p.td;
-      if (p.a > .6 || p.a < .04) p.td *= -1;
-      if (p.y < -8) { p.x = Math.random() * W; p.y = H + 8; }
+      
+      if (p.a > 0.8 || p.a < 0.1) p.td *= -1;
+      
+      if (p.x > W) p.x = 0;
+      if (p.x < 0) p.x = W;
+      if (p.y > H) p.y = 0;
+      if (p.y < 0) p.y = H;
+      
       ctx.beginPath();
       ctx.arc(p.x, p.y, p.s, 0, Math.PI * 2);
-      ctx.fillStyle = p.col + p.a + ')';
+      ctx.fillStyle = `rgba(255, 255, 255, ${p.a})`;
       ctx.fill();
     });
 
@@ -99,9 +55,7 @@
   }
   loop();
 
-  /* =============================================
-     COMMUNITY POPUP
-  ============================================= */
+  /* ── COMMUNITY POPUP ── */
   window.toggleCommunity = function (e) {
     e.stopPropagation();
     const popup = document.getElementById('community-popup');
@@ -123,10 +77,7 @@
     }
   });
 
-  /* =============================================
-     DL38 POPUP — v3.8 download mirrors
-     Opens ABOVE the button since it's near bottom of page
-  ============================================= */
+  /* ── DL38 POPUP ── */
   window.toggleDl38 = function (e) {
     e.stopPropagation();
     const popup = document.getElementById('dl38-popup');
@@ -152,10 +103,11 @@
     });
     if (btn) {
       btn.textContent = 'Copied!';
-      btn.classList.add('copied');
-      setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+      btn.style.color = '#34d399';
+      setTimeout(() => { btn.textContent = 'Copy'; btn.style.color = ''; }, 2000);
     }
   };
+  
   document.addEventListener('click', function (e) {
     const btn38 = document.getElementById('dl38-btn');
     const pop38 = document.getElementById('dl38-popup');
@@ -164,32 +116,7 @@
     }
   });
 
-  /* =============================================
-     SMOOTH SCROLL TO SECTION
-  ============================================= */
-  window.smoothScrollTo = function (id) {
-    const el = document.getElementById(id);
-    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  };
-
-  /* =============================================
-     ROCKET SCROLL FIX
-     Prevent animation skip during scroll
-  ============================================= */
-  let scrollTimer;
-  const rockets = document.querySelectorAll('.r');
-
-  window.addEventListener('scroll', () => {
-    rockets.forEach(r => { r.style.willChange = 'transform, opacity'; });
-    clearTimeout(scrollTimer);
-    scrollTimer = setTimeout(() => {
-      rockets.forEach(r => { r.style.willChange = 'transform, opacity'; });
-    }, 150);
-  }, { passive: true });
-
-  /* =============================================
-     TAB SWITCHER — Flash Guide methods
-  ============================================= */
+  /* ── TAB SWITCHER ── */
   window.showTab = function (id, btn) {
     ['win', 'linux', 'termux'].forEach(t => {
       const el = document.getElementById('tab-' + t);
@@ -199,36 +126,30 @@
     btn.classList.add('active');
   };
 
-  /* =============================================
-     COPY COMMAND — Terminal copy buttons
-  ============================================= */
+  /* ── COPY COMMAND ── */
   window.copyCmd = function (btn, text) {
     const done = () => {
       btn.textContent = 'Copied!';
-      btn.classList.add('copied');
-      setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+      btn.style.color = '#34d399';
+      setTimeout(() => { btn.textContent = 'Copy'; btn.style.color = ''; }, 2000);
     };
-
     if (navigator.clipboard) {
       navigator.clipboard.writeText(text).then(done).catch(() => fallbackCopy(text, done));
     } else {
       fallbackCopy(text, done);
     }
   };
-
   function fallbackCopy(text, cb) {
     const ta = document.createElement('textarea');
-    ta.value = text;
-    document.body.appendChild(ta);
-    ta.select();
-    document.execCommand('copy');
-    document.body.removeChild(ta);
-    cb();
+    ta.value = text; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); cb();
   }
 
-  /* =============================================
-     SCROLL REVEAL — sections slide up on enter
-  ============================================= */
+  /* ── SCROLL REVEAL ── */
+  window.smoothScrollTo = function (id) {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
   const revealObs = new IntersectionObserver(entries => {
     entries.forEach(e => {
       if (e.isIntersecting) {
@@ -237,137 +158,54 @@
       }
     });
   }, { threshold: 0.08 });
-
   document.querySelectorAll('.scroll-reveal').forEach(el => revealObs.observe(el));
 
-  /* =============================================
-     TIMELINE SCROLL REVEAL
-  ============================================= */
   const tlObs = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (e.isIntersecting) e.target.classList.add('visible');
-    });
-  }, { threshold: .15 });
-
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.15 });
   document.querySelectorAll('.tl-item').forEach(el => tlObs.observe(el));
 
-  /* =============================================
-     GITHUB API — live release stats
-     Replaces skeleton loaders with real data
-  ============================================= */
+  /* ── GITHUB API ── */
   const setVal = (id, val) => {
     const el = document.getElementById(id);
     if (el) el.innerHTML = val;
   };
-
   fetch('https://api.github.com/repos/itsrohan17/android_device_xiaomi_xaga/releases/latest')
     .then(r => r.json())
     .then(d => {
       setVal('gh-ver',  d.tag_name || 'v3.9');
-
       if (d.published_at) {
         const dt = new Date(d.published_at);
         setVal('gh-date', dt.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }));
-      } else {
-        setVal('gh-date', 'Apr 2026');
-      }
-
+      } else { setVal('gh-date', 'Apr 2026'); }
       if (d.assets) {
         const total = d.assets.reduce((s, a) => s + a.download_count, 0);
         setVal('gh-dl', total > 0 ? total.toLocaleString() : '—');
-      } else {
-        setVal('gh-dl', '—');
-      }
+      } else { setVal('gh-dl', '—'); }
     })
     .catch(() => {
-      /* Fallback static values if API fails */
-      setVal('gh-ver',  'v3.8');
-      setVal('gh-date', 'Apr 2026');
-      setVal('gh-dl',   '—');
+      setVal('gh-ver',  'v3.8'); setVal('gh-date', 'Apr 2026'); setVal('gh-dl',   '—');
     });
 
-  /* =============================================
-     DESKTOP EXTRAS
-  ============================================= */
+  /* ── CUSTOM CURSOR ── */
   if (!isMobile) {
-
-    /* Custom cursor */
     const dot  = document.getElementById('cur-dot');
     const ring = document.getElementById('cur-ring');
-
     if (dot && ring) {
       document.addEventListener('mousemove', e => {
-        dot.style.left  = e.clientX + 'px';
-        dot.style.top   = e.clientY + 'px';
-        ring.style.left = e.clientX + 'px';
-        ring.style.top  = e.clientY + 'px';
+        dot.style.left = e.clientX + 'px';
+        dot.style.top  = e.clientY + 'px';
+        setTimeout(() => {
+          ring.style.left = e.clientX + 'px';
+          ring.style.top  = e.clientY + 'px';
+        }, 40);
       }, { passive: true });
-
-      /* Expand ring on interactive elements */
-      document.querySelectorAll('a, button, .btn, .feat, .pf, .cmd-copy, .mtab').forEach(el => {
-        el.addEventListener('mouseenter', () => { ring.classList.add('hover'); dot.classList.add('hover'); });
-        el.addEventListener('mouseleave', () => { ring.classList.remove('hover'); dot.classList.remove('hover'); });
+      document.querySelectorAll('a, button, .btn, .feat, .pf, .mtab').forEach(el => {
+        el.addEventListener('mouseenter', () => { ring.style.width = '48px'; ring.style.height = '48px'; ring.style.borderColor = 'rgba(139, 92, 246, 0.8)'; dot.style.background = '#8b5cf6'; });
+        el.addEventListener('mouseleave', () => { ring.style.width = '32px'; ring.style.height = '32px'; ring.style.borderColor = 'rgba(255,255,255,0.4)'; dot.style.background = '#fff'; });
       });
-
       document.addEventListener('mouseleave', () => { dot.style.opacity = '0'; ring.style.opacity = '0'; });
       document.addEventListener('mouseenter', () => { dot.style.opacity = '1'; ring.style.opacity = '1'; });
     }
-
-    /* Magnetic buttons */
-    document.querySelectorAll('.btn').forEach(b => {
-      b.addEventListener('mousemove', e => {
-        const r  = b.getBoundingClientRect();
-        const dx = (e.clientX - r.left - r.width  / 2) * .1;
-        const dy = (e.clientY - r.top  - r.height / 2) * .1;
-        b.style.transform = `translateY(-3px) scale(1.02) translate(${dx}px,${dy}px)`;
-      });
-      b.addEventListener('mouseleave', () => { b.style.transform = ''; });
-    });
-
-    /* 3D phone tilt */
-    document.querySelectorAll('.pf').forEach(f => {
-      f.addEventListener('mousemove', e => {
-        const r = f.getBoundingClientRect();
-        const x = (e.clientX - r.left) / r.width  - .5;
-        const y = (e.clientY - r.top)  / r.height - .5;
-        f.style.transform = `translateY(-10px) scale(1.03) rotateY(${x * 12}deg) rotateX(${-y * 12}deg)`;
-      });
-      f.addEventListener('mouseleave', () => { f.style.transform = ''; });
-    });
-
-    /* Cursor glow */
-    const g = document.createElement('div');
-    Object.assign(g.style, {
-      position:     'fixed',
-      pointerEvents:'none',
-      zIndex:       '9997',
-      width:        '260px',
-      height:       '260px',
-      borderRadius: '50%',
-      background:   'radial-gradient(circle, rgba(124,106,255,.055) 0%, transparent 70%)',
-      transform:    'translate(-50%,-50%)',
-      opacity:      '0',
-      transition:   'opacity .3s',
-      top:          '0',
-      left:         '0'
-    });
-    document.body.appendChild(g);
-    document.addEventListener('mousemove', e => {
-      g.style.left    = e.clientX + 'px';
-      g.style.top     = e.clientY + 'px';
-      g.style.opacity = '1';
-    }, { passive: true });
-    document.addEventListener('mouseleave', () => { g.style.opacity = '0'; });
   }
-
-  /* =============================================
-     MOBILE — touch press feedback on buttons
-  ============================================= */
-  if (isMobile) {
-    document.querySelectorAll('.btn').forEach(b => {
-      b.addEventListener('touchstart', () => { b.style.transform = 'scale(.96)'; }, { passive: true });
-      b.addEventListener('touchend',   () => { b.style.transform = ''; },          { passive: true });
-    });
-  }
-
 })();
