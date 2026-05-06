@@ -125,6 +125,11 @@
     .comm-sub { font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; color: var(--muted); }
     .comm-divider { height: 1px; background: var(--glass-border); margin: 4px 8px; }
     .skeleton { display: inline-block; min-width: 40px; height: 14px; background: #1e293b; border-radius: 4px; }
+    
+    /* ── ANIMATED ARROW CSS ── */
+    .dl-arrow { display: inline-block; animation: arrowBounce 1.2s ease-in-out infinite; margin-left: 4px; }
+    @keyframes arrowBounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(4px); } }
+
     ::-webkit-scrollbar { width: 8px; } ::-webkit-scrollbar-track { background: var(--bg); } ::-webkit-scrollbar-thumb { background: rgba(139,92,246,0.5); border-radius: 10px; } ::-webkit-scrollbar-thumb:hover { background: rgba(139,92,246,0.8); }
     @media (hover: hover) and (pointer: fine) { body { cursor: none; } .cursor-dot { width: 8px; height: 8px; background: #fff; position: fixed; pointer-events: none; border-radius: 50%; z-index: 99999; transform: translate(-50%, -50%); transition: background 0.2s; } .cursor-ring { width: 32px; height: 32px; border: 2px solid rgba(255,255,255,0.4); position: fixed; pointer-events: none; border-radius: 50%; z-index: 99998; transform: translate(-50%, -50%); transition: width 0.2s, height 0.2s, border-color 0.2s; } }
   </style>
@@ -179,12 +184,10 @@
             Join Community
           </button>
         </div>
-        
         <a href="https://github.com/itsrohan17" target="_blank" rel="noopener noreferrer" class="btn bg">
           <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.336-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.564 9.564 0 0112 6.844c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.161 22 16.416 22 12c0-5.523-4.477-10-10-10z"/></svg>
           itsrohan17
         </a>
-
         <a href="changelog.html" class="btn bcl">
           <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
           Changelogs
@@ -197,6 +200,7 @@
     </div>
   </header>
 
+  <!-- FEATURES -->
   <section class="features scroll-reveal">
     <div class="features-grid">
       <div class="feat rev d6">
@@ -223,6 +227,7 @@
     </div>
   </section>
 
+  <!-- INTERACTIVE SCREENSHOTS CAROUSEL -->
   <section class="ss scroll-reveal" style="padding-top: 40px; padding-bottom: 80px;">
     <div class="divider rev d6"><span>Gallery</span></div>
     
@@ -245,11 +250,13 @@
     </div>
   </section>
 
+  <!-- LIGHTBOX MODAL -->
   <div id="lightbox" class="lightbox" onclick="closeModal()">
     <span class="lightbox-close">&times;</span>
     <img class="lightbox-content" id="lightbox-img">
   </div>
 
+  <!-- PREMIUM FOOTER -->
   <footer class="premium-footer scroll-reveal">
     <div class="footer-grid">
       <div class="footer-col brand-col">
@@ -276,7 +283,7 @@
         <span class="dot-sep">•</span>
         <span><span class="info-label">Android</span> 16</span>
         <span class="dot-sep">•</span>
-        <span><span class="info-label">Last Build</span> Apr 2026</span>
+        <span><span class="info-label">Last Build</span> May 2026</span>
         <span class="dot-sep">•</span>
         <span><span class="info-label">Maintainer</span> dev Rohan</span>
       </div>
@@ -284,6 +291,7 @@
     </div>
   </footer>
 
+  <!-- COMMUNITY POPUP -->
   <div class="community-popup" id="community-popup">
     <a href="https://t.me/screenshotsxaga" target="_blank" rel="noopener noreferrer" class="comm-item">
       <div class="comm-icon">
@@ -301,36 +309,17 @@
   </div>
 
   <script>
-    /* =============================================
-       LUNARIS AOSP — PREMIUM REFINED (INLINE JS)
-    ============================================= */
     (function () {
       const isMobile = window.innerWidth < 768 || navigator.maxTouchPoints > 0;
-      const canvas = document.getElementById('pc');
-      const ctx    = canvas.getContext('2d');
-      let W, H;
-      let targetX = 0, targetY = 0;
-      let currentX = 0, currentY = 0;
-
+      const canvas = document.getElementById('pc'); const ctx = canvas.getContext('2d');
+      let W, H, targetX = 0, targetY = 0, currentX = 0, currentY = 0;
       function resize() { W = canvas.width = innerWidth; H = canvas.height = innerHeight; }
       addEventListener('resize', resize, { passive: true }); resize();
-
-      if (!isMobile) {
-        document.addEventListener('mousemove', (e) => {
-          targetX = (e.clientX - W / 2) * 0.05;
-          targetY = (e.clientY - H / 2) * 0.05;
-        });
-      }
-
+      if (!isMobile) { document.addEventListener('mousemove', (e) => { targetX = (e.clientX - W / 2) * 0.05; targetY = (e.clientY - H / 2) * 0.05; }); }
       const COUNT = isMobile ? 50 : 150;
-      const pts = Array.from({ length: COUNT }, () => ({
-        x: Math.random() * W, y: Math.random() * H, vx: (Math.random() - 0.5) * 0.1, vy: (Math.random() - 0.5) * 0.1 - 0.05, 
-        s: Math.random() * 1.5 + 0.5, a: Math.random() * 0.5 + 0.1, td: 1, ts: Math.random() * 0.005 + 0.001, depth: Math.random() * 0.8 + 0.2
-      }));
-
+      const pts = Array.from({ length: COUNT }, () => ({ x: Math.random() * W, y: Math.random() * H, vx: (Math.random() - 0.5) * 0.1, vy: (Math.random() - 0.5) * 0.1 - 0.05, s: Math.random() * 1.5 + 0.5, a: Math.random() * 0.5 + 0.1, td: 1, ts: Math.random() * 0.005 + 0.001, depth: Math.random() * 0.8 + 0.2 }));
       function loop() {
-        ctx.clearRect(0, 0, W, H);
-        currentX += (targetX - currentX) * 0.05; currentY += (targetY - currentY) * 0.05;
+        ctx.clearRect(0, 0, W, H); currentX += (targetX - currentX) * 0.05; currentY += (targetY - currentY) * 0.05;
         pts.forEach(p => {
           p.x += p.vx; p.y += p.vy; p.a += p.ts * p.td;
           if (p.a > 0.8 || p.a < 0.1) p.td *= -1;
@@ -339,46 +328,31 @@
           ctx.beginPath(); ctx.arc(drawX, drawY, p.s, 0, Math.PI * 2); ctx.fillStyle = `rgba(255, 255, 255, ${p.a})`; ctx.fill();
         });
         requestAnimationFrame(loop);
-      }
-      loop();
-
+      } loop();
+      
       window.toggleCommunity = function (e) {
-        e.stopPropagation();
-        const popup = document.getElementById('community-popup');
-        const btn   = document.getElementById('comm-btn');
-        if(!popup || !btn) return;
-        const rect  = btn.getBoundingClientRect();
-        const W     = 240;
-        let left    = rect.left + rect.width / 2 - W / 2;
-        if (left < 8) left = 8; if (left + W > window.innerWidth - 8) left = window.innerWidth - W - 8;
-        popup.style.top  = (rect.bottom + 8) + 'px'; popup.style.left = left + 'px'; popup.classList.toggle('open');
+        e.stopPropagation(); const popup = document.getElementById('community-popup'); const btn = document.getElementById('comm-btn');
+        if(!popup || !btn) return; const rect = btn.getBoundingClientRect(); const W = 240;
+        let left = rect.left + rect.width / 2 - W / 2; if (left < 8) left = 8; if (left + W > window.innerWidth - 8) left = window.innerWidth - W - 8;
+        popup.style.top = (rect.bottom + 8) + 'px'; popup.style.left = left + 'px'; popup.classList.toggle('open');
       };
 
       document.addEventListener('click', function (e) {
-        const btnComm = document.getElementById('comm-btn');
-        const popComm = document.getElementById('community-popup');
+        const btnComm = document.getElementById('comm-btn'); const popComm = document.getElementById('community-popup');
         if (popComm && btnComm && !btnComm.contains(e.target) && !popComm.contains(e.target)) { popComm.classList.remove('open'); }
       });
 
       window.filterGallery = function(category) {
         const target = window.event ? window.event.target : null;
-        if (target) {
-          const btns = document.querySelectorAll('.filter-btn');
-          btns.forEach(btn => btn.classList.remove('active'));
-          target.classList.add('active');
-        }
+        if (target) { const btns = document.querySelectorAll('.filter-btn'); btns.forEach(btn => btn.classList.remove('active')); target.classList.add('active'); }
         const items = document.querySelectorAll('.ss-carousel .pw');
         items.forEach(item => {
-          if (category === 'all' || item.getAttribute('data-cat') === category) {
-            item.style.display = 'block'; setTimeout(() => item.style.opacity = '1', 50);
-          } else {
-            item.style.opacity = '0'; setTimeout(() => item.style.display = 'none', 300);
-          }
+          if (category === 'all' || item.getAttribute('data-cat') === category) { item.style.display = 'block'; setTimeout(() => item.style.opacity = '1', 50); } 
+          else { item.style.opacity = '0'; setTimeout(() => item.style.display = 'none', 300); }
         });
       };
 
-      const lightbox = document.getElementById('lightbox');
-      const lightboxImg = document.getElementById('lightbox-img');
+      const lightbox = document.getElementById('lightbox'); const lightboxImg = document.getElementById('lightbox-img');
       window.openModal = function(src) { if(!lightbox) return; lightboxImg.src = src; lightbox.classList.add('show'); document.body.style.overflow = 'hidden'; };
       window.closeModal = function() { if(!lightbox) return; lightbox.classList.remove('show'); document.body.style.overflow = 'auto'; };
       document.addEventListener('keydown', function(event) { if (event.key === "Escape") closeModal(); });
@@ -391,23 +365,21 @@
       fetch('https://api.github.com/repos/itsrohan17/android_device_xiaomi_xaga/releases/latest')
         .then(r => r.json())
         .then(d => {
-          setVal('gh-ver',  d.tag_name || 'v3.9');
-          if (d.published_at) { const dt = new Date(d.published_at); setVal('gh-date', dt.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })); } else { setVal('gh-date', 'Apr 2026'); }
+          setVal('gh-ver',  d.tag_name || 'v3.10');
+          if (d.published_at) { const dt = new Date(d.published_at); setVal('gh-date', dt.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })); } else { setVal('gh-date', 'May 2026'); }
           if (d.assets) { const total = d.assets.reduce((s, a) => s + a.download_count, 0); setVal('gh-dl', total > 0 ? total.toLocaleString() : '—'); } else { setVal('gh-dl', '—'); }
         })
-        .catch(() => { setVal('gh-ver', 'v3.8'); setVal('gh-date', 'Apr 2026'); setVal('gh-dl', '—'); });
+        .catch(() => { setVal('gh-ver', 'v3.10'); setVal('gh-date', 'May 2026'); setVal('gh-dl', '—'); });
 
       if (!isMobile) {
-        const dot  = document.getElementById('cur-dot');
-        const ring = document.getElementById('cur-ring');
+        const dot = document.getElementById('cur-dot'); const ring = document.getElementById('cur-ring');
         if (dot && ring) {
           document.addEventListener('mousemove', e => { dot.style.left = e.clientX + 'px'; dot.style.top = e.clientY + 'px'; setTimeout(() => { ring.style.left = e.clientX + 'px'; ring.style.top = e.clientY + 'px'; }, 40); }, { passive: true });
-          document.querySelectorAll('a, button, .btn, .filter-btn, .pf, .lightbox-close, .mtab, .cmd-copy').forEach(el => {
+          document.querySelectorAll('a, button, .btn, .filter-btn, .pf, .lightbox-close').forEach(el => {
             el.addEventListener('mouseenter', () => { ring.style.width = '48px'; ring.style.height = '48px'; ring.style.borderColor = 'rgba(139, 92, 246, 0.8)'; dot.style.background = '#8b5cf6'; });
             el.addEventListener('mouseleave', () => { ring.style.width = '32px'; ring.style.height = '32px'; ring.style.borderColor = 'rgba(255,255,255,0.4)'; dot.style.background = '#fff'; });
           });
-          document.addEventListener('mouseleave', () => { dot.style.opacity = '0'; ring.style.opacity = '0'; });
-          document.addEventListener('mouseenter', () => { dot.style.opacity = '1'; ring.style.opacity = '1'; });
+          document.addEventListener('mouseleave', () => { dot.style.opacity = '0'; ring.style.opacity = '0'; }); document.addEventListener('mouseenter', () => { dot.style.opacity = '1'; ring.style.opacity = '1'; });
         }
       }
     })();
