@@ -117,7 +117,7 @@
     .community-popup { position: fixed; width: 240px; background: rgba(10,12,28,0.95); border: 1px solid rgba(139,92,246,0.3); border-radius: 16px; padding: 8px; z-index: 999999; box-shadow: 0 20px 60px rgba(0,0,0,0.8); opacity: 0; pointer-events: none; transform: scale(0.96); transition: opacity 0.2s, transform 0.2s; backdrop-filter: blur(10px); }
     .community-popup.open { opacity: 1; pointer-events: all; transform: scale(1); }
     .comm-item { display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 10px; text-decoration: none; cursor: pointer; transition: background 0.2s; }
-    .comm-item:hover { background: rgba(139,92,246,0.1); }
+    .comm-item:hover { background: rgba(139, 92, 246, 0.1); }
     .comm-icon { width: 36px; height: 36px; border-radius: 10px; background: #2563eb; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #fff; }
     .comm-icon.comm-icon-support { background: #8b5cf6; }
     .comm-text { display: flex; flex-direction: column; gap: 2px; flex: 1; }
@@ -125,11 +125,6 @@
     .comm-sub { font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; color: var(--muted); }
     .comm-divider { height: 1px; background: var(--glass-border); margin: 4px 8px; }
     .skeleton { display: inline-block; min-width: 40px; height: 14px; background: #1e293b; border-radius: 4px; }
-    
-    /* ── ANIMATED ARROW CSS ── */
-    .dl-arrow { display: inline-block; animation: arrowBounce 1.2s ease-in-out infinite; margin-left: 4px; }
-    @keyframes arrowBounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(4px); } }
-
     ::-webkit-scrollbar { width: 8px; } ::-webkit-scrollbar-track { background: var(--bg); } ::-webkit-scrollbar-thumb { background: rgba(139,92,246,0.5); border-radius: 10px; } ::-webkit-scrollbar-thumb:hover { background: rgba(139,92,246,0.8); }
     @media (hover: hover) and (pointer: fine) { body { cursor: none; } .cursor-dot { width: 8px; height: 8px; background: #fff; position: fixed; pointer-events: none; border-radius: 50%; z-index: 99999; transform: translate(-50%, -50%); transition: background 0.2s; } .cursor-ring { width: 32px; height: 32px; border: 2px solid rgba(255,255,255,0.4); position: fixed; pointer-events: none; border-radius: 50%; z-index: 99998; transform: translate(-50%, -50%); transition: width 0.2s, height 0.2s, border-color 0.2s; } }
   </style>
@@ -240,12 +235,19 @@
 
     <div class="carousel-container">
       <div class="ss-carousel" id="ss-carousel">
-        <div class="pw" data-cat="home"><div class="pf"><img src="screenshots/home.png" alt="Home" onclick="openModal(this.src)" loading="lazy"></div><p class="pl">Home</p></div>
-        <div class="pw" data-cat="ui"><div class="pf"><img src="screenshots/lunaris.png" alt="Lunaris UI" onclick="openModal(this.src)" loading="lazy"></div><p class="pl">Lunaris UI</p></div>
-        <div class="pw" data-cat="ui"><div class="pf"><img src="screenshots/music.png" alt="Music" onclick="openModal(this.src)" loading="lazy"></div><p class="pl">Music Player</p></div>
-        <div class="pw" data-cat="settings"><div class="pf"><img src="screenshots/settings.png" alt="Settings" onclick="openModal(this.src)" loading="lazy"></div><p class="pl">Settings</p></div>
-        <div class="pw" data-cat="home"><div class="pf"><img src="screenshots/appdrawer.png" alt="App Drawer" onclick="openModal(this.src)" loading="lazy"></div><p class="pl">App Drawer</p></div>
         <div class="pw" data-cat="home"><div class="pf"><img src="screenshots/homescreen.png" alt="Homescreen" onclick="openModal(this.src)" loading="lazy"></div><p class="pl">Homescreen</p></div>
+        <div class="pw" data-cat="home"><div class="pf"><img src="screenshots/appdrawer.png" alt="App Drawer" onclick="openModal(this.src)" loading="lazy"></div><p class="pl">App Drawer</p></div>
+        <div class="pw" data-cat="home"><div class="pf"><img src="screenshots/lock%20screen.png" alt="Lock Screen" onclick="openModal(this.src)" loading="lazy"></div><p class="pl">Lock Screen</p></div>
+        <div class="pw" data-cat="home"><div class="pf"><img src="screenshots/lock%20screen%202.jpg" alt="Lock Screen Alt" onclick="openModal(this.src)" loading="lazy"></div><p class="pl">Lock Screen 2</p></div>
+        <div class="pw" data-cat="ui"><div class="pf"><img src="screenshots/qs%20panel.png" alt="QS Panel" onclick="openModal(this.src)" loading="lazy"></div><p class="pl">QS Panel</p></div>
+        
+        <!-- THE NEW QS PANEL 2 SCREENSHOT -->
+        <div class="pw" data-cat="ui"><div class="pf"><img src="screenshots/qs%20panel%202.png" alt="QS Panel 2" onclick="openModal(this.src)" loading="lazy"></div><p class="pl">QS Panel 2</p></div>
+
+        <div class="pw" data-cat="ui"><div class="pf"><img src="screenshots/dynamic%20bar.png" alt="Dynamic Bar" onclick="openModal(this.src)" loading="lazy"></div><p class="pl">Dynamic Bar</p></div>
+        <div class="pw" data-cat="ui"><div class="pf"><img src="screenshots/quick%20switch.png" alt="Quick Switch" onclick="openModal(this.src)" loading="lazy"></div><p class="pl">Quick Switch</p></div>
+        <div class="pw" data-cat="ui"><div class="pf"><img src="screenshots/music.png" alt="Music" onclick="openModal(this.src)" loading="lazy"></div><p class="pl">Music Player</p></div>
+        <div class="pw" data-cat="settings"><div class="pf"><img src="screenshots/about%20info.png" alt="About Info" onclick="openModal(this.src)" loading="lazy"></div><p class="pl">About Info</p></div>
       </div>
     </div>
   </section>
@@ -309,17 +311,36 @@
   </div>
 
   <script>
+    /* =============================================
+       LUNARIS AOSP — PREMIUM REFINED (INLINE JS)
+    ============================================= */
     (function () {
       const isMobile = window.innerWidth < 768 || navigator.maxTouchPoints > 0;
-      const canvas = document.getElementById('pc'); const ctx = canvas.getContext('2d');
-      let W, H, targetX = 0, targetY = 0, currentX = 0, currentY = 0;
+      const canvas = document.getElementById('pc');
+      const ctx    = canvas.getContext('2d');
+      let W, H;
+      let targetX = 0, targetY = 0;
+      let currentX = 0, currentY = 0;
+
       function resize() { W = canvas.width = innerWidth; H = canvas.height = innerHeight; }
       addEventListener('resize', resize, { passive: true }); resize();
-      if (!isMobile) { document.addEventListener('mousemove', (e) => { targetX = (e.clientX - W / 2) * 0.05; targetY = (e.clientY - H / 2) * 0.05; }); }
+
+      if (!isMobile) {
+        document.addEventListener('mousemove', (e) => {
+          targetX = (e.clientX - W / 2) * 0.05;
+          targetY = (e.clientY - H / 2) * 0.05;
+        });
+      }
+
       const COUNT = isMobile ? 50 : 150;
-      const pts = Array.from({ length: COUNT }, () => ({ x: Math.random() * W, y: Math.random() * H, vx: (Math.random() - 0.5) * 0.1, vy: (Math.random() - 0.5) * 0.1 - 0.05, s: Math.random() * 1.5 + 0.5, a: Math.random() * 0.5 + 0.1, td: 1, ts: Math.random() * 0.005 + 0.001, depth: Math.random() * 0.8 + 0.2 }));
+      const pts = Array.from({ length: COUNT }, () => ({
+        x: Math.random() * W, y: Math.random() * H, vx: (Math.random() - 0.5) * 0.1, vy: (Math.random() - 0.5) * 0.1 - 0.05, 
+        s: Math.random() * 1.5 + 0.5, a: Math.random() * 0.5 + 0.1, td: 1, ts: Math.random() * 0.005 + 0.001, depth: Math.random() * 0.8 + 0.2
+      }));
+
       function loop() {
-        ctx.clearRect(0, 0, W, H); currentX += (targetX - currentX) * 0.05; currentY += (targetY - currentY) * 0.05;
+        ctx.clearRect(0, 0, W, H);
+        currentX += (targetX - currentX) * 0.05; currentY += (targetY - currentY) * 0.05;
         pts.forEach(p => {
           p.x += p.vx; p.y += p.vy; p.a += p.ts * p.td;
           if (p.a > 0.8 || p.a < 0.1) p.td *= -1;
@@ -328,31 +349,46 @@
           ctx.beginPath(); ctx.arc(drawX, drawY, p.s, 0, Math.PI * 2); ctx.fillStyle = `rgba(255, 255, 255, ${p.a})`; ctx.fill();
         });
         requestAnimationFrame(loop);
-      } loop();
-      
+      }
+      loop();
+
       window.toggleCommunity = function (e) {
-        e.stopPropagation(); const popup = document.getElementById('community-popup'); const btn = document.getElementById('comm-btn');
-        if(!popup || !btn) return; const rect = btn.getBoundingClientRect(); const W = 240;
-        let left = rect.left + rect.width / 2 - W / 2; if (left < 8) left = 8; if (left + W > window.innerWidth - 8) left = window.innerWidth - W - 8;
-        popup.style.top = (rect.bottom + 8) + 'px'; popup.style.left = left + 'px'; popup.classList.toggle('open');
+        e.stopPropagation();
+        const popup = document.getElementById('community-popup');
+        const btn   = document.getElementById('comm-btn');
+        if(!popup || !btn) return;
+        const rect  = btn.getBoundingClientRect();
+        const W     = 240;
+        let left    = rect.left + rect.width / 2 - W / 2;
+        if (left < 8) left = 8; if (left + W > window.innerWidth - 8) left = window.innerWidth - W - 8;
+        popup.style.top  = (rect.bottom + 8) + 'px'; popup.style.left = left + 'px'; popup.classList.toggle('open');
       };
 
       document.addEventListener('click', function (e) {
-        const btnComm = document.getElementById('comm-btn'); const popComm = document.getElementById('community-popup');
+        const btnComm = document.getElementById('comm-btn');
+        const popComm = document.getElementById('community-popup');
         if (popComm && btnComm && !btnComm.contains(e.target) && !popComm.contains(e.target)) { popComm.classList.remove('open'); }
       });
 
       window.filterGallery = function(category) {
         const target = window.event ? window.event.target : null;
-        if (target) { const btns = document.querySelectorAll('.filter-btn'); btns.forEach(btn => btn.classList.remove('active')); target.classList.add('active'); }
+        if (target) {
+          const btns = document.querySelectorAll('.filter-btn');
+          btns.forEach(btn => btn.classList.remove('active'));
+          target.classList.add('active');
+        }
         const items = document.querySelectorAll('.ss-carousel .pw');
         items.forEach(item => {
-          if (category === 'all' || item.getAttribute('data-cat') === category) { item.style.display = 'block'; setTimeout(() => item.style.opacity = '1', 50); } 
-          else { item.style.opacity = '0'; setTimeout(() => item.style.display = 'none', 300); }
+          if (category === 'all' || item.getAttribute('data-cat') === category) {
+            item.style.display = 'block'; setTimeout(() => item.style.opacity = '1', 50);
+          } else {
+            item.style.opacity = '0'; setTimeout(() => item.style.display = 'none', 300);
+          }
         });
       };
 
-      const lightbox = document.getElementById('lightbox'); const lightboxImg = document.getElementById('lightbox-img');
+      const lightbox = document.getElementById('lightbox');
+      const lightboxImg = document.getElementById('lightbox-img');
       window.openModal = function(src) { if(!lightbox) return; lightboxImg.src = src; lightbox.classList.add('show'); document.body.style.overflow = 'hidden'; };
       window.closeModal = function() { if(!lightbox) return; lightbox.classList.remove('show'); document.body.style.overflow = 'auto'; };
       document.addEventListener('keydown', function(event) { if (event.key === "Escape") closeModal(); });
@@ -365,21 +401,23 @@
       fetch('https://api.github.com/repos/itsrohan17/android_device_xiaomi_xaga/releases/latest')
         .then(r => r.json())
         .then(d => {
-          setVal('gh-ver',  d.tag_name || 'v3.10');
+          setVal('gh-ver',  d.tag_name || 'v3.10 Hotfix');
           if (d.published_at) { const dt = new Date(d.published_at); setVal('gh-date', dt.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })); } else { setVal('gh-date', 'May 2026'); }
           if (d.assets) { const total = d.assets.reduce((s, a) => s + a.download_count, 0); setVal('gh-dl', total > 0 ? total.toLocaleString() : '—'); } else { setVal('gh-dl', '—'); }
         })
-        .catch(() => { setVal('gh-ver', 'v3.10'); setVal('gh-date', 'May 2026'); setVal('gh-dl', '—'); });
+        .catch(() => { setVal('gh-ver', 'v3.10 Hotfix'); setVal('gh-date', 'May 2026'); setVal('gh-dl', '—'); });
 
       if (!isMobile) {
-        const dot = document.getElementById('cur-dot'); const ring = document.getElementById('cur-ring');
+        const dot  = document.getElementById('cur-dot');
+        const ring = document.getElementById('cur-ring');
         if (dot && ring) {
           document.addEventListener('mousemove', e => { dot.style.left = e.clientX + 'px'; dot.style.top = e.clientY + 'px'; setTimeout(() => { ring.style.left = e.clientX + 'px'; ring.style.top = e.clientY + 'px'; }, 40); }, { passive: true });
-          document.querySelectorAll('a, button, .btn, .filter-btn, .pf, .lightbox-close').forEach(el => {
+          document.querySelectorAll('a, button, .btn, .filter-btn, .pf, .lightbox-close, .mtab, .cmd-copy').forEach(el => {
             el.addEventListener('mouseenter', () => { ring.style.width = '48px'; ring.style.height = '48px'; ring.style.borderColor = 'rgba(139, 92, 246, 0.8)'; dot.style.background = '#8b5cf6'; });
             el.addEventListener('mouseleave', () => { ring.style.width = '32px'; ring.style.height = '32px'; ring.style.borderColor = 'rgba(255,255,255,0.4)'; dot.style.background = '#fff'; });
           });
-          document.addEventListener('mouseleave', () => { dot.style.opacity = '0'; ring.style.opacity = '0'; }); document.addEventListener('mouseenter', () => { dot.style.opacity = '1'; ring.style.opacity = '1'; });
+          document.addEventListener('mouseleave', () => { dot.style.opacity = '0'; ring.style.opacity = '0'; });
+          document.addEventListener('mouseenter', () => { dot.style.opacity = '1'; ring.style.opacity = '1'; });
         }
       }
     })();

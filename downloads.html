@@ -37,9 +37,8 @@
     .bg { background: var(--glass); border-color: var(--glass-border); backdrop-filter: blur(10px); }
     .bg:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.2); box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
     .dl-section { position: relative; z-index: 10; padding: 0 16px 64px; }
-    .dl-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; max-width: 960px; margin: 0 auto; }
+    .dl-grid-3 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; max-width: 960px; margin: 0 auto; }
     @media (max-width: 720px) { .dl-grid-3 { grid-template-columns: 1fr; max-width: 340px; } }
-    @media (min-width: 721px) and (max-width: 960px) { .dl-grid-3 { grid-template-columns: 1fr 1fr; max-width: 640px; } }
     .dl-card { position: relative; background: var(--glass); border: 1px solid var(--glass-border); border-radius: 20px; padding: 28px 22px 22px; text-align: center; backdrop-filter: blur(12px); transition: transform 0.3s, border-color 0.3s; }
     .dl-card:hover { transform: translateY(-4px); border-color: rgba(139,92,246,0.3); box-shadow: 0 10px 30px rgba(139,92,246,0.1); }
     .dl-badge-wrap { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); }
@@ -124,58 +123,66 @@
   <section class="dl-section scroll-reveal" id="download-section">
     <div class="dl-grid-3">
 
-      <!-- v3.10 — Latest -->
+      <!-- v3.10 Hotfix — LATEST (Arrows + Stock Boot) -->
       <div class="dl-card dl-latest">
-        <div class="dl-badge-wrap"><span class="dl-ver-badge new">✦ Latest</span></div>
+        <div class="dl-badge-wrap"><span class="dl-ver-badge new">✦ Latest Hotfix</span></div>
         <div class="dl-icon">⚡</div>
+        <div class="dl-ver">Lunaris v3.10 Hotfix</div>
+        <div class="dl-device">Redmi K50i · xaga</div>
+        <ul class="dl-tags"><li>Android 16</li><li>LineageOS</li><li>Hotfix</li></ul>
+        <ul class="dl-changelog">
+          <li>Fixed previous blur issues</li>
+          <li>Optimized Dynamic Bar responsiveness</li>
+          <li>System Sandbox performance boost</li>
+          <li>Improved charging info accuracy</li>
+          <li>Smoother UI wallpaper transitions</li>
+        </ul>
+        <div class="dl-btn-group">
+          <a href="https://drive.google.com/file/d/1fgwHybkwSjbaBBGD9rNshaLlSyxAv9VK/view?usp=sharing" target="_blank" class="btn bp dl-btn">Fastboot <span class="dl-arrow">↓</span></a>
+          <a href="https://drive.google.com/file/d/1Af5SgJFnTj05Tl0uDDQTQTEt-AdJojUy/view?usp=sharing" target="_blank" class="btn bg dl-btn dl-btn-stock">Stock Boot <span class="dl-arrow">↓</span></a>
+        </div>
+      </div>
+
+      <!-- v3.10 — Stable (No Stock Boot) -->
+      <div class="dl-card">
+        <div class="dl-badge-wrap"><span class="dl-ver-badge stable">Stable</span></div>
+        <div class="dl-icon">🌟</div>
         <div class="dl-ver">Lunaris v3.10</div>
         <div class="dl-device">Redmi K50i · xaga</div>
         <ul class="dl-tags"><li>Android 16</li><li>LineageOS</li><li>Stable</li></ul>
         <ul class="dl-changelog">
           <li>Working torch intensity control</li>
-          <li>QS panel media &amp; slider widget</li>
-          <li>Neumatic &amp; 13 random clock styles</li>
+          <li>QS panel media & slider widget</li>
+          <li>Neumatic & 13 random clock styles</li>
           <li>Lockscreen CPU info overlay</li>
-          <li>New emoji styles &amp; blur tweaks</li>
-          <li>Multiple UX &amp; animation additions</li>
         </ul>
         <div class="dl-btn-group">
-          <!-- WITH ARROWS -->
-          <a href="https://drive.google.com/file/d/1to22VAN6Z8TKXUaTgHv04Tz7E4VknxQy/view?usp=sharing" target="_blank" class="btn bp dl-btn">Fastboot <span class="dl-arrow">↓</span></a>
-          <a href="https://drive.google.com/file/d/1Af5SgJFnTj05Tl0uDDQTQTEt-AdJojUy/view?usp=sharing" target="_blank" class="btn bg dl-btn dl-btn-stock">Stock Boot <span class="dl-arrow">↓</span></a>
+          <a href="https://drive.google.com/file/d/1to22VAN6Z8TKXUaTgHv04Tz7E4VknxQy/view?usp=sharing" target="_blank" class="btn bp dl-btn">Fastboot</a>
         </div>
       </div>
 
-      <!-- v3.9 — Stable -->
+      <!-- v3.9 — Stable (No Stock Boot) -->
       <div class="dl-card">
         <div class="dl-badge-wrap"><span class="dl-ver-badge stable">Stable</span></div>
         <div class="dl-icon">🔥</div>
         <div class="dl-ver">Lunaris v3.9</div>
         <div class="dl-device">Redmi K50i · xaga</div>
         <ul class="dl-tags"><li>Android 16</li><li>LineageOS</li><li>Stable</li></ul>
-        <ul class="dl-changelog">
-          <li>Fixed audio service 100% prime core drain</li>
-          <li>Fixed statsD CPU usage</li>
-          <li>Fixed Spotify ongoing chip art</li>
-          <li>Fixed dynamic bar glitches</li>
-          <li>Fixed clock font reset after idle</li>
-        </ul>
         <div class="dl-btn-group">
           <a href="https://drive.google.com/file/d/1EjHQTIiWe0vtI8l74qbs0nRO5-8o7Qqz/view?usp=sharing" target="_blank" class="btn bg dl-btn">Fastboot</a>
-          <a href="https://drive.google.com/file/d/1BkWv1nDxqdkf0-jHh6uD3Gym888BVAp-/view?usp=sharing" target="_blank" class="btn bg dl-btn dl-btn-stock">Stock Boot</a>
         </div>
       </div>
 
-      <!-- v3.8 — Stable -->
+      <!-- v3.8 — Stable (No Stock Boot) -->
       <div class="dl-card">
         <div class="dl-badge-wrap"><span class="dl-ver-badge stable">Stable</span></div>
         <div class="dl-icon">🚀</div>
         <div class="dl-ver">Lunaris v3.8</div>
         <div class="dl-device">Redmi K50i · xaga</div>
         <ul class="dl-tags"><li>Android 16</li><li>LineageOS</li><li>Stable</li></ul>
-        <button class="btn bg dl-btn" id="dl38-btn" onclick="toggleDl38(event)" style="margin-top: 15px;">
-          Download v3.8 <span class="dl-arrow">↓</span>
-        </button>
+        <div class="dl-btn-group">
+          <button class="btn bg dl-btn" id="dl38-btn" onclick="toggleDl38(event)">Download Mirror</button>
+        </div>
       </div>
 
     </div>
