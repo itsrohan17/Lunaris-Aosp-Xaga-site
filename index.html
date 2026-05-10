@@ -1010,8 +1010,8 @@
           <p class="pl">Homescreen</p>
         </div>
         <div class="pw" data-cat="home">
-          <div class="pf"><img src="screenshots/Depth%20wallpaper.jpg" alt="Depth Wallpaper" onclick="openModal(this.src)"
-              loading="lazy"></div>
+          <div class="pf"><img src="screenshots/Depth%20wallpaper.jpg" alt="Depth Wallpaper"
+              onclick="openModal(this.src)" loading="lazy"></div>
           <p class="pl">Depth Wallpaper</p>
         </div>
         <div class="pw" data-cat="home">
@@ -1050,19 +1050,23 @@
           <p class="pl">About Info</p>
         </div>
         <div class="pw" data-cat="settings">
-          <div class="pf"><img src="screenshots/Custom%20clock%20style.jpg" alt="Custom Clock Style" onclick="openModal(this.src)" loading="lazy"></div>
+          <div class="pf"><img src="screenshots/Custom%20clock%20style.jpg" alt="Custom Clock Style"
+              onclick="openModal(this.src)" loading="lazy"></div>
           <p class="pl">Custom Clock Style</p>
         </div>
         <div class="pw" data-cat="settings">
-          <div class="pf"><img src="screenshots/color%20customization.jpg" alt="Color Customization" onclick="openModal(this.src)" loading="lazy"></div>
+          <div class="pf"><img src="screenshots/color%20customization.jpg" alt="Color Customization"
+              onclick="openModal(this.src)" loading="lazy"></div>
           <p class="pl">Color Customization</p>
         </div>
         <div class="pw" data-cat="settings">
-          <div class="pf"><img src="screenshots/gradients%20customization.jpg" alt="Gradients Customization" onclick="openModal(this.src)" loading="lazy"></div>
+          <div class="pf"><img src="screenshots/gradients%20customization.jpg" alt="Gradients Customization"
+              onclick="openModal(this.src)" loading="lazy"></div>
           <p class="pl">Gradients Customization</p>
         </div>
         <div class="pw" data-cat="settings">
-          <div class="pf"><img src="screenshots/font%20settings.jpg" alt="Font Settings" onclick="openModal(this.src)" loading="lazy"></div>
+          <div class="pf"><img src="screenshots/font%20settings.jpg" alt="Font Settings" onclick="openModal(this.src)"
+              loading="lazy"></div>
           <p class="pl">Font Settings</p>
         </div>
       </div>
@@ -1248,32 +1252,32 @@
       let currentImages = [];
       let currentIdx = 0;
 
-      window.openModal = function (src) { 
-        if (!lightbox) return; 
+      window.openModal = function (src) {
+        if (!lightbox) return;
         const visibleCards = Array.from(document.querySelectorAll('.ss-carousel .pw')).filter(el => el.style.display !== 'none');
         currentImages = visibleCards.map(el => el.querySelector('img').src);
         currentIdx = currentImages.indexOf(src);
         if (currentIdx === -1) currentIdx = 0;
 
-        lightboxImg.src = src; 
-        lightbox.classList.add('show'); 
-        document.body.style.overflow = 'hidden'; 
+        lightboxImg.src = src;
+        lightbox.classList.add('show');
+        document.body.style.overflow = 'hidden';
       };
 
-      window.closeModal = function () { 
-        if (!lightbox) return; 
-        lightbox.classList.remove('show'); 
-        document.body.style.overflow = 'auto'; 
+      window.closeModal = function () {
+        if (!lightbox) return;
+        lightbox.classList.remove('show');
+        document.body.style.overflow = 'auto';
       };
 
-      window.prevImage = function(e) {
+      window.prevImage = function (e) {
         if (e) e.stopPropagation();
         if (currentImages.length === 0) return;
         currentIdx = (currentIdx - 1 + currentImages.length) % currentImages.length;
         lightboxImg.src = currentImages[currentIdx];
       };
 
-      window.nextImage = function(e) {
+      window.nextImage = function (e) {
         if (e) e.stopPropagation();
         if (currentImages.length === 0) return;
         currentIdx = (currentIdx + 1) % currentImages.length;
@@ -1282,22 +1286,22 @@
 
       let touchstartX = 0;
       let touchendX = 0;
-      
+
       if (lightbox) {
         lightbox.addEventListener('touchstart', e => {
           touchstartX = e.changedTouches[0].screenX;
-        }, {passive: true});
+        }, { passive: true });
 
         lightbox.addEventListener('touchend', e => {
           touchendX = e.changedTouches[0].screenX;
           if (touchendX < touchstartX - 40) nextImage();
           if (touchendX > touchstartX + 40) prevImage();
-        }, {passive: true});
+        }, { passive: true });
       }
 
-      document.addEventListener('keydown', function (event) { 
+      document.addEventListener('keydown', function (event) {
         if (!lightbox || !lightbox.classList.contains('show')) return;
-        if (event.key === "Escape") closeModal(); 
+        if (event.key === "Escape") closeModal();
         if (event.key === "ArrowLeft") prevImage();
         if (event.key === "ArrowRight") nextImage();
       });
