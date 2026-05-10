@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#03050a">
   <title>Downloads · Lunaris AOSP</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -12,7 +13,8 @@
     * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
     html { scroll-behavior: smooth; }
     body { font-family: 'Outfit', sans-serif; background: var(--bg); background-image: var(--bg-gradient); color: var(--text); overflow-x: hidden; -webkit-font-smoothing: antialiased; }
-    .ambient-glow { position: fixed; top: -20vh; left: 50%; transform: translateX(-50%); width: 120vw; height: 100vh; background: radial-gradient(circle, rgba(139, 92, 246, 0.12) 0%, transparent 60%); z-index: 0; pointer-events: none; filter: blur(90px); animation: nebulaBreathe 12s ease-in-out infinite alternate; will-change: transform; }
+    .ambient-glow { position: fixed; top: -20vh; left: 50%; transform: translateX(-50%); width: 120vw; height: 100vh; background: radial-gradient(circle, rgba(139, 92, 246, 0.15) 0%, transparent 60%); z-index: 0; pointer-events: none; animation: nebulaBreathe 12s ease-in-out infinite alternate; will-change: transform; }
+    @media (max-width: 768px) { .ambient-glow { animation: none; opacity: 0.8; } }
     @keyframes nebulaBreathe { 0% { transform: translateX(-50%) scale(1); opacity: 0.8; } 100% { transform: translateX(-48%) scale(1.05); opacity: 1; } }
     #pc { position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: 0.7; }
     .rev { opacity: 0; transform: translateY(20px); animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
@@ -253,7 +255,8 @@
       function resize() { W = canvas.width = innerWidth; H = canvas.height = innerHeight; }
       addEventListener('resize', resize, { passive: true }); resize();
       if (!isMobile) { document.addEventListener('mousemove', (e) => { targetX = (e.clientX - W / 2) * 0.05; targetY = (e.clientY - H / 2) * 0.05; }); }
-      const COUNT = isMobile ? 50 : 150;
+      const COUNT = isMobile ? 0 : 100;
+      if (isMobile && canvas) canvas.style.display = 'none';
       const pts = Array.from({ length: COUNT }, () => ({ x: Math.random() * W, y: Math.random() * H, vx: (Math.random() - 0.5) * 0.1, vy: (Math.random() - 0.5) * 0.1 - 0.05, s: Math.random() * 1.5 + 0.5, a: Math.random() * 0.5 + 0.1, td: 1, ts: Math.random() * 0.005 + 0.001, depth: Math.random() * 0.8 + 0.2 }));
       function loop() {
         ctx.clearRect(0, 0, W, H); currentX += (targetX - currentX) * 0.05; currentY += (targetY - currentY) * 0.05;
@@ -264,7 +267,7 @@
           const drawX = p.x + (currentX * p.depth); const drawY = p.y + (currentY * p.depth);
           ctx.beginPath(); ctx.arc(drawX, drawY, p.s, 0, Math.PI * 2); ctx.fillStyle = `rgba(255, 255, 255, ${p.a})`; ctx.fill();
         });
-        requestAnimationFrame(loop);
+        if (!isMobile) requestAnimationFrame(loop);
       } loop();
       
       window.toggleDl38 = function (e) {

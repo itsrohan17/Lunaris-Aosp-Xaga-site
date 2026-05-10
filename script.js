@@ -27,7 +27,8 @@
     });
   }
 
-  const COUNT = isMobile ? 50 : 150;
+  const COUNT = isMobile ? 0 : 100;
+  if (isMobile && canvas) canvas.style.display = 'none';
   const pts = Array.from({ length: COUNT }, () => ({
     x:   Math.random() * W,
     y:   Math.random() * H,
@@ -62,7 +63,7 @@
       ctx.fillStyle = `rgba(255, 255, 255, ${p.a})`;
       ctx.fill();
     });
-    requestAnimationFrame(loop);
+    if (!isMobile) requestAnimationFrame(loop);
   }
   loop();
 
@@ -177,20 +178,60 @@
   /* ── LIGHTBOX MODAL ── */
   const lightbox = document.getElementById('lightbox');
   const lightboxImg = document.getElementById('lightbox-img');
+  let currentImages = [];
+  let currentIdx = 0;
 
   window.openModal = function(src) {
     if(!lightbox) return;
+    const visibleCards = Array.from(document.querySelectorAll('.ss-carousel .pw')).filter(el => el.style.display !== 'none');
+    currentImages = visibleCards.map(el => el.querySelector('img').src);
+    currentIdx = currentImages.indexOf(src);
+    if (currentIdx === -1) currentIdx = 0;
+
     lightboxImg.src = src;
     lightbox.classList.add('show');
     document.body.style.overflow = 'hidden'; 
   };
+
   window.closeModal = function() {
     if(!lightbox) return;
     lightbox.classList.remove('show');
     document.body.style.overflow = 'auto';
   };
+
+  window.prevImage = function(e) {
+    if (e) e.stopPropagation();
+    if (currentImages.length === 0) return;
+    currentIdx = (currentIdx - 1 + currentImages.length) % currentImages.length;
+    lightboxImg.src = currentImages[currentIdx];
+  };
+
+  window.nextImage = function(e) {
+    if (e) e.stopPropagation();
+    if (currentImages.length === 0) return;
+    currentIdx = (currentIdx + 1) % currentImages.length;
+    lightboxImg.src = currentImages[currentIdx];
+  };
+
+  if (lightbox) {
+    let touchstartX = 0;
+    let touchendX = 0;
+    lightbox.addEventListener('touchstart', e => {
+      touchstartX = e.changedTouches[0].screenX;
+    }, {passive: true});
+
+    lightbox.addEventListener('touchend', e => {
+      touchendX = e.changedTouches[0].screenX;
+      if (touchendX < touchstartX - 40) nextImage();
+      if (touchendX > touchstartX + 40) prevImage();
+    }, {passive: true});
+  }
+
   document.addEventListener('keydown', function(event) {
+    if (!lightbox || !lightbox.classList.contains('show')) return;
     if (event.key === "Escape") closeModal();
+    if (event.key === "ArrowLeft") prevImage();
+    if (event.key === "ArrowRight") nextImage();
   });
 
   /* ── SCROLL & OBSERVERS ── */
