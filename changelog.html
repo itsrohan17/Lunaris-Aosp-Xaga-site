@@ -70,6 +70,64 @@
     .dot-sep { color: rgba(255,255,255,0.2); }
     .copyright { font-size: 0.75rem; color: var(--muted); }
     ::-webkit-scrollbar { width: 8px; } ::-webkit-scrollbar-track { background: var(--bg); } ::-webkit-scrollbar-thumb { background: rgba(139,92,246,0.5); border-radius: 10px; } ::-webkit-scrollbar-thumb:hover { background: rgba(139,92,246,0.8); }
+    /* === ANIMATIONS === */
+    @keyframes timelineGlow {
+      0%, 100% { background: linear-gradient(to bottom, rgba(139,92,246,0.5), transparent); }
+      50% { background: linear-gradient(to bottom, rgba(139,92,246,0.9), rgba(139,92,246,0.2), transparent); }
+    }
+    .timeline::before { animation: timelineGlow 4s ease-in-out infinite; }
+
+    @keyframes dotPulseTimeline {
+      0%, 100% { box-shadow: 0 0 12px var(--violet); transform: scale(1); }
+      50% { box-shadow: 0 0 20px var(--violet), 0 0 30px rgba(139,92,246,0.3); transform: scale(1.2); }
+    }
+    .tl-dot.latest { animation: dotPulseTimeline 2.5s ease-in-out infinite; }
+
+    .tl-card { transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s; }
+    .tl-item.visible .tl-card:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(139,92,246,0.1); }
+
+    @keyframes badgeShimmer {
+      0% { background-position: -200% center; }
+      100% { background-position: 200% center; }
+    }
+    .tl-badge.latest { background: linear-gradient(90deg, rgba(16,185,129,0.1) 0%, rgba(16,185,129,0.3) 50%, rgba(16,185,129,0.1) 100%); background-size: 200% 100%; animation: badgeShimmer 3s ease-in-out infinite; }
+
+    .tl-changes li { opacity: 0; transform: translateX(-8px); transition: opacity 0.3s, transform 0.3s; }
+    .tl-item.visible .tl-changes li { opacity: 1; transform: translateX(0); }
+    .tl-item.visible .tl-changes li:nth-child(1) { transition-delay: 0.05s; }
+    .tl-item.visible .tl-changes li:nth-child(2) { transition-delay: 0.1s; }
+    .tl-item.visible .tl-changes li:nth-child(3) { transition-delay: 0.15s; }
+    .tl-item.visible .tl-changes li:nth-child(4) { transition-delay: 0.2s; }
+    .tl-item.visible .tl-changes li:nth-child(5) { transition-delay: 0.25s; }
+    .tl-item.visible .tl-changes li:nth-child(6) { transition-delay: 0.3s; }
+    .tl-item.visible .tl-changes li:nth-child(7) { transition-delay: 0.35s; }
+    .tl-item.visible .tl-changes li:nth-child(8) { transition-delay: 0.4s; }
+    .tl-item.visible .tl-changes li:nth-child(9) { transition-delay: 0.45s; }
+    .tl-item.visible .tl-changes li:nth-child(10) { transition-delay: 0.5s; }
+
+    @keyframes dotPulse {
+      0%, 100% { box-shadow: 0 0 8px #10b981; }
+      50% { box-shadow: 0 0 16px #10b981, 0 0 24px rgba(16,185,129,0.3); }
+    }
+    .nav-dot { animation: dotPulse 2s ease-in-out infinite; }
+
+    .tl-version { transition: color 0.3s; }
+    .tl-card:hover .tl-version { background: linear-gradient(135deg, var(--violet), #818cf8); -webkit-background-clip: text; background-clip: text; color: transparent; }
+
+    .footer-col a { position: relative; }
+    .footer-col a::before { content: '\2192'; position: absolute; left: -15px; opacity: 0; transform: translateX(-5px); transition: opacity 0.2s, transform 0.2s; color: var(--violet); }
+    .footer-col a:hover::before { opacity: 1; transform: translateX(0); }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+    }
+    @media (max-width: 768px) {
+      .tl-dot.latest { animation: none; }
+      .timeline::before { animation: none; }
+      .tl-badge.latest { animation: none; }
+      .footer-col a::before { display: none; }
+    }
+
     @media (hover: hover) and (pointer: fine) { body { cursor: none; } .cursor-dot { width: 8px; height: 8px; background: #fff; position: fixed; pointer-events: none; border-radius: 50%; z-index: 99999; transform: translate(-50%, -50%); transition: background 0.2s; } .cursor-ring { width: 32px; height: 32px; border: 2px solid rgba(255,255,255,0.4); position: fixed; pointer-events: none; border-radius: 50%; z-index: 99998; transform: translate(-50%, -50%); transition: width 0.2s, height 0.2s, border-color 0.2s; } }
   </style>
 
@@ -104,14 +162,41 @@
   <section class="timeline-section scroll-reveal" id="changelog-section">
     <div class="timeline">
       
-      <!-- v3.10 Hotfix Entry -->
+      <!-- v3.10 Hotfix 1.2 Entry -->
       <div class="tl-item">
         <div class="tl-dot latest"></div>
         <div class="tl-card">
           <div class="tl-header">
-            <span class="tl-version">v3.10 Hotfix</span>
+            <span class="tl-version">v3.10 Hotfix 1.2</span>
             <span class="tl-date">May 2026</span>
             <span class="tl-badge latest">Latest</span>
+          </div>
+          <ul class="tl-changes">
+            <li>Add skydrove color customisation for clock style</li>
+            <li>Add option to browse all clocks</li>
+            <li>Add Statusbar brightness</li>
+            <li>Update some clock size and add new clocks</li>
+            <li>Add option in idle manager to trigger only when sleep mode on</li>
+            <li>Enable power button gemini animation</li>
+            <li>L3 popup unlock animation</li>
+            <li>Fix performance issues with OneUI app drawer style</li>
+            <li>Add initial split qs option</li>
+            <li>Fix app lock notification issue</li>
+          </ul>
+          <a href="https://github.com/itsrohan17/Lunaris-Aosp-xaga-/blob/main/CHANGELOG.md" target="_blank" class="tl-link">
+            <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+            Full changelog on GitHub
+          </a>
+        </div>
+      </div>
+
+      <!-- v3.10 Hotfix Entry -->
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-card">
+          <div class="tl-header">
+            <span class="tl-version">v3.10 Hotfix</span>
+            <span class="tl-date">May 2026</span>
           </div>
           <ul class="tl-changes">
             <li>Fixed issues where blur was not working previously</li>

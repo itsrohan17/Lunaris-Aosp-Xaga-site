@@ -91,6 +91,74 @@
     .dl-checksum-copy { font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; color: var(--violet); background: rgba(139,92,246,0.15); border: 1px solid rgba(139,92,246,0.3); border-radius: 5px; padding: 3px 8px; cursor: pointer; transition: background 0.2s; }
     .dl-checksum-copy:hover { background: rgba(139,92,246,0.25); }
     ::-webkit-scrollbar { width: 8px; } ::-webkit-scrollbar-track { background: var(--bg); } ::-webkit-scrollbar-thumb { background: rgba(139,92,246,0.5); border-radius: 10px; } ::-webkit-scrollbar-thumb:hover { background: rgba(139,92,246,0.8); }
+    /* === ANIMATIONS === */
+    .dl-card { opacity: 0; transform: translateY(30px); transition: opacity 0.6s cubic-bezier(0.16,1,0.3,1), transform 0.6s cubic-bezier(0.16,1,0.3,1), border-color 0.3s; }
+    .dl-card.visible { opacity: 1; transform: translateY(0); }
+    .dl-card:nth-child(1) { transition-delay: 0s; }
+    .dl-card:nth-child(2) { transition-delay: 0.12s; }
+    .dl-card:nth-child(3) { transition-delay: 0.24s; }
+    .dl-card:nth-child(4) { transition-delay: 0.36s; }
+    .dl-card:nth-child(5) { transition-delay: 0.48s; }
+    .dl-card.visible:hover { transform: translateY(-4px); }
+
+    @keyframes latestGlow {
+      0%, 100% { border-color: rgba(139,92,246,0.15); box-shadow: 0 0 20px rgba(139,92,246,0.05); }
+      50% { border-color: rgba(139,92,246,0.4); box-shadow: 0 0 30px rgba(139,92,246,0.15), 0 10px 40px rgba(139,92,246,0.1); }
+    }
+    .dl-latest.visible { animation: latestGlow 4s ease-in-out infinite; }
+
+    @keyframes badgeFloat {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(-3px); }
+    }
+    .dl-badge-wrap { animation: badgeFloat 3s ease-in-out infinite; }
+
+    .dl-changelog li { opacity: 0; transform: translateX(-10px); transition: opacity 0.3s, transform 0.3s; }
+    .dl-card.visible .dl-changelog li { opacity: 1; transform: translateX(0); }
+    .dl-card.visible .dl-changelog li:nth-child(1) { transition-delay: 0.1s; }
+    .dl-card.visible .dl-changelog li:nth-child(2) { transition-delay: 0.15s; }
+    .dl-card.visible .dl-changelog li:nth-child(3) { transition-delay: 0.2s; }
+    .dl-card.visible .dl-changelog li:nth-child(4) { transition-delay: 0.25s; }
+    .dl-card.visible .dl-changelog li:nth-child(5) { transition-delay: 0.3s; }
+    .dl-card.visible .dl-changelog li:nth-child(6) { transition-delay: 0.35s; }
+    .dl-card.visible .dl-changelog li:nth-child(7) { transition-delay: 0.4s; }
+    .dl-card.visible .dl-changelog li:nth-child(8) { transition-delay: 0.45s; }
+    .dl-card.visible .dl-changelog li:nth-child(9) { transition-delay: 0.5s; }
+    .dl-card.visible .dl-changelog li:nth-child(10) { transition-delay: 0.55s; }
+
+    @keyframes btnPulse {
+      0%, 100% { box-shadow: 0 4px 14px rgba(139,92,246,0.2); }
+      50% { box-shadow: 0 4px 20px rgba(139,92,246,0.5), 0 0 40px rgba(139,92,246,0.1); }
+    }
+    .dl-latest .btn.bp { animation: btnPulse 3s ease-in-out infinite; }
+
+    @keyframes dotPulse {
+      0%, 100% { box-shadow: 0 0 8px #10b981; }
+      50% { box-shadow: 0 0 16px #10b981, 0 0 24px rgba(16,185,129,0.3); }
+    }
+    .nav-dot { animation: dotPulse 2s ease-in-out infinite; }
+
+    @keyframes iconPulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.15); }
+    }
+    .dl-latest .dl-icon { animation: iconPulse 2.5s ease-in-out infinite; display: inline-block; }
+
+    .footer-col a { position: relative; }
+    .footer-col a::before { content: '\2192'; position: absolute; left: -15px; opacity: 0; transform: translateX(-5px); transition: opacity 0.2s, transform 0.2s; color: var(--violet); }
+    .footer-col a:hover::before { opacity: 1; transform: translateX(0); }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+    }
+    @media (max-width: 768px) {
+      .dl-latest.visible { animation: none; }
+      .dl-badge-wrap { animation: none; }
+      .dl-latest .dl-icon { animation: none; }
+      .dl-latest .btn.bp { animation: none; }
+      .footer-col a::before { display: none; }
+    }
+
     @media (hover: hover) and (pointer: fine) { body { cursor: none; } .cursor-dot { width: 8px; height: 8px; background: #fff; position: fixed; pointer-events: none; border-radius: 50%; z-index: 99999; transform: translate(-50%, -50%); transition: background 0.2s; } .cursor-ring { width: 32px; height: 32px; border: 2px solid rgba(255,255,255,0.4); position: fixed; pointer-events: none; border-radius: 50%; z-index: 99998; transform: translate(-50%, -50%); transition: width 0.2s, height 0.2s, border-color 0.2s; } }
   </style>
 
@@ -125,9 +193,34 @@
   <section class="dl-section scroll-reveal" id="download-section">
     <div class="dl-grid-3">
 
-      <!-- v3.10 Hotfix — LATEST (Arrows + Stock Boot) -->
+      <!-- v3.10 Hotfix 1.2 — LATEST (Fastboot + Stock Boot) -->
       <div class="dl-card dl-latest">
         <div class="dl-badge-wrap"><span class="dl-ver-badge new">✦ Latest Hotfix</span></div>
+        <div class="dl-icon">⚡</div>
+        <div class="dl-ver">Lunaris 3.10 Hotfix 1.2</div>
+        <div class="dl-device">Redmi K50i · xaga</div>
+        <ul class="dl-tags"><li>Android 16</li><li>LineageOS</li><li>Hotfix</li></ul>
+        <ul class="dl-changelog">
+          <li>Add skydrove color customisation for clock style</li>
+          <li>Add option to browse all clocks</li>
+          <li>Add Statusbar brightness</li>
+          <li>Update some clock size and add new clocks</li>
+          <li>Add option in idle manager to trigger only when sleep mode on</li>
+          <li>Enable power button gemini animation</li>
+          <li>L3 popup unlock animation</li>
+          <li>Fix performance issues with OneUI app drawer style</li>
+          <li>Add initial split qs option</li>
+          <li>Fix app lock notification issue</li>
+        </ul>
+        <div class="dl-btn-group">
+          <a href="https://drive.google.com/file/d/1TbjVX_ye-TkiYtQxZ4rJklOl6Gd5_VT9/view?usp=sharing" target="_blank" class="btn bp dl-btn">Fastboot <span class="dl-arrow">↓</span></a>
+          <a href="https://drive.google.com/file/d/1AkOYmfGMxB6b559MnyB0b7_nSis3_BES/view?usp=sharing" target="_blank" class="btn bg dl-btn dl-btn-stock">Stock Boot <span class="dl-arrow">↓</span></a>
+        </div>
+      </div>
+
+      <!-- v3.10 Hotfix — Previous Hotfix (Arrows + Stock Boot) -->
+      <div class="dl-card">
+        <div class="dl-badge-wrap"><span class="dl-ver-badge stable">Stable</span></div>
         <div class="dl-icon">⚡</div>
         <div class="dl-ver">Lunaris v3.10 Hotfix</div>
         <div class="dl-device">Redmi K50i · xaga</div>
@@ -293,6 +386,9 @@
           document.addEventListener('mouseleave', () => { dot.style.opacity = '0'; ring.style.opacity = '0'; }); document.addEventListener('mouseenter', () => { dot.style.opacity = '1'; ring.style.opacity = '1'; });
         }
       }
+      /* Download card staggered reveal */
+      const cardObs = new IntersectionObserver(entries => { entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); cardObs.unobserve(e.target); } }); }, { threshold: 0.1 });
+      document.querySelectorAll('.dl-card').forEach(el => cardObs.observe(el));
     })();
   </script>
 </body>
