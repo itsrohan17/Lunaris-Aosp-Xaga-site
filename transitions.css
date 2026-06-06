@@ -1,45 +1,34 @@
-/* Lunaris — page transition animations (mobile + desktop) */
+/* Lunaris — page transition animations */
 
 :root {
   --page-ease: cubic-bezier(0.22, 1, 0.36, 1);
-  --page-dur: 0.26s;
-  --page-dur-out: 0.2s;
+  --page-dur-out: 0.18s;
 }
 
-/* Prevent flash before enter animation */
-html.page-enter:not(.page-enter-active):not(.page-leave) body {
-  opacity: 0;
-}
-
+/* Never hide body — content stays visible while HTML parses (fixes mobile blank) */
 html.page-enter:not(.page-enter-active):not(.page-leave) #page-root {
   opacity: 0;
-  transform: translate3d(0, 20px, 0);
+  transform: translate3d(0, 12px, 0);
 }
 
 #page-root {
   position: relative;
   z-index: 1;
   min-height: 100vh;
-  will-change: transform, opacity;
 }
 
 html.page-enter-active #page-root {
-  animation: pageEnter 0.28s var(--page-ease) forwards;
+  animation: pageEnter 0.24s var(--page-ease) forwards;
 }
 
 html.page-enter-active header {
-  animation: headerEnter 0.3s var(--page-ease) 0.02s both;
-}
-
-html.page-enter-active .scroll-reveal.in-view,
-html.page-enter-active .scroll-reveal.active {
-  animation: sectionEnter 0.28s var(--page-ease) 0.04s both;
+  animation: headerEnter 0.26s var(--page-ease) 0.02s both;
 }
 
 @keyframes pageEnter {
   from {
     opacity: 0;
-    transform: translate3d(0, 22px, 0);
+    transform: translate3d(0, 14px, 0);
   }
   to {
     opacity: 1;
@@ -50,18 +39,7 @@ html.page-enter-active .scroll-reveal.active {
 @keyframes headerEnter {
   from {
     opacity: 0;
-    transform: translate3d(0, -14px, 0);
-  }
-  to {
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
-  }
-}
-
-@keyframes sectionEnter {
-  from {
-    opacity: 0;
-    transform: translate3d(0, 16px, 0);
+    transform: translate3d(0, -10px, 0);
   }
   to {
     opacity: 1;
@@ -70,69 +48,51 @@ html.page-enter-active .scroll-reveal.active {
 }
 
 html.page-enter-active .dl-card.visible {
-  animation: cardPop 0.26s var(--page-ease) both;
+  animation: cardPop 0.22s var(--page-ease) both;
 }
 
-html.page-enter-active .dl-card.visible:nth-child(1) { animation-delay: 0.04s; }
-html.page-enter-active .dl-card.visible:nth-child(2) { animation-delay: 0.07s; }
-html.page-enter-active .dl-card.visible:nth-child(3) { animation-delay: 0.1s; }
-html.page-enter-active .dl-card.visible:nth-child(4) { animation-delay: 0.13s; }
-html.page-enter-active .dl-card.visible:nth-child(5) { animation-delay: 0.16s; }
-html.page-enter-active .dl-card.visible:nth-child(6) { animation-delay: 0.19s; }
+html.page-enter-active .dl-card.visible:nth-child(1) { animation-delay: 0.03s; }
+html.page-enter-active .dl-card.visible:nth-child(2) { animation-delay: 0.05s; }
+html.page-enter-active .dl-card.visible:nth-child(3) { animation-delay: 0.07s; }
+html.page-enter-active .dl-card.visible:nth-child(4) { animation-delay: 0.09s; }
+html.page-enter-active .dl-card.visible:nth-child(5) { animation-delay: 0.11s; }
+html.page-enter-active .dl-card.visible:nth-child(6) { animation-delay: 0.13s; }
 
-html.page-enter-active .tl-item.visible {
-  animation: cardPop 0.24s var(--page-ease) both;
-}
-
+html.page-enter-active .tl-item.visible,
 html.page-enter-active .terminal-wrap.visible {
-  animation: cardPop 0.28s var(--page-ease) both;
+  animation: cardPop 0.22s var(--page-ease) both;
 }
 
 @keyframes cardPop {
   from {
     opacity: 0;
-    transform: translate3d(0, 18px, 0) scale(0.98);
+    transform: translate3d(0, 10px, 0);
   }
   to {
     opacity: 1;
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translate3d(0, 0, 0);
   }
 }
 
-/* Exit transition */
 html.page-leave #page-root {
   animation: pageLeave var(--page-dur-out) var(--page-ease) forwards;
   pointer-events: none;
 }
 
-html.page-leave .page-curtain {
-  opacity: 1;
-  pointer-events: all;
-}
-
 @keyframes pageLeave {
-  from {
-    opacity: 1;
-    transform: translate3d(0, 0, 0) scale(1);
-  }
   to {
     opacity: 0;
-    transform: translate3d(0, -18px, 0) scale(0.98);
+    transform: translate3d(0, -10px, 0);
   }
 }
 
-/* Violet sweep overlay */
 .page-curtain {
   position: fixed;
   inset: 0;
   z-index: 999998;
   pointer-events: none;
   opacity: 0;
-  background:
-    radial-gradient(circle at 30% 20%, rgba(139, 92, 246, 0.18) 0%, transparent 55%),
-    radial-gradient(circle at 70% 80%, rgba(56, 189, 248, 0.08) 0%, transparent 50%),
-    rgba(3, 5, 10, 0.55);
-  transition: opacity var(--page-dur-out) var(--page-ease);
+  background: rgba(3, 5, 10, 0.45);
 }
 
 html.page-leave .page-curtain {
@@ -140,56 +100,65 @@ html.page-leave .page-curtain {
 }
 
 @keyframes curtainIn {
-  from { opacity: 0; }
   to { opacity: 1; }
 }
 
-/* Nav / button link press feedback */
 a.page-link {
-  transition: transform 0.2s var(--page-ease), box-shadow 0.2s var(--page-ease);
+  transition: transform 0.15s var(--page-ease), opacity 0.15s var(--page-ease);
 }
 
 a.page-link:active {
-  transform: scale(0.96);
+  transform: scale(0.97);
+  opacity: 0.9;
 }
 
 html.page-leave a.page-link {
   pointer-events: none;
 }
 
-/* Cross-document View Transitions (Chrome 126+ progressive enhancement) */
-@view-transition {
-  navigation: auto;
-}
+/* ── Mobile: no blank screen, no exit wait, native-speed navigation ── */
+@media (max-width: 768px) {
+  html.page-instant body,
+  html.page-instant #page-root,
+  html.page-enter:not(.page-enter-active) body,
+  html.page-enter:not(.page-enter-active) #page-root {
+    opacity: 1 !important;
+    transform: none !important;
+  }
 
-::view-transition-old(root) {
-  animation: pageLeave var(--page-dur-out) var(--page-ease) both;
-}
+  html.page-instant #page-root,
+  html.page-instant header,
+  html.page-instant .dl-card,
+  html.page-instant .tl-item,
+  html.page-instant .terminal-wrap {
+    animation: none !important;
+  }
 
-::view-transition-new(root) {
-  animation: pageEnter 0.28s var(--page-ease) both;
+  .page-curtain {
+    display: none !important;
+  }
+
+  a.page-link:active {
+    transform: scale(0.97);
+    opacity: 0.85;
+    transition-duration: 0.1s;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  html.page-enter:not(.page-enter-active):not(.page-leave) body,
-  html.page-enter:not(.page-enter-active):not(.page-leave) #page-root {
+  html.page-enter:not(.page-enter-active) #page-root {
     opacity: 1;
     transform: none;
   }
 
   html.page-enter-active #page-root,
   html.page-enter-active header,
-  html.page-enter-active .scroll-reveal.in-view,
-  html.page-enter-active .scroll-reveal.active,
   html.page-enter-active .dl-card.visible,
   html.page-enter-active .tl-item.visible,
   html.page-enter-active .terminal-wrap.visible,
   html.page-leave #page-root,
-  html.page-leave .page-curtain,
-  ::view-transition-old(root),
-  ::view-transition-new(root) {
+  html.page-leave .page-curtain {
     animation: none !important;
-    transition: none !important;
   }
 
   .page-curtain {

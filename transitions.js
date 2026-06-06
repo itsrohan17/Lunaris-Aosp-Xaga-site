@@ -1,4 +1,4 @@
-/* Lunaris — page enter/exit transitions between site pages */
+/* Lunaris — page transitions (full on desktop, instant on mobile) */
 (function () {
   'use strict';
 
@@ -9,11 +9,17 @@
     'changelog.html': true
   };
 
-  var EXIT_MS = 200;
+  var isMobile = window.LUNARIS_IS_MOBILE ?? window.matchMedia('(max-width:767px)').matches;
   var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var useTransitions = !isMobile && !reduced;
+  var EXIT_MS = 180;
   var leaving = false;
 
-  document.documentElement.classList.add('page-enter');
+  if (useTransitions) {
+    document.documentElement.classList.add('page-enter');
+  } else {
+    document.documentElement.classList.add('page-instant', 'page-enter-active');
+  }
 
   function pageFromHref(href) {
     try {
@@ -55,49 +61,35 @@
     ensureCurtain();
   }
 
-  function startEnter() {
-    if (reduced) {
-      document.documentElement.classList.add('page-enter-active');
-      staggerPageContent();
-      return;
-    }
-    requestAnimationFrame(function () {
-      document.documentElement.classList.add('page-enter-active');
-      staggerPageContent();
+  function revealContent(instant) {
+    document.querySelectorAll('.dl-card, .tl-item, .terminal-wrap').forEach(function (el) {
+      el.classList.add('visible');
     });
-  }
+    if (instant) return;
 
-  function staggerPageContent() {
     var page = pageFromHref(window.location.href);
-    var delay = reduced ? 0 : 40;
-
     if (page === 'downloads.html') {
       document.querySelectorAll('.dl-card').forEach(function (el, i) {
-        window.setTimeout(function () {
-          el.classList.add('visible');
-        }, delay + i * 25);
+        window.setTimeout(function () { el.classList.add('visible'); }, i * 20);
       });
-    }
-
-    if (page === 'changelog.html') {
+    } else if (page === 'changelog.html') {
       document.querySelectorAll('.tl-item').forEach(function (el, i) {
-        window.setTimeout(function () {
-          el.classList.add('visible');
-        }, delay + Math.min(i * 20, 120));
+        window.setTimeout(function () { el.classList.add('visible'); }, Math.min(i * 15, 80));
       });
-    }
-
-    if (page === 'guide.html') {
+    } else if (page === 'guide.html') {
       document.querySelectorAll('.terminal-wrap').forEach(function (el, i) {
-        window.setTimeout(function () {
-          el.classList.add('visible');
-        }, delay + i * 35);
+        window.setTimeout(function () { el.classList.add('visible'); }, i * 25);
       });
     }
+  }
+
+  function startEnter() {
+    document.documentElement.classList.add('page-enter-active');
+    revealContent(!useTransitions);
   }
 
   function navigateWithExit(url) {
-    if (leaving || reduced) {
+    if (!useTransitions || leaving) {
       window.location.href = url;
       return;
     }
@@ -115,34 +107,40 @@
     });
   }
 
-  document.addEventListener('click', function (e) {
-    if (e.defaultPrevented || e.button !== 0) return;
-    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+  if (useTransitions) {
+    document.addEventListener('click', function (e) {
+      if (e.defaultPrevented || e.button !== 0) return;
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
 
-    var a = e.target.closest('a[href]');
-    if (!isSiteLink(a)) return;
+      var a = e.target.closest('a[href]');
+      if (!isSiteLink(a)) return;
 
-    var dest = pageFromHref(a.href);
-    var current = pageFromHref(window.location.href);
-    if (dest === current) return;
+      var dest = pageFromHref(a.href);
+      var current = pageFromHref(window.location.href);
+      if (dest === current) return;
 
-    e.preventDefault();
-    navigateWithExit(a.href);
-  }, true);
+      e.preventDefault();
+      navigateWithExit(a.href);
+    }, true);
 
-  window.addEventListener('pageshow', function (e) {
-    leaving = false;
-    document.documentElement.classList.remove('page-leave');
-    if (e.persisted) {
-      document.documentElement.classList.add('page-enter');
-      startEnter();
-    }
-  });
+    window.addEventListener('pageshow', function (e) {
+      leaving = false;
+      document.documentElement.classList.remove('page-leave');
+      if (e.persisted) {
+        document.documentElement.classList.add('page-enter');
+        startEnter();
+      }
+    });
+  }
 
   function boot() {
-    wrapPageRoot();
     markPageLinks();
-    startEnter();
+    if (useTransitions) {
+      wrapPageRoot();
+      startEnter();
+    } else {
+      revealContent(true);
+    }
   }
 
   if (document.readyState === 'loading') {
