@@ -2,8 +2,8 @@
 
 :root {
   --page-ease: cubic-bezier(0.22, 1, 0.36, 1);
-  --page-dur: 0.42s;
-  --page-dur-out: 0.34s;
+  --page-dur: 0.26s;
+  --page-dur-out: 0.2s;
 }
 
 /* Prevent flash before enter animation */
@@ -24,16 +24,16 @@ html.page-enter:not(.page-enter-active):not(.page-leave) #page-root {
 }
 
 html.page-enter-active #page-root {
-  animation: pageEnter 0.48s var(--page-ease) forwards;
+  animation: pageEnter 0.28s var(--page-ease) forwards;
 }
 
 html.page-enter-active header {
-  animation: headerEnter 0.55s var(--page-ease) 0.06s both;
+  animation: headerEnter 0.3s var(--page-ease) 0.02s both;
 }
 
 html.page-enter-active .scroll-reveal.in-view,
 html.page-enter-active .scroll-reveal.active {
-  animation: sectionEnter 0.5s var(--page-ease) 0.1s both;
+  animation: sectionEnter 0.28s var(--page-ease) 0.04s both;
 }
 
 @keyframes pageEnter {
@@ -70,22 +70,22 @@ html.page-enter-active .scroll-reveal.active {
 }
 
 html.page-enter-active .dl-card.visible {
-  animation: cardPop 0.45s var(--page-ease) both;
+  animation: cardPop 0.26s var(--page-ease) both;
 }
 
-html.page-enter-active .dl-card.visible:nth-child(1) { animation-delay: 0.14s; }
-html.page-enter-active .dl-card.visible:nth-child(2) { animation-delay: 0.2s; }
-html.page-enter-active .dl-card.visible:nth-child(3) { animation-delay: 0.26s; }
-html.page-enter-active .dl-card.visible:nth-child(4) { animation-delay: 0.32s; }
-html.page-enter-active .dl-card.visible:nth-child(5) { animation-delay: 0.38s; }
-html.page-enter-active .dl-card.visible:nth-child(6) { animation-delay: 0.44s; }
+html.page-enter-active .dl-card.visible:nth-child(1) { animation-delay: 0.04s; }
+html.page-enter-active .dl-card.visible:nth-child(2) { animation-delay: 0.07s; }
+html.page-enter-active .dl-card.visible:nth-child(3) { animation-delay: 0.1s; }
+html.page-enter-active .dl-card.visible:nth-child(4) { animation-delay: 0.13s; }
+html.page-enter-active .dl-card.visible:nth-child(5) { animation-delay: 0.16s; }
+html.page-enter-active .dl-card.visible:nth-child(6) { animation-delay: 0.19s; }
 
 html.page-enter-active .tl-item.visible {
-  animation: cardPop 0.42s var(--page-ease) both;
+  animation: cardPop 0.24s var(--page-ease) both;
 }
 
 html.page-enter-active .terminal-wrap.visible {
-  animation: cardPop 0.48s var(--page-ease) both;
+  animation: cardPop 0.28s var(--page-ease) both;
 }
 
 @keyframes cardPop {
@@ -167,7 +167,7 @@ html.page-leave a.page-link {
 }
 
 ::view-transition-new(root) {
-  animation: pageEnter 0.48s var(--page-ease) both;
+  animation: pageEnter 0.28s var(--page-ease) both;
 }
 
 @media (prefers-reduced-motion: reduce) {
