@@ -6,8 +6,11 @@
   <meta name="theme-color" content="#03050a">
   <title>Flashing Guide · Lunaris AOSP</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  
+  <script src="perf.js"></script>
+  <link rel="stylesheet" href="perf.css">
+
   <style>
     :root { --bg: #03050a; --bg-gradient: radial-gradient(circle at top, #0d1126 0%, #03050a 70%); --border: rgba(255, 255, 255, 0.06); --violet: #a78bfa; --accent: #8b5cf6; --sky: #38bdf8; --text: #f8fafc; --muted: #94a3b8; --glass: rgba(255, 255, 255, 0.03); --glass-border: rgba(255, 255, 255, 0.08); }
     * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -342,7 +345,7 @@
         <span class="dot-sep">•</span>
         <span><span class="info-label">Android</span> 16</span>
         <span class="dot-sep">•</span>
-        <span><span class="info-label">Last Build</span> Apr 2026</span>
+        <span><span class="info-label">Last Build</span> Jun 2026</span>
         <span class="dot-sep">•</span>
         <span><span class="info-label">Maintainer</span> dev Rohan</span>
       </div>
@@ -352,26 +355,34 @@
 
   <script>
     (function () {
-      const isMobile = window.innerWidth < 768 || navigator.maxTouchPoints > 0;
-      const canvas = document.getElementById('pc'); const ctx = canvas.getContext('2d');
-      let W, H, targetX = 0, targetY = 0, currentX = 0, currentY = 0;
-      function resize() { W = canvas.width = innerWidth; H = canvas.height = innerHeight; }
-      addEventListener('resize', resize, { passive: true }); resize();
-      if (!isMobile) { document.addEventListener('mousemove', (e) => { targetX = (e.clientX - W / 2) * 0.05; targetY = (e.clientY - H / 2) * 0.05; }); }
-      const COUNT = isMobile ? 0 : 100;
-      if (isMobile && canvas) canvas.style.display = 'none';
-      const pts = Array.from({ length: COUNT }, () => ({ x: Math.random() * W, y: Math.random() * H, vx: (Math.random() - 0.5) * 0.1, vy: (Math.random() - 0.5) * 0.1 - 0.05, s: Math.random() * 1.5 + 0.5, a: Math.random() * 0.5 + 0.1, td: 1, ts: Math.random() * 0.005 + 0.001, depth: Math.random() * 0.8 + 0.2 }));
-      function loop() {
-        ctx.clearRect(0, 0, W, H); currentX += (targetX - currentX) * 0.05; currentY += (targetY - currentY) * 0.05;
-        pts.forEach(p => {
-          p.x += p.vx; p.y += p.vy; p.a += p.ts * p.td;
-          if (p.a > 0.8 || p.a < 0.1) p.td *= -1;
-          if (p.x > W) p.x = 0; if (p.x < 0) p.x = W; if (p.y > H) p.y = 0; if (p.y < 0) p.y = H;
-          const drawX = p.x + (currentX * p.depth); const drawY = p.y + (currentY * p.depth);
-          ctx.beginPath(); ctx.arc(drawX, drawY, p.s, 0, Math.PI * 2); ctx.fillStyle = `rgba(255, 255, 255, ${p.a})`; ctx.fill();
-        });
-        if (!isMobile) requestAnimationFrame(loop);
-      } loop();
+      const isMobile = window.LUNARIS_IS_MOBILE ?? matchMedia('(max-width:767px)').matches;
+
+      if (!isMobile) {
+        const canvas = document.getElementById('pc');
+        const ctx = canvas && canvas.getContext('2d');
+        if (canvas && ctx) {
+          let W, H, targetX = 0, targetY = 0, currentX = 0, currentY = 0;
+          function resize() { W = canvas.width = innerWidth; H = canvas.height = innerHeight; }
+          addEventListener('resize', resize, { passive: true }); resize();
+          document.addEventListener('mousemove', (e) => { targetX = (e.clientX - W / 2) * 0.05; targetY = (e.clientY - H / 2) * 0.05; });
+          const pts = Array.from({ length: 100 }, () => ({ x: Math.random() * W, y: Math.random() * H, vx: (Math.random() - 0.5) * 0.1, vy: (Math.random() - 0.5) * 0.1 - 0.05, s: Math.random() * 1.5 + 0.5, a: Math.random() * 0.5 + 0.1, td: 1, ts: Math.random() * 0.005 + 0.001, depth: Math.random() * 0.8 + 0.2 }));
+          function loop() {
+            ctx.clearRect(0, 0, W, H); currentX += (targetX - currentX) * 0.05; currentY += (targetY - currentY) * 0.05;
+            pts.forEach(p => {
+              p.x += p.vx; p.y += p.vy; p.a += p.ts * p.td;
+              if (p.a > 0.8 || p.a < 0.1) p.td *= -1;
+              if (p.x > W) p.x = 0; if (p.x < 0) p.x = W; if (p.y > H) p.y = 0; if (p.y < 0) p.y = H;
+              const drawX = p.x + (currentX * p.depth); const drawY = p.y + (currentY * p.depth);
+              ctx.beginPath(); ctx.arc(drawX, drawY, p.s, 0, Math.PI * 2); ctx.fillStyle = `rgba(255, 255, 255, ${p.a})`; ctx.fill();
+            });
+            requestAnimationFrame(loop);
+          }
+          loop();
+        }
+      } else {
+        const canvas = document.getElementById('pc');
+        if (canvas) canvas.hidden = true;
+      }
       
       window.showTab = function (id, btn) {
         ['win', 'linux', 'termux'].forEach(t => { const el = document.getElementById('tab-' + t); if (el) el.style.display = t === id ? 'block' : 'none'; });
@@ -384,7 +395,7 @@
       };
       function fallbackCopy(text, cb) { const ta = document.createElement('textarea'); ta.value = text; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); cb(); }
 
-      const revealObs = new IntersectionObserver(entries => { entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('active'); revealObs.unobserve(e.target); } }); }, { threshold: 0.08 });
+      const revealObs = new IntersectionObserver(entries => { entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('active'); revealObs.unobserve(e.target); } }); }, lunarisRevealOpts({ threshold: 0.08 }));
       document.querySelectorAll('.scroll-reveal').forEach(el => revealObs.observe(el));
       if (!isMobile) {
         const dot = document.getElementById('cur-dot'); const ring = document.getElementById('cur-ring');
@@ -395,8 +406,11 @@
         }
       }
       /* Terminal card staggered reveal */
-      const termObs = new IntersectionObserver(entries => { entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); termObs.unobserve(e.target); } }); }, { threshold: 0.1 });
-      document.querySelectorAll('.terminal-wrap').forEach((el, i) => { el.style.transitionDelay = (i * 0.12) + 's'; termObs.observe(el); });
+      const termObs = new IntersectionObserver(entries => { entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); termObs.unobserve(e.target); } }); }, lunarisRevealOpts({ threshold: 0.1 }));
+      document.querySelectorAll('.terminal-wrap').forEach((el, i) => {
+        if (!isMobile) el.style.transitionDelay = (i * 0.12) + 's';
+        termObs.observe(el);
+      });
     })();
   </script>
 </body>

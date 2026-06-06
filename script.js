@@ -4,68 +4,71 @@
 ============================================= */
 
 (function () {
-  const isMobile = window.innerWidth < 768 || navigator.maxTouchPoints > 0;
+  const isMobile = window.LUNARIS_IS_MOBILE ?? matchMedia('(max-width:767px)').matches;
 
   /* ── ELEGANT PARALLAX STARFIELD CANVAS ── */
-  const canvas = document.getElementById('pc');
-  const ctx    = canvas.getContext('2d');
-  let W, H;
-  let targetX = 0, targetY = 0;
-  let currentX = 0, currentY = 0;
-
-  function resize() {
-    W = canvas.width  = innerWidth;
-    H = canvas.height = innerHeight;
-  }
-  addEventListener('resize', resize, { passive: true });
-  resize();
-
   if (!isMobile) {
-    document.addEventListener('mousemove', (e) => {
-      targetX = (e.clientX - W / 2) * 0.05;
-      targetY = (e.clientY - H / 2) * 0.05;
-    });
-  }
+    const canvas = document.getElementById('pc');
+    const ctx = canvas && canvas.getContext('2d');
+    if (canvas && ctx) {
+      let W, H;
+      let targetX = 0, targetY = 0;
+      let currentX = 0, currentY = 0;
 
-  const COUNT = isMobile ? 0 : 100;
-  if (isMobile && canvas) canvas.style.display = 'none';
-  const pts = Array.from({ length: COUNT }, () => ({
-    x:   Math.random() * W,
-    y:   Math.random() * H,
-    vx:  (Math.random() - 0.5) * 0.1,
-    vy:  (Math.random() - 0.5) * 0.1 - 0.05, 
-    s:   Math.random() * 1.5 + 0.5,
-    a:   Math.random() * 0.5 + 0.1,
-    td:  1,
-    ts:  Math.random() * 0.005 + 0.001,
-    depth: Math.random() * 0.8 + 0.2
-  }));
+      function resize() {
+        W = canvas.width  = innerWidth;
+        H = canvas.height = innerHeight;
+      }
+      addEventListener('resize', resize, { passive: true });
+      resize();
 
-  function loop() {
-    ctx.clearRect(0, 0, W, H);
-    currentX += (targetX - currentX) * 0.05;
-    currentY += (targetY - currentY) * 0.05;
-    
-    pts.forEach(p => {
-      p.x += p.vx;
-      p.y += p.vy;
-      p.a += p.ts * p.td;
-      if (p.a > 0.8 || p.a < 0.1) p.td *= -1;
-      if (p.x > W) p.x = 0;
-      if (p.x < 0) p.x = W;
-      if (p.y > H) p.y = 0;
-      if (p.y < 0) p.y = H;
-      
-      const drawX = p.x + (currentX * p.depth);
-      const drawY = p.y + (currentY * p.depth);
-      ctx.beginPath();
-      ctx.arc(drawX, drawY, p.s, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(255, 255, 255, ${p.a})`;
-      ctx.fill();
-    });
-    if (!isMobile) requestAnimationFrame(loop);
+      document.addEventListener('mousemove', (e) => {
+        targetX = (e.clientX - W / 2) * 0.05;
+        targetY = (e.clientY - H / 2) * 0.05;
+      });
+
+      const pts = Array.from({ length: 100 }, () => ({
+        x:   Math.random() * W,
+        y:   Math.random() * H,
+        vx:  (Math.random() - 0.5) * 0.1,
+        vy:  (Math.random() - 0.5) * 0.1 - 0.05,
+        s:   Math.random() * 1.5 + 0.5,
+        a:   Math.random() * 0.5 + 0.1,
+        td:  1,
+        ts:  Math.random() * 0.005 + 0.001,
+        depth: Math.random() * 0.8 + 0.2
+      }));
+
+      function loop() {
+        ctx.clearRect(0, 0, W, H);
+        currentX += (targetX - currentX) * 0.05;
+        currentY += (targetY - currentY) * 0.05;
+
+        pts.forEach(p => {
+          p.x += p.vx;
+          p.y += p.vy;
+          p.a += p.ts * p.td;
+          if (p.a > 0.8 || p.a < 0.1) p.td *= -1;
+          if (p.x > W) p.x = 0;
+          if (p.x < 0) p.x = W;
+          if (p.y > H) p.y = 0;
+          if (p.y < 0) p.y = H;
+
+          const drawX = p.x + (currentX * p.depth);
+          const drawY = p.y + (currentY * p.depth);
+          ctx.beginPath();
+          ctx.arc(drawX, drawY, p.s, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(255, 255, 255, ${p.a})`;
+          ctx.fill();
+        });
+        requestAnimationFrame(loop);
+      }
+      loop();
+    }
+  } else {
+    const canvas = document.getElementById('pc');
+    if (canvas) canvas.hidden = true;
   }
-  loop();
 
   /* ── POPUPS & CHECKSUM (RESTORED) ── */
   window.toggleCommunity = function (e) {
@@ -237,17 +240,18 @@
   /* ── SCROLL & OBSERVERS ── */
   window.smoothScrollTo = function (id) {
     const el = document.getElementById(id);
-    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    if (el) el.scrollIntoView({ behavior: isMobile ? 'auto' : 'smooth', block: 'start' });
   };
+  const revealOpts = window.lunarisRevealOpts ? lunarisRevealOpts({ threshold: 0.08 }) : { threshold: 0.08 };
   const revealObs = new IntersectionObserver(entries => {
     entries.forEach(e => {
       if (e.isIntersecting) { e.target.classList.add('active'); revealObs.unobserve(e.target); }
     });
-  }, { threshold: 0.08 });
+  }, revealOpts);
   document.querySelectorAll('.scroll-reveal').forEach(el => revealObs.observe(el));
   const tlObs = new IntersectionObserver(entries => {
     entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-  }, { threshold: 0.15 });
+  }, window.lunarisRevealOpts ? lunarisRevealOpts({ threshold: 0.15 }) : { threshold: 0.15 });
   document.querySelectorAll('.tl-item').forEach(el => tlObs.observe(el));
 
   /* ── GITHUB API ── */
@@ -255,22 +259,26 @@
     const el = document.getElementById(id);
     if (el) el.innerHTML = val;
   };
-  fetch('https://api.github.com/repos/itsrohan17/android_device_xiaomi_xaga/releases/latest')
-    .then(r => r.json())
-    .then(d => {
-      setVal('gh-ver',  d.tag_name || 'v3.9');
-      if (d.published_at) {
-        const dt = new Date(d.published_at);
-        setVal('gh-date', dt.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }));
-      } else { setVal('gh-date', 'Apr 2026'); }
-      if (d.assets) {
-        const total = d.assets.reduce((s, a) => s + a.download_count, 0);
-        setVal('gh-dl', total > 0 ? total.toLocaleString() : '—');
-      } else { setVal('gh-dl', '—'); }
-    })
-    .catch(() => {
-      setVal('gh-ver',  'v3.8'); setVal('gh-date', 'Apr 2026'); setVal('gh-dl',   '—');
-    });
+  const loadGh = () => {
+    fetch('https://api.github.com/repos/itsrohan17/android_device_xiaomi_xaga/releases/latest')
+      .then(r => r.json())
+      .then(d => {
+        setVal('gh-ver',  d.tag_name || 'v3.9');
+        if (d.published_at) {
+          const dt = new Date(d.published_at);
+          setVal('gh-date', dt.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }));
+        } else { setVal('gh-date', 'Apr 2026'); }
+        if (d.assets) {
+          const total = d.assets.reduce((s, a) => s + a.download_count, 0);
+          setVal('gh-dl', total > 0 ? total.toLocaleString() : '—');
+        } else { setVal('gh-dl', '—'); }
+      })
+      .catch(() => {
+        setVal('gh-ver',  'v3.8'); setVal('gh-date', 'Apr 2026'); setVal('gh-dl',   '—');
+      });
+  };
+  if (window.lunarisWhenIdle) lunarisWhenIdle(loadGh);
+  else loadGh();
 
   /* ── CUSTOM CURSOR ── */
   if (!isMobile) {

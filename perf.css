@@ -1,0 +1,232 @@
+/* Lunaris — mobile performance & fluid animations */
+
+@media (max-width: 768px) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  /* backdrop-filter is the #1 mobile jank source */
+  .nav,
+  .feat,
+  .bg,
+  .dl-card,
+  .terminal,
+  .step-card,
+  .filter-btn,
+  .pf,
+  .tl-card,
+  .community-popup,
+  .dl38-popup,
+  .lightbox,
+  .lightbox-nav,
+  .gh-stat,
+  .premium-footer,
+  .cmd-row,
+  .prereq-item,
+  .boot-opt {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+
+  .nav { background: rgba(8, 10, 22, 0.94); }
+  .feat,
+  .dl-card,
+  .tl-card,
+  .terminal,
+  .step-card,
+  .filter-btn {
+    background: rgba(8, 10, 22, 0.88);
+  }
+  .bg { background: rgba(8, 10, 22, 0.8); }
+
+  .ambient-glow {
+    will-change: auto;
+    animation: none !important;
+    opacity: 0.55;
+    transform: translate3d(-50%, 0, 0);
+  }
+
+  #pc {
+    display: none !important;
+  }
+
+  /* Disable paint-heavy infinite loops */
+  .nav,
+  .nav-dot,
+  h1,
+  .chip,
+  .feat-icon,
+  .dl-arrow,
+  .dl-latest .btn.bp,
+  .dl-latest .dl-icon,
+  .dl-latest.visible,
+  .dl-badge-wrap,
+  .t-dot.g,
+  .tl-dot.latest,
+  .timeline::before,
+  .tl-badge.latest,
+  .tl-item:first-child.visible .tl-card {
+    animation: none !important;
+  }
+
+  /* GPU-friendly entrance — shorter, tighter stagger */
+  .rev {
+    animation: mobileFadeUp 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    transform: translate3d(0, 12px, 0);
+  }
+
+  @keyframes mobileFadeUp {
+    to {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+    }
+  }
+
+  .d1 { animation-delay: 0.02s !important; }
+  .d2 { animation-delay: 0.05s !important; }
+  .d3 { animation-delay: 0.08s !important; }
+  .d4 { animation-delay: 0.11s !important; }
+  .d5 { animation-delay: 0.14s !important; }
+  .d6 { animation-delay: 0.17s !important; }
+
+  .rev[style*="animation-delay"] {
+    animation-delay: 0.2s !important;
+  }
+
+  .scroll-reveal {
+    transition:
+      opacity 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+    transform: translate3d(0, 14px, 0);
+  }
+
+  .scroll-reveal.active {
+    transform: translate3d(0, 0, 0);
+  }
+
+  /* Above-fold nav: show immediately when perf.js marks it */
+  html.is-mobile .scroll-reveal.in-view {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+
+  .feat {
+    transform: translate3d(0, 14px, 0);
+    transition:
+      opacity 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+      border-color 0.25s,
+      background-color 0.25s;
+  }
+
+  .feat.visible {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+
+  .feat.rev {
+    animation: mobileFadeUp 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+
+  .feat.rev.visible {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+
+  .terminal-wrap {
+    transition:
+      opacity 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+    transform: translate3d(0, 14px, 0);
+  }
+
+  .terminal-wrap.visible {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+
+  .rev,
+  .scroll-reveal,
+  .feat,
+  .terminal-wrap,
+  .dl-card,
+  .pw {
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+  }
+
+  /* Avoid transition: all — limits repaints */
+  .btn,
+  .filter-btn,
+  .pf,
+  .pw,
+  .dl-card,
+  .tl-card,
+  .mtab,
+  .cmd-copy {
+    transition-property: transform, opacity, border-color, background-color, box-shadow, color;
+    transition-duration: 0.22s;
+    transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .btn:hover,
+  .feat:hover,
+  .dl-card:hover,
+  .tl-card:hover,
+  .pf:hover {
+    transform: none;
+  }
+
+  .footer-col a::before {
+    display: none;
+  }
+
+  .dl-card {
+    transform: translate3d(0, 14px, 0);
+    transition:
+      opacity 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+      border-color 0.25s,
+      box-shadow 0.25s;
+  }
+
+  .dl-card.visible {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+
+  .dl-card:nth-child(1) { transition-delay: 0s !important; }
+  .dl-card:nth-child(2) { transition-delay: 0.04s !important; }
+  .dl-card:nth-child(3) { transition-delay: 0.08s !important; }
+  .dl-card:nth-child(4) { transition-delay: 0.12s !important; }
+  .dl-card:nth-child(5) { transition-delay: 0.16s !important; }
+  .dl-card:nth-child(6) { transition-delay: 0.2s !important; }
+
+  .dl-card.visible .dl-changelog li {
+    transition-duration: 0.2s !important;
+    transition-delay: 0s !important;
+  }
+
+  .tl-card,
+  .tl-item {
+    transform: translate3d(0, 14px, 0);
+    transition-duration: 0.35s !important;
+  }
+
+  .tl-item.visible .tl-card,
+  .tl-item.visible {
+    transform: translate3d(0, 0, 0);
+  }
+
+  /* Defer layout for below-fold sections */
+  .features,
+  .ss,
+  .premium-footer,
+  .dl-section,
+  .terminal-section,
+  .timeline-section,
+  .quick-install {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 480px;
+  }
+}

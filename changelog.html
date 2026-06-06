@@ -6,8 +6,11 @@
   <meta name="theme-color" content="#03050a">
   <title>Changelogs · Lunaris AOSP</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  
+  <script src="perf.js"></script>
+  <link rel="stylesheet" href="perf.css">
+
   <style>
     :root { --bg: #03050a; --bg-gradient: radial-gradient(circle at top, #0d1126 0%, #03050a 70%); --border: rgba(255, 255, 255, 0.06); --violet: #a78bfa; --accent: #8b5cf6; --sky: #38bdf8; --text: #f8fafc; --muted: #94a3b8; --glass: rgba(255, 255, 255, 0.03); --glass-border: rgba(255, 255, 255, 0.08); }
     * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -21,13 +24,15 @@
     @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
     .d1 { animation-delay: 0.1s; } .d2 { animation-delay: 0.2s; } .d3 { animation-delay: 0.3s; }
     header { position: relative; z-index: 10; padding: 24px 16px 0; text-align: center; }
-    .nav { display: inline-flex; justify-content: space-between; align-items: center; margin: 0 auto 48px; padding: 10px 20px; background: var(--glass); border: 1px solid var(--glass-border); border-radius: 100px; backdrop-filter: blur(16px); box-shadow: 0 4px 24px rgba(0,0,0,0.2); gap: 16px; }
+    .nav { display: inline-flex; justify-content: space-between; align-items: center; margin: 0 auto 48px; padding: 10px 20px; background: var(--glass); border: 1px solid var(--glass-border); border-radius: 100px; backdrop-filter: blur(16px); box-shadow: 0 4px 24px rgba(0,0,0,0.2); gap: 16px; animation: navGlow 6s ease-in-out infinite; }
+    @keyframes navGlow { 0%, 100% { border-color: rgba(255,255,255,0.08); box-shadow: 0 4px 24px rgba(0,0,0,0.2); } 50% { border-color: rgba(139,92,246,0.2); box-shadow: 0 4px 30px rgba(139,92,246,0.1); } }
     .nav-logo { font-weight: 800; font-size: 0.9rem; letter-spacing: 0.1em; color: var(--text); }
     .nav-badge { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: var(--muted); }
     .nav-dot { width: 6px; height: 6px; border-radius: 50%; background: #10b981; box-shadow: 0 0 8px #10b981; }
     .hero-content { margin-top: 40px; }
     .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; letter-spacing: 0.2em; color: var(--violet); text-transform: uppercase; margin-bottom: 16px; }
-    h1 { font-size: clamp(2.5rem, 8vw, 4.5rem); font-weight: 800; line-height: 1; letter-spacing: -0.03em; background: linear-gradient(135deg, #fff 0%, #c4b5fd 50%, #818cf8 100%); -webkit-background-clip: text; background-clip: text; color: transparent; margin-bottom: 24px; }
+    h1 { font-size: clamp(2.5rem, 8vw, 4.5rem); font-weight: 800; line-height: 1; letter-spacing: -0.03em; background: linear-gradient(135deg, #fff 0%, #c4b5fd 25%, #818cf8 50%, #c4b5fd 75%, #fff 100%); background-size: 200% 200%; -webkit-background-clip: text; background-clip: text; color: transparent; margin-bottom: 24px; animation: gradientShift 8s ease infinite; }
+    @keyframes gradientShift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
     .btns { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-bottom: 40px; position: relative; z-index: 20; }
     .btn { position: relative; display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px; font-weight: 500; font-size: 0.9rem; border-radius: 12px; text-decoration: none; color: #fff; border: 1px solid transparent; cursor: pointer; overflow: hidden; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); }
     .btn:hover { transform: translateY(-3px); }
@@ -39,12 +44,19 @@
     .timeline-section { position: relative; z-index: 10; padding: 0 16px 64px; }
     .timeline { max-width: 680px; margin: 0 auto; position: relative; padding-left: 28px; }
     .timeline::before { content: ''; position: absolute; left: 8px; top: 0; bottom: 0; width: 1px; background: linear-gradient(to bottom, rgba(139,92,246,0.5), transparent); }
-    .tl-item { position: relative; margin-bottom: 32px; opacity: 0; transform: translateX(-20px); transition: opacity 0.5s, transform 0.5s; }
+    .scroll-reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.16,1,0.3,1); }
+    .scroll-reveal.active { opacity: 1; transform: translateY(0); }
+    .tl-item { position: relative; margin-bottom: 32px; opacity: 0; transform: translateX(-20px); transition: opacity 0.6s cubic-bezier(0.16,1,0.3,1), transform 0.6s cubic-bezier(0.16,1,0.3,1); }
     .tl-item.visible { opacity: 1; transform: translateX(0); }
     .tl-dot { position: absolute; left: -24px; top: 4px; width: 16px; height: 16px; border-radius: 50%; background: var(--violet); border: 2px solid rgba(255,255,255,0.1); }
     .tl-dot.latest { box-shadow: 0 0 12px var(--violet); }
-    .tl-card { background: var(--glass); border: 1px solid var(--glass-border); border-radius: 16px; padding: 20px; backdrop-filter: blur(12px); transition: border-color 0.3s; }
+    .tl-card { background: var(--glass); border: 1px solid var(--glass-border); border-radius: 16px; padding: 20px; backdrop-filter: blur(12px); transition: border-color 0.4s, transform 0.4s cubic-bezier(0.16,1,0.3,1), box-shadow 0.4s; }
     .tl-item.visible .tl-card:hover { border-color: rgba(139,92,246,0.3); }
+    .tl-item:first-child.visible .tl-card { animation: tlLatestGlow 4s ease-in-out infinite; }
+    @keyframes tlLatestGlow {
+      0%, 100% { border-color: rgba(139,92,246,0.15); box-shadow: 0 0 20px rgba(139,92,246,0.05); }
+      50% { border-color: rgba(139,92,246,0.35); box-shadow: 0 0 30px rgba(139,92,246,0.12), 0 8px 32px rgba(139,92,246,0.08); }
+    }
     .tl-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; flex-wrap: wrap; }
     .tl-version { font-weight: 700; font-size: 1.1rem; color: var(--violet); }
     .tl-date { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--muted); }
@@ -53,8 +65,8 @@
     .tl-changes { list-style: none; padding: 0; }
     .tl-changes li { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: #a7f3d0; padding: 4px 0 4px 12px; position: relative; line-height: 1.5; border-left: 2px solid rgba(16,185,129,0.2); margin-bottom: 4px; }
     .tl-changes li::before { content: '>'; position: absolute; left: -1px; color: rgba(16,185,129,0.8); font-weight: 700; font-size: 0.7rem; }
-    .tl-link { display: inline-flex; align-items: center; gap: 6px; margin-top: 12px; font-size: 0.8rem; color: var(--sky); text-decoration: none; opacity: 0.8; transition: opacity 0.2s; }
-    .tl-link:hover { opacity: 1; }
+    .tl-link { display: inline-flex; align-items: center; gap: 6px; margin-top: 12px; font-size: 0.8rem; color: var(--sky); text-decoration: none; opacity: 0.8; transition: opacity 0.25s, transform 0.25s; }
+    .tl-link:hover { opacity: 1; transform: translateX(4px); }
     .premium-footer { position: relative; z-index: 10; background: rgba(5, 8, 20, 0.6); border-top: 1px solid var(--glass-border); padding: 60px 20px 30px; margin-top: 40px; }
     .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 40px; max-width: 1000px; margin: 0 auto 40px; }
     @media (max-width: 768px) { .footer-grid { grid-template-columns: 1fr; text-align: center; } }
@@ -83,7 +95,6 @@
     }
     .tl-dot.latest { animation: dotPulseTimeline 2.5s ease-in-out infinite; }
 
-    .tl-card { transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s; }
     .tl-item.visible .tl-card:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(139,92,246,0.1); }
 
     @keyframes badgeShimmer {
@@ -104,7 +115,8 @@
     .tl-item.visible .tl-changes li:nth-child(8) { transition-delay: 0.4s; }
     .tl-item.visible .tl-changes li:nth-child(9) { transition-delay: 0.45s; }
     .tl-item.visible .tl-changes li:nth-child(10) { transition-delay: 0.5s; }
-
+    .tl-item.visible .tl-changes li:nth-child(11) { transition-delay: 0.55s; }
+    .tl-item.visible .tl-changes li:nth-child(12) { transition-delay: 0.6s; }
     @keyframes dotPulse {
       0%, 100% { box-shadow: 0 0 8px #10b981; }
       50% { box-shadow: 0 0 16px #10b981, 0 0 24px rgba(16,185,129,0.3); }
@@ -125,10 +137,13 @@
       .tl-dot.latest { animation: none; }
       .timeline::before { animation: none; }
       .tl-badge.latest { animation: none; }
+      .tl-item:first-child.visible .tl-card { animation: none; }
+      .nav { animation: none; }
+      h1 { animation: none; }
       .footer-col a::before { display: none; }
     }
 
-    @media (hover: hover) and (pointer: fine) { body { cursor: none; } .cursor-dot { width: 8px; height: 8px; background: #fff; position: fixed; pointer-events: none; border-radius: 50%; z-index: 99999; transform: translate(-50%, -50%); transition: background 0.2s; } .cursor-ring { width: 32px; height: 32px; border: 2px solid rgba(255,255,255,0.4); position: fixed; pointer-events: none; border-radius: 50%; z-index: 99998; transform: translate(-50%, -50%); transition: width 0.2s, height 0.2s, border-color 0.2s; } }
+    @media (hover: hover) and (pointer: fine) { body { cursor: none; } .cursor-dot { width: 8px; height: 8px; background: #fff; position: fixed; pointer-events: none; border-radius: 50%; z-index: 99999; transform: translate(-50%, -50%); will-change: left, top; } .cursor-ring { width: 32px; height: 32px; border: 2px solid rgba(255,255,255,0.4); position: fixed; pointer-events: none; border-radius: 50%; z-index: 99998; transform: translate(-50%, -50%); transition: width 0.25s cubic-bezier(0.16,1,0.3,1), height 0.25s cubic-bezier(0.16,1,0.3,1), border-color 0.25s; will-change: left, top; } }
   </style>
 
 </head>
@@ -162,14 +177,42 @@
   <section class="timeline-section scroll-reveal" id="changelog-section">
     <div class="timeline">
       
-      <!-- v3.10 Hotfix 1.2 Entry -->
+      <!-- v3.11 Entry -->
       <div class="tl-item">
         <div class="tl-dot latest"></div>
         <div class="tl-card">
           <div class="tl-header">
+            <span class="tl-version">v3.11</span>
+            <span class="tl-date">Jun 2026</span>
+            <span class="tl-badge latest">Latest</span>
+          </div>
+          <ul class="tl-changes">
+            <li>Added Dolby Atmos</li>
+            <li>Fix WiFi & signal icons sizing</li>
+            <li>Improve custom recents animations</li>
+            <li>Fix QS media position reset issue (QQS and QS)</li>
+            <li>Fix battery percentage color issue when statusbar tint on</li>
+            <li>New 15 clock styles with weather support</li>
+            <li>Match some clock weather text with clock date</li>
+            <li>Advanced Monet customisation</li>
+            <li>Fix custom clock weather text not following clock color</li>
+            <li>Add album art color override for lockscreen clock</li>
+            <li>Improve gallery area — all screenshots look good</li>
+          </ul>
+          <a href="https://github.com/itsrohan17/Lunaris-Aosp-xaga-/blob/main/CHANGELOG.md" target="_blank" class="tl-link">
+            <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+            Full changelog on GitHub
+          </a>
+        </div>
+      </div>
+
+      <!-- v3.10 Hotfix 1.2 Entry -->
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-card">
+          <div class="tl-header">
             <span class="tl-version">v3.10 Hotfix 1.2</span>
             <span class="tl-date">May 2026</span>
-            <span class="tl-badge latest">Latest</span>
           </div>
           <ul class="tl-changes">
             <li>Add skydrove color customisation for clock style</li>
@@ -293,7 +336,7 @@
         <span class="dot-sep">•</span>
         <span><span class="info-label">Android</span> 16</span>
         <span class="dot-sep">•</span>
-        <span><span class="info-label">Last Build</span> May 2026</span>
+        <span><span class="info-label">Last Build</span> Jun 2026</span>
         <span class="dot-sep">•</span>
         <span><span class="info-label">Maintainer</span> dev Rohan</span>
       </div>
@@ -303,36 +346,69 @@
 
   <script>
     (function () {
-      const isMobile = window.innerWidth < 768 || navigator.maxTouchPoints > 0;
-      const canvas = document.getElementById('pc'); const ctx = canvas.getContext('2d');
-      let W, H, targetX = 0, targetY = 0, currentX = 0, currentY = 0;
-      function resize() { W = canvas.width = innerWidth; H = canvas.height = innerHeight; }
-      addEventListener('resize', resize, { passive: true }); resize();
-      if (!isMobile) { document.addEventListener('mousemove', (e) => { targetX = (e.clientX - W / 2) * 0.05; targetY = (e.clientY - H / 2) * 0.05; }); }
-      const COUNT = isMobile ? 0 : 100;
-      if (isMobile && canvas) canvas.style.display = 'none';
-      const pts = Array.from({ length: COUNT }, () => ({ x: Math.random() * W, y: Math.random() * H, vx: (Math.random() - 0.5) * 0.1, vy: (Math.random() - 0.5) * 0.1 - 0.05, s: Math.random() * 1.5 + 0.5, a: Math.random() * 0.5 + 0.1, td: 1, ts: Math.random() * 0.005 + 0.001, depth: Math.random() * 0.8 + 0.2 }));
-      function loop() {
-        ctx.clearRect(0, 0, W, H); currentX += (targetX - currentX) * 0.05; currentY += (targetY - currentY) * 0.05;
-        pts.forEach(p => {
-          p.x += p.vx; p.y += p.vy; p.a += p.ts * p.td;
-          if (p.a > 0.8 || p.a < 0.1) p.td *= -1;
-          if (p.x > W) p.x = 0; if (p.x < 0) p.x = W; if (p.y > H) p.y = 0; if (p.y < 0) p.y = H;
-          const drawX = p.x + (currentX * p.depth); const drawY = p.y + (currentY * p.depth);
-          ctx.beginPath(); ctx.arc(drawX, drawY, p.s, 0, Math.PI * 2); ctx.fillStyle = `rgba(255, 255, 255, ${p.a})`; ctx.fill();
-        });
-        if (!isMobile) requestAnimationFrame(loop);
-      } loop();
-      
-      const tlObs = new IntersectionObserver(entries => { entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }); }, { threshold: 0.15 });
+      const isMobile = window.LUNARIS_IS_MOBILE ?? matchMedia('(max-width:767px)').matches;
+
+      if (!isMobile) {
+        const canvas = document.getElementById('pc');
+        const ctx = canvas && canvas.getContext('2d');
+        if (canvas && ctx) {
+          let W, H, targetX = 0, targetY = 0, currentX = 0, currentY = 0;
+          function resize() { W = canvas.width = innerWidth; H = canvas.height = innerHeight; }
+          addEventListener('resize', resize, { passive: true }); resize();
+          document.addEventListener('mousemove', (e) => { targetX = (e.clientX - W / 2) * 0.05; targetY = (e.clientY - H / 2) * 0.05; });
+          const pts = Array.from({ length: 100 }, () => ({ x: Math.random() * W, y: Math.random() * H, vx: (Math.random() - 0.5) * 0.08, vy: (Math.random() - 0.5) * 0.08 - 0.04, s: Math.random() * 1.5 + 0.5, a: Math.random() * 0.5 + 0.1, td: 1, ts: Math.random() * 0.004 + 0.001, depth: Math.random() * 0.8 + 0.2, hue: Math.random() > 0.7 }));
+          const LINK_DIST = 90;
+          function loop() {
+            ctx.clearRect(0, 0, W, H); currentX += (targetX - currentX) * 0.04; currentY += (targetY - currentY) * 0.04;
+            const positions = pts.map(p => {
+              p.x += p.vx; p.y += p.vy; p.a += p.ts * p.td;
+              if (p.a > 0.8 || p.a < 0.1) p.td *= -1;
+              if (p.x > W) p.x = 0; if (p.x < 0) p.x = W; if (p.y > H) p.y = 0; if (p.y < 0) p.y = H;
+              return { x: p.x + (currentX * p.depth), y: p.y + (currentY * p.depth), a: p.a, hue: p.hue, s: p.s };
+            });
+            for (let i = 0; i < positions.length; i++) {
+              for (let j = i + 1; j < positions.length; j++) {
+                const dx = positions[i].x - positions[j].x, dy = positions[i].y - positions[j].y;
+                const dist = Math.hypot(dx, dy);
+                if (dist < LINK_DIST) {
+                  const alpha = (1 - dist / LINK_DIST) * 0.12;
+                  ctx.beginPath(); ctx.moveTo(positions[i].x, positions[i].y); ctx.lineTo(positions[j].x, positions[j].y);
+                  ctx.strokeStyle = `rgba(139, 92, 246, ${alpha})`; ctx.lineWidth = 0.5; ctx.stroke();
+                }
+              }
+            }
+            positions.forEach((pos, i) => {
+              const p = pts[i];
+              ctx.beginPath(); ctx.arc(pos.x, pos.y, p.s, 0, Math.PI * 2);
+              ctx.fillStyle = pos.hue ? `rgba(167, 139, 250, ${pos.a})` : `rgba(255, 255, 255, ${pos.a})`;
+              ctx.fill();
+            });
+            requestAnimationFrame(loop);
+          }
+          loop();
+        }
+      } else {
+        const canvas = document.getElementById('pc');
+        if (canvas) canvas.hidden = true;
+      }
+
+      const tlObs = new IntersectionObserver(entries => { entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }); }, lunarisRevealOpts({ threshold: 0.15 }));
       document.querySelectorAll('.tl-item').forEach(el => tlObs.observe(el));
-      const revealObs = new IntersectionObserver(entries => { entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('active'); revealObs.unobserve(e.target); } }); }, { threshold: 0.08 });
+      const revealObs = new IntersectionObserver(entries => { entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('active'); revealObs.unobserve(e.target); } }); }, lunarisRevealOpts({ threshold: 0.08 }));
       document.querySelectorAll('.scroll-reveal').forEach(el => revealObs.observe(el));
 
       if (!isMobile) {
         const dot = document.getElementById('cur-dot'); const ring = document.getElementById('cur-ring');
         if (dot && ring) {
-          document.addEventListener('mousemove', e => { dot.style.left = e.clientX + 'px'; dot.style.top = e.clientY + 'px'; setTimeout(() => { ring.style.left = e.clientX + 'px'; ring.style.top = e.clientY + 'px'; }, 40); }, { passive: true });
+          let mx = 0, my = 0, dx = 0, dy = 0, rx = 0, ry = 0;
+          document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; }, { passive: true });
+          (function cursorLoop() {
+            dx += (mx - dx) * 0.35; dy += (my - dy) * 0.35;
+            rx += (mx - rx) * 0.15; ry += (my - ry) * 0.15;
+            dot.style.left = dx + 'px'; dot.style.top = dy + 'px';
+            ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+            requestAnimationFrame(cursorLoop);
+          })();
           document.querySelectorAll('a, button, .btn').forEach(el => { el.addEventListener('mouseenter', () => { ring.style.width = '48px'; ring.style.height = '48px'; ring.style.borderColor = 'rgba(139, 92, 246, 0.8)'; dot.style.background = '#8b5cf6'; }); el.addEventListener('mouseleave', () => { ring.style.width = '32px'; ring.style.height = '32px'; ring.style.borderColor = 'rgba(255,255,255,0.4)'; dot.style.background = '#fff'; }); });
           document.addEventListener('mouseleave', () => { dot.style.opacity = '0'; ring.style.opacity = '0'; }); document.addEventListener('mouseenter', () => { dot.style.opacity = '1'; ring.style.opacity = '1'; });
         }
