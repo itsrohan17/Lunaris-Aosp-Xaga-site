@@ -12,6 +12,7 @@
     href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
     rel="stylesheet">
   <script src="perf.js"></script>
+  <script src="stars.js" defer></script>
   <link rel="stylesheet" href="perf.css">
 
   <style>
@@ -910,7 +911,7 @@
 
 <body>
 
-  <canvas id="pc"></canvas>
+  <canvas id="pc" data-linked></canvas>
   <div class="ambient-glow" id="nebula"></div>
   <div class="cursor-dot" id="cur-dot"></div>
   <div class="cursor-ring" id="cur-ring"></div>
@@ -1177,57 +1178,6 @@
     ============================================= */
     (function () {
       const isMobile = window.LUNARIS_IS_MOBILE ?? matchMedia('(max-width:767px)').matches;
-
-      if (!isMobile) {
-        const canvas = document.getElementById('pc');
-        const ctx = canvas && canvas.getContext('2d');
-        if (canvas && ctx) {
-          let W, H, targetX = 0, targetY = 0, currentX = 0, currentY = 0;
-          function resize() { W = canvas.width = innerWidth; H = canvas.height = innerHeight; }
-          addEventListener('resize', resize, { passive: true }); resize();
-          document.addEventListener('mousemove', (e) => {
-            targetX = (e.clientX - W / 2) * 0.05;
-            targetY = (e.clientY - H / 2) * 0.05;
-          });
-          const pts = Array.from({ length: 100 }, () => ({
-            x: Math.random() * W, y: Math.random() * H, vx: (Math.random() - 0.5) * 0.08, vy: (Math.random() - 0.5) * 0.08 - 0.04,
-            s: Math.random() * 1.5 + 0.5, a: Math.random() * 0.5 + 0.1, td: 1, ts: Math.random() * 0.004 + 0.001, depth: Math.random() * 0.8 + 0.2, hue: Math.random() > 0.7
-          }));
-          const LINK_DIST = 90;
-          function loop() {
-            ctx.clearRect(0, 0, W, H);
-            currentX += (targetX - currentX) * 0.04; currentY += (targetY - currentY) * 0.04;
-            const positions = pts.map(p => {
-              p.x += p.vx; p.y += p.vy; p.a += p.ts * p.td;
-              if (p.a > 0.8 || p.a < 0.1) p.td *= -1;
-              if (p.x > W) p.x = 0; if (p.x < 0) p.x = W; if (p.y > H) p.y = 0; if (p.y < 0) p.y = H;
-              return { x: p.x + (currentX * p.depth), y: p.y + (currentY * p.depth), a: p.a, hue: p.hue, s: p.s };
-            });
-            for (let i = 0; i < positions.length; i++) {
-              for (let j = i + 1; j < positions.length; j++) {
-                const dx = positions[i].x - positions[j].x, dy = positions[i].y - positions[j].y;
-                const dist = Math.hypot(dx, dy);
-                if (dist < LINK_DIST) {
-                  const alpha = (1 - dist / LINK_DIST) * 0.12;
-                  ctx.beginPath(); ctx.moveTo(positions[i].x, positions[i].y); ctx.lineTo(positions[j].x, positions[j].y);
-                  ctx.strokeStyle = `rgba(139, 92, 246, ${alpha})`; ctx.lineWidth = 0.5; ctx.stroke();
-                }
-              }
-            }
-            positions.forEach((pos, i) => {
-              const p = pts[i];
-              ctx.beginPath(); ctx.arc(pos.x, pos.y, p.s, 0, Math.PI * 2);
-              ctx.fillStyle = pos.hue ? `rgba(167, 139, 250, ${pos.a})` : `rgba(255, 255, 255, ${pos.a})`;
-              ctx.fill();
-            });
-            requestAnimationFrame(loop);
-          }
-          loop();
-        }
-      } else {
-        const canvas = document.getElementById('pc');
-        if (canvas) canvas.hidden = true;
-      }
 
       window.toggleCommunity = function (e) {
         e.stopPropagation();

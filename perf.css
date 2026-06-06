@@ -1,11 +1,11 @@
-/* Lunaris — mobile performance & fluid animations */
+/* Lunaris — mobile performance & layout fixes */
 
 @media (max-width: 768px) {
   html {
     scroll-behavior: auto;
   }
 
-  /* backdrop-filter is the #1 mobile jank source */
+  /* backdrop-filter is costly on mobile GPUs */
   .nav,
   .feat,
   .bg,
@@ -23,7 +23,8 @@
   .premium-footer,
   .cmd-row,
   .prereq-item,
-  .boot-opt {
+  .boot-opt,
+  .device-info {
     -webkit-backdrop-filter: none !important;
     backdrop-filter: none !important;
   }
@@ -34,7 +35,8 @@
   .tl-card,
   .terminal,
   .step-card,
-  .filter-btn {
+  .filter-btn,
+  .device-info {
     background: rgba(8, 10, 22, 0.88);
   }
   .bg { background: rgba(8, 10, 22, 0.8); }
@@ -47,10 +49,15 @@
   }
 
   #pc {
-    display: none !important;
+    display: block !important;
+    opacity: 0.55;
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
   }
 
-  /* Disable paint-heavy infinite loops */
+  /* Disable paint-heavy infinite loops (keep stars) */
   .nav,
   .nav-dot,
   h1,
@@ -60,7 +67,6 @@
   .dl-latest .btn.bp,
   .dl-latest .dl-icon,
   .dl-latest.visible,
-  .dl-badge-wrap,
   .t-dot.g,
   .tl-dot.latest,
   .timeline::before,
@@ -69,7 +75,282 @@
     animation: none !important;
   }
 
-  /* GPU-friendly entrance — shorter, tighter stagger */
+  /* ── Nav & header ── */
+  header {
+    padding: 16px 12px 0;
+  }
+
+  .nav {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    max-width: calc(100vw - 24px);
+    padding: 10px 16px;
+    margin-bottom: 32px;
+  }
+
+  .nav-badge {
+    font-size: 0.62rem;
+    letter-spacing: 0.04em;
+  }
+
+  .hero-content {
+    margin-top: 24px;
+  }
+
+  h1 {
+    font-size: clamp(2.2rem, 12vw, 3.5rem);
+    margin-bottom: 16px;
+  }
+
+  .gh-stats {
+    gap: 8px;
+    margin-bottom: 32px;
+  }
+
+  .gh-stat {
+    font-size: 0.68rem;
+    padding: 6px 12px;
+  }
+
+  .btns {
+    margin-bottom: 48px;
+    padding: 0 4px;
+  }
+
+  .btn {
+    min-height: 44px;
+  }
+
+  /* ── Download cards (badge clipping fix) ── */
+  .dl-section {
+    padding: 0 12px 48px;
+    overflow: visible;
+    content-visibility: visible;
+  }
+
+  .dl-grid-3 {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    max-width: min(100%, 420px);
+    padding: 0;
+    overflow: visible;
+  }
+
+  .dl-card {
+    overflow: visible;
+    padding: 20px 18px 18px;
+    width: 100%;
+  }
+
+  /* Badge in normal flow — no negative offset clipping */
+  .dl-badge-wrap {
+    position: static !important;
+    transform: none !important;
+    display: flex;
+    justify-content: center;
+    margin: 0 0 14px;
+    animation: none !important;
+  }
+
+  .dl-ver-badge {
+    font-size: 0.68rem;
+    padding: 5px 14px;
+  }
+
+  .dl-icon {
+    margin: 0 0 10px;
+    font-size: 2rem;
+  }
+
+  .dl-ver {
+    font-size: 1.05rem;
+    line-height: 1.3;
+    word-break: break-word;
+  }
+
+  .dl-device {
+    margin-bottom: 12px;
+  }
+
+  .dl-tags {
+    gap: 6px;
+    margin-bottom: 14px;
+  }
+
+  .dl-tags li {
+    font-size: 0.62rem;
+    padding: 4px 9px;
+  }
+
+  .dl-changelog li {
+    font-size: 0.68rem;
+    padding-left: 8px;
+  }
+
+  .dl-btn-group {
+    margin-top: 4px;
+  }
+
+  /* ── Gallery ── */
+  .ss {
+    padding: 0 10px 48px;
+    content-visibility: visible;
+  }
+
+  .ss-filters {
+    gap: 6px;
+    padding: 0 4px;
+  }
+
+  .filter-btn {
+    padding: 8px 14px;
+    font-size: 0.8rem;
+  }
+
+  .ss-carousel {
+    gap: 16px;
+    padding: 10px 4px 32px;
+  }
+
+  .pw {
+    width: min(72vw, 200px);
+  }
+
+  /* ── Features ── */
+  .features {
+    padding: 0 12px 48px;
+    content-visibility: visible;
+  }
+
+  .features-grid {
+    gap: 16px;
+  }
+
+  .feat {
+    padding: 24px 20px;
+  }
+
+  /* ── Guide / terminal ── */
+  .terminal-section {
+    padding: 0 12px 48px;
+    content-visibility: visible;
+  }
+
+  .terminal-wrap {
+    max-width: 100%;
+  }
+
+  .method-tabs {
+    flex-wrap: wrap;
+  }
+
+  .mtab {
+    flex: 1 1 30%;
+    min-width: 0;
+    font-size: 0.78rem;
+    padding: 10px 6px;
+  }
+
+  .cmd-row {
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .cmd-text {
+    flex: 1 1 100%;
+    font-size: 0.68rem;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+  }
+
+  .cmd-copy {
+    margin-left: auto;
+    min-height: 32px;
+  }
+
+  /* ── Changelog timeline ── */
+  .timeline-section {
+    padding: 0 12px 48px;
+    content-visibility: visible;
+  }
+
+  .timeline {
+    padding-left: 24px;
+  }
+
+  .tl-item {
+    transform: translate3d(0, 14px, 0) !important;
+    opacity: 0;
+    transition:
+      opacity 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.35s cubic-bezier(0.22, 1, 0.36, 1) !important;
+  }
+
+  .tl-item.visible {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) !important;
+  }
+
+  .tl-dot {
+    left: -20px;
+  }
+
+  .tl-card {
+    padding: 16px;
+  }
+
+  .tl-header {
+    gap: 8px;
+  }
+
+  .tl-version {
+    font-size: 1rem;
+  }
+
+  /* ── Footer ── */
+  .premium-footer {
+    padding: 48px 16px 24px;
+    content-visibility: visible;
+  }
+
+  .footer-grid {
+    gap: 28px;
+  }
+
+  .device-info {
+    padding: 10px 16px;
+    font-size: 0.65rem;
+    gap: 8px;
+    border-radius: 16px;
+    max-width: 100%;
+  }
+
+  .dot-sep {
+    display: none;
+  }
+
+  .device-info span {
+    display: block;
+    width: 100%;
+    text-align: center;
+  }
+
+  /* ── Lightbox ── */
+  .lightbox-close {
+    top: 12px;
+    right: 16px;
+    font-size: 32px;
+  }
+
+  .lightbox-content {
+    max-width: 94vw;
+    max-height: 82vh;
+    border-radius: 16px;
+  }
+
+  /* ── Animations (GPU-friendly) ── */
   .rev {
     animation: mobileFadeUp 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
     transform: translate3d(0, 12px, 0);
@@ -104,7 +385,6 @@
     transform: translate3d(0, 0, 0);
   }
 
-  /* Above-fold nav: show immediately when perf.js marks it */
   html.is-mobile .scroll-reveal.in-view {
     opacity: 1;
     transform: translate3d(0, 0, 0);
@@ -119,18 +399,14 @@
       background-color 0.25s;
   }
 
-  .feat.visible {
+  .feat.visible,
+  .feat.rev.visible {
     opacity: 1;
     transform: translate3d(0, 0, 0);
   }
 
   .feat.rev {
     animation: mobileFadeUp 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-  }
-
-  .feat.rev.visible {
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
   }
 
   .terminal-wrap {
@@ -143,42 +419,6 @@
   .terminal-wrap.visible {
     opacity: 1;
     transform: translate3d(0, 0, 0);
-  }
-
-  .rev,
-  .scroll-reveal,
-  .feat,
-  .terminal-wrap,
-  .dl-card,
-  .pw {
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
-  }
-
-  /* Avoid transition: all — limits repaints */
-  .btn,
-  .filter-btn,
-  .pf,
-  .pw,
-  .dl-card,
-  .tl-card,
-  .mtab,
-  .cmd-copy {
-    transition-property: transform, opacity, border-color, background-color, box-shadow, color;
-    transition-duration: 0.22s;
-    transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
-  }
-
-  .btn:hover,
-  .feat:hover,
-  .dl-card:hover,
-  .tl-card:hover,
-  .pf:hover {
-    transform: none;
-  }
-
-  .footer-col a::before {
-    display: none;
   }
 
   .dl-card {
@@ -207,26 +447,50 @@
     transition-delay: 0s !important;
   }
 
-  .tl-card,
+  .rev,
+  .scroll-reveal,
+  .feat,
+  .terminal-wrap,
+  .dl-card,
+  .pw,
   .tl-item {
-    transform: translate3d(0, 14px, 0);
-    transition-duration: 0.35s !important;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
   }
 
-  .tl-item.visible .tl-card,
-  .tl-item.visible {
-    transform: translate3d(0, 0, 0);
+  .btn,
+  .filter-btn,
+  .pf,
+  .pw,
+  .dl-card,
+  .tl-card,
+  .mtab,
+  .cmd-copy {
+    transition-property: transform, opacity, border-color, background-color, box-shadow, color;
+    transition-duration: 0.22s;
+    transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
   }
 
-  /* Defer layout for below-fold sections */
+  .btn:hover,
+  .feat:hover,
+  .dl-card:hover,
+  .tl-card:hover,
+  .pf:hover {
+    transform: none;
+  }
+
+  .footer-col a::before {
+    display: none;
+  }
+
+  .footer-col a:hover {
+    padding-left: 0;
+  }
+
+  /* Below-fold sections — skip only on homepage gallery/features */
   .features,
-  .ss,
-  .premium-footer,
-  .dl-section,
-  .terminal-section,
-  .timeline-section,
-  .quick-install {
+  .ss {
     content-visibility: auto;
-    contain-intrinsic-size: auto 480px;
+    contain-intrinsic-size: auto 400px;
   }
 }

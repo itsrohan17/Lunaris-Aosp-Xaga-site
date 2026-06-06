@@ -9,6 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <script src="perf.js"></script>
+  <script src="stars.js" defer></script>
   <link rel="stylesheet" href="perf.css">
 
   <style>
@@ -357,33 +358,6 @@
     (function () {
       const isMobile = window.LUNARIS_IS_MOBILE ?? matchMedia('(max-width:767px)').matches;
 
-      if (!isMobile) {
-        const canvas = document.getElementById('pc');
-        const ctx = canvas && canvas.getContext('2d');
-        if (canvas && ctx) {
-          let W, H, targetX = 0, targetY = 0, currentX = 0, currentY = 0;
-          function resize() { W = canvas.width = innerWidth; H = canvas.height = innerHeight; }
-          addEventListener('resize', resize, { passive: true }); resize();
-          document.addEventListener('mousemove', (e) => { targetX = (e.clientX - W / 2) * 0.05; targetY = (e.clientY - H / 2) * 0.05; });
-          const pts = Array.from({ length: 100 }, () => ({ x: Math.random() * W, y: Math.random() * H, vx: (Math.random() - 0.5) * 0.1, vy: (Math.random() - 0.5) * 0.1 - 0.05, s: Math.random() * 1.5 + 0.5, a: Math.random() * 0.5 + 0.1, td: 1, ts: Math.random() * 0.005 + 0.001, depth: Math.random() * 0.8 + 0.2 }));
-          function loop() {
-            ctx.clearRect(0, 0, W, H); currentX += (targetX - currentX) * 0.05; currentY += (targetY - currentY) * 0.05;
-            pts.forEach(p => {
-              p.x += p.vx; p.y += p.vy; p.a += p.ts * p.td;
-              if (p.a > 0.8 || p.a < 0.1) p.td *= -1;
-              if (p.x > W) p.x = 0; if (p.x < 0) p.x = W; if (p.y > H) p.y = 0; if (p.y < 0) p.y = H;
-              const drawX = p.x + (currentX * p.depth); const drawY = p.y + (currentY * p.depth);
-              ctx.beginPath(); ctx.arc(drawX, drawY, p.s, 0, Math.PI * 2); ctx.fillStyle = `rgba(255, 255, 255, ${p.a})`; ctx.fill();
-            });
-            requestAnimationFrame(loop);
-          }
-          loop();
-        }
-      } else {
-        const canvas = document.getElementById('pc');
-        if (canvas) canvas.hidden = true;
-      }
-      
       window.showTab = function (id, btn) {
         ['win', 'linux', 'termux'].forEach(t => { const el = document.getElementById('tab-' + t); if (el) el.style.display = t === id ? 'block' : 'none'; });
         document.querySelectorAll('.mtab').forEach(b => b.classList.remove('active')); btn.classList.add('active');

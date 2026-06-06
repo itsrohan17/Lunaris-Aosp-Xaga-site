@@ -34,6 +34,12 @@
         el.classList.add('in-view', 'active');
       }
     });
+    document.querySelectorAll('.dl-card').forEach(function (el) {
+      var rect = el.getBoundingClientRect();
+      if (rect.top < vh * 0.95) {
+        el.classList.add('visible');
+      }
+    });
   }
 
   if (document.readyState === 'loading') {
