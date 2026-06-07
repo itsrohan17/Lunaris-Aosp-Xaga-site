@@ -1,4 +1,4 @@
-/* Lunaris — mobile perf helpers (load before page scripts) */
+
 (function () {
   'use strict';
 
