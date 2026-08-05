@@ -116,22 +116,26 @@ html.page-leave a.page-link {
   pointer-events: none;
 }
 
-/* ── Mobile: no blank screen, no exit wait, native-speed navigation ── */
+/* ── Mobile: Smooth native GPU accelerated page navigation ── */
 @media (max-width: 768px) {
-  html.page-instant body,
-  html.page-instant #page-root,
-  html.page-enter:not(.page-enter-active) body,
-  html.page-enter:not(.page-enter-active) #page-root {
-    opacity: 1 !important;
-    transform: none !important;
+  :root {
+    --page-dur-out: 0.12s;
   }
 
-  html.page-instant #page-root,
-  html.page-instant header,
-  html.page-instant .dl-card,
-  html.page-instant .tl-item,
-  html.page-instant .terminal-wrap {
-    animation: none !important;
+  html.page-enter-active #page-root {
+    animation: pageEnterMobile 0.18s var(--page-ease) forwards;
+    will-change: transform, opacity;
+  }
+
+  @keyframes pageEnterMobile {
+    from {
+      opacity: 0;
+      transform: translate3d(0, 8px, 0);
+    }
+    to {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+    }
   }
 
   .page-curtain {
@@ -139,7 +143,7 @@ html.page-leave a.page-link {
   }
 
   a.page-link:active {
-    transform: scale(0.97);
+    transform: scale(0.97) translate3d(0, 0, 0);
     opacity: 0.85;
     transition-duration: 0.1s;
   }

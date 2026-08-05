@@ -2,10 +2,11 @@
 
 @media (max-width: 768px) {
   html {
-    scroll-behavior: auto;
+    scroll-behavior: smooth;
+    -webkit-tap-highlight-color: transparent;
   }
 
-  /* backdrop-filter is costly on mobile GPUs */
+  /* Optimized backdrop blur & GPU accelerated rendering for mobile */
   .nav,
   .feat,
   .bg,
@@ -25,11 +26,12 @@
   .prereq-item,
   .boot-opt,
   .device-info {
-    -webkit-backdrop-filter: none !important;
-    backdrop-filter: none !important;
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    will-change: transform, opacity;
   }
 
-  .nav { background: rgba(8, 10, 22, 0.94); }
+  .nav { background: rgba(8, 10, 22, 0.85); }
   .feat,
   .dl-card,
   .tl-card,
@@ -37,42 +39,41 @@
   .step-card,
   .filter-btn,
   .device-info {
-    background: rgba(8, 10, 22, 0.88);
+    background: rgba(8, 10, 22, 0.82);
   }
-  .bg { background: rgba(8, 10, 22, 0.8); }
+  .bg { background: rgba(8, 10, 22, 0.75); }
 
   .ambient-glow {
-    will-change: auto;
-    animation: none !important;
-    opacity: 0.55;
+    will-change: transform, opacity;
+    opacity: 0.7;
     transform: translate3d(-50%, 0, 0);
+    animation: mobileNebulaPulse 8s ease-in-out infinite alternate !important;
+  }
+
+  @keyframes mobileNebulaPulse {
+    0% { opacity: 0.5; transform: translate3d(-50%, 0, 0) scale(1); }
+    100% { opacity: 0.85; transform: translate3d(-50%, -10px, 0) scale(1.05); }
   }
 
   #pc {
     display: block !important;
-    opacity: 0.55;
+    opacity: 0.6;
     position: fixed;
     inset: 0;
     z-index: 0;
     pointer-events: none;
   }
 
-  /* Disable paint-heavy infinite loops (keep stars) */
-  .nav,
-  .nav-dot,
-  h1,
-  .chip,
-  .feat-icon,
-  .dl-arrow,
-  .dl-latest .btn.bp,
-  .dl-latest .dl-icon,
-  .dl-latest.visible,
-  .t-dot.g,
-  .tl-dot.latest,
-  .timeline::before,
-  .tl-badge.latest,
-  .tl-item:first-child.visible .tl-card {
-    animation: none !important;
+  /* Active touch-down feedback for Android / Mobile devices */
+  .btn:active,
+  .dl-card:active,
+  .tl-card:active,
+  .step-card:active,
+  .feat:active,
+  .filter-btn:active,
+  .mtab:active {
+    transform: scale(0.97) translate3d(0, 0, 0) !important;
+    transition: transform 0.12s cubic-bezier(0.2, 0, 0.1, 1) !important;
   }
 
   /* ── Nav & header ── */

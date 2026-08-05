@@ -215,26 +215,4 @@
   };
   if (window.lunarisWhenIdle) lunarisWhenIdle(loadGh);
   else loadGh();
-
-  /* ── CUSTOM CURSOR ── */
-  if (!isMobile) {
-    const dot  = document.getElementById('cur-dot');
-    const ring = document.getElementById('cur-ring');
-    if (dot && ring) {
-      document.addEventListener('mousemove', e => {
-        dot.style.left = e.clientX + 'px';
-        dot.style.top  = e.clientY + 'px';
-        setTimeout(() => {
-          ring.style.left = e.clientX + 'px';
-          ring.style.top  = e.clientY + 'px';
-        }, 40);
-      }, { passive: true });
-      document.querySelectorAll('a, button, .btn, .filter-btn, .pf, .lightbox-close, .mtab, .cmd-copy').forEach(el => {
-        el.addEventListener('mouseenter', () => { ring.style.width = '48px'; ring.style.height = '48px'; ring.style.borderColor = 'rgba(139, 92, 246, 0.8)'; dot.style.background = '#8b5cf6'; });
-        el.addEventListener('mouseleave', () => { ring.style.width = '32px'; ring.style.height = '32px'; ring.style.borderColor = 'rgba(255,255,255,0.4)'; dot.style.background = '#fff'; });
-      });
-      document.addEventListener('mouseleave', () => { dot.style.opacity = '0'; ring.style.opacity = '0'; });
-      document.addEventListener('mouseenter', () => { dot.style.opacity = '1'; ring.style.opacity = '1'; });
-    }
-  }
 })();

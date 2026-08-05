@@ -142,12 +142,6 @@
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
     }
-    @media (max-width: 768px) {
-      .t-dot.g { animation: none; }
-      .footer-col a::before { display: none; }
-    }
-
-    @media (hover: hover) and (pointer: fine) { body { cursor: none; } .cursor-dot { width: 8px; height: 8px; background: #fff; position: fixed; pointer-events: none; border-radius: 50%; z-index: 99999; transform: translate(-50%, -50%); transition: background 0.2s; } .cursor-ring { width: 32px; height: 32px; border: 2px solid rgba(255,255,255,0.4); position: fixed; pointer-events: none; border-radius: 50%; z-index: 99998; transform: translate(-50%, -50%); transition: width 0.2s, height 0.2s, border-color 0.2s; } }
   </style>
 
 </head>
@@ -155,8 +149,6 @@
 
   <canvas id="pc"></canvas>
   <div class="ambient-glow" id="nebula"></div>
-  <div class="cursor-dot" id="cur-dot"></div>
-  <div class="cursor-ring" id="cur-ring"></div>
 
   <header>
     <nav class="nav scroll-reveal">
@@ -348,7 +340,7 @@
         <span class="dot-sep">•</span>
         <span><span class="info-label">Android</span> 16</span>
         <span class="dot-sep">•</span>
-        <span><span class="info-label">Last Build</span> Jun 2026</span>
+        <span><span class="info-label">Last Build</span> Aug 2026</span>
         <span class="dot-sep">•</span>
         <span><span class="info-label">Maintainer</span> dev Rohan</span>
       </div>
@@ -373,14 +365,6 @@
 
       const revealObs = new IntersectionObserver(entries => { entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('active'); revealObs.unobserve(e.target); } }); }, lunarisRevealOpts({ threshold: 0.08 }));
       document.querySelectorAll('.scroll-reveal').forEach(el => revealObs.observe(el));
-      if (!isMobile) {
-        const dot = document.getElementById('cur-dot'); const ring = document.getElementById('cur-ring');
-        if (dot && ring) {
-          document.addEventListener('mousemove', e => { dot.style.left = e.clientX + 'px'; dot.style.top = e.clientY + 'px'; setTimeout(() => { ring.style.left = e.clientX + 'px'; ring.style.top = e.clientY + 'px'; }, 40); }, { passive: true });
-          document.querySelectorAll('a, button, .btn, .mtab, .cmd-copy').forEach(el => { el.addEventListener('mouseenter', () => { ring.style.width = '48px'; ring.style.height = '48px'; ring.style.borderColor = 'rgba(139, 92, 246, 0.8)'; dot.style.background = '#8b5cf6'; }); el.addEventListener('mouseleave', () => { ring.style.width = '32px'; ring.style.height = '32px'; ring.style.borderColor = 'rgba(255,255,255,0.4)'; dot.style.background = '#fff'; }); });
-          document.addEventListener('mouseleave', () => { dot.style.opacity = '0'; ring.style.opacity = '0'; }); document.addEventListener('mouseenter', () => { dot.style.opacity = '1'; ring.style.opacity = '1'; });
-        }
-      }
       /* Terminal card staggered reveal */
       const termObs = new IntersectionObserver(entries => { entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); termObs.unobserve(e.target); } }); }, lunarisRevealOpts({ threshold: 0.1 }));
       document.querySelectorAll('.terminal-wrap').forEach((el, i) => {

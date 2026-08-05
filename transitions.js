@@ -11,8 +11,8 @@
 
   var isMobile = window.LUNARIS_IS_MOBILE ?? window.matchMedia('(max-width:767px)').matches;
   var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var useTransitions = !isMobile && !reduced;
-  var EXIT_MS = 180;
+  var useTransitions = !reduced;
+  var EXIT_MS = isMobile ? 120 : 180;
   var leaving = false;
 
   if (useTransitions) {
