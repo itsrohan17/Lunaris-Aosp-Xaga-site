@@ -215,6 +215,7 @@
         <button class="mtab active" onclick="showTab('win',this)">💻 Windows</button>
         <button class="mtab" onclick="showTab('linux',this)">🐧 Linux</button>
         <button class="mtab" onclick="showTab('termux',this)">📱 Termux</button>
+        <button class="mtab" onclick="showTab('ota',this)">🔄 OTA Update</button>
       </div>
 
       <div class="terminal" id="tab-win">
@@ -310,6 +311,25 @@
           </div>
         </div>
       </div>
+
+      <div class="terminal" id="tab-ota" style="display:none">
+        <div class="terminal-bar">
+          <div class="t-dot r"></div><div class="t-dot y"></div><div class="t-dot g"></div>
+          <span class="t-title">OTA Update Instructions</span>
+        </div>
+        <div class="cmd-list">
+          <div class="step-list">
+            <div class="step"><span class="step-n">1</span><span>Download the OTA update package from the link provided on the website.</span></div>
+            <div class="step"><span class="step-n">2</span><span>Open <strong>Settings</strong> → <strong>System</strong> → <strong>System Updates</strong>.</span></div>
+            <div class="step"><span class="step-n">3</span><span>Tap <strong>Install Local Update</strong>.</span></div>
+            <div class="step"><span class="step-n">4</span><span>Select the downloaded OTA update package.</span></div>
+            <div class="step"><span class="step-n">5</span><span>Wait for the installation to complete, then reboot your device if prompted.</span></div>
+          </div>
+          <div class="prompt-row clean" style="margin-top:14px">
+            <span class="prompt-key">Note:</span> This method is only for updating from a compatible previous build. If you're coming from another ROM or encounter issues, perform a clean flash instead.
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -353,7 +373,7 @@
       const isMobile = window.LUNARIS_IS_MOBILE ?? matchMedia('(max-width:767px)').matches;
 
       window.showTab = function (id, btn) {
-        ['win', 'linux', 'termux'].forEach(t => { const el = document.getElementById('tab-' + t); if (el) el.style.display = t === id ? 'block' : 'none'; });
+        ['win', 'linux', 'termux', 'ota'].forEach(t => { const el = document.getElementById('tab-' + t); if (el) el.style.display = t === id ? 'block' : 'none'; });
         document.querySelectorAll('.mtab').forEach(b => b.classList.remove('active')); btn.classList.add('active');
       };
 

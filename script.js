@@ -68,7 +68,7 @@
 
   /* ── TAB SWITCHER & COPY COMMAND ── */
   window.showTab = function (id, btn) {
-    ['win', 'linux', 'termux'].forEach(t => {
+    ['win', 'linux', 'termux', 'ota'].forEach(t => {
       const el = document.getElementById('tab-' + t);
       if (el) el.style.display = t === id ? 'block' : 'none';
     });
