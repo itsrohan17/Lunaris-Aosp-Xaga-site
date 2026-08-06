@@ -268,6 +268,14 @@ h1 {
   box-shadow: 0 8px 24px rgba(0,0,0,0.3);
 }
 
+/* Feature Cards */
+.features { position: relative; z-index: 10; padding: 0 16px 64px; max-width: 1000px; margin: 0 auto; }
+.features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; max-width: 1000px; margin: 0 auto; }
+@media (max-width: 768px) { .features-grid { grid-template-columns: 1fr; gap: 16px; } }
+
+.feat { position: relative; background: var(--glass); border: 1px solid var(--glass-border); border-radius: 20px; padding: 32px 24px; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease; }
+.feat:hover { transform: translate3d(0, -4px, 0); border-color: rgba(139,92,246,0.4); box-shadow: 0 10px 30px rgba(139,92,246,0.1); }
+
 /* Quick Install Preview */
 .quick-install {
   position: relative;
