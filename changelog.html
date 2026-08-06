@@ -388,12 +388,6 @@
   <script>
     (function () {
       const isMobile = window.LUNARIS_IS_MOBILE ?? matchMedia('(max-width:767px)').matches;
-
-      const tlObs = new IntersectionObserver(entries => { entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }); }, lunarisRevealOpts({ threshold: 0.15 }));
-      document.querySelectorAll('.tl-item').forEach(el => tlObs.observe(el));
-      const revealObs = new IntersectionObserver(entries => { entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('active'); revealObs.unobserve(e.target); } }); }, lunarisRevealOpts({ threshold: 0.08 }));
-      document.querySelectorAll('.scroll-reveal').forEach(el => revealObs.observe(el));
-
     })();
   </script>
 </body>

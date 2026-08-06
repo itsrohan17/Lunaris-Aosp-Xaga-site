@@ -502,6 +502,9 @@
       padding: 10px 10px 40px;
       scroll-snap-type: x mandatory;
       scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior-x: contain;
+      touch-action: pan-x pan-y;
       scrollbar-width: thin;
       scrollbar-color: var(--violet) var(--bg);
     }
@@ -1289,10 +1292,6 @@
         if (event.key === "ArrowRight") nextImage();
       });
 
-      window.smoothScrollTo = function (id) { const el = document.getElementById(id); if (el) el.scrollIntoView({ behavior: isMobile ? 'auto' : 'smooth', block: 'start' }); };
-      const revealObs = new IntersectionObserver(entries => { entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('active'); revealObs.unobserve(e.target); } }); }, lunarisRevealOpts({ threshold: 0.08 }));
-      document.querySelectorAll('.scroll-reveal').forEach(el => revealObs.observe(el));
-
       const setVal = (id, val) => { const el = document.getElementById(id); if (el) el.innerHTML = val; };
       lunarisWhenIdle(() => {
         fetch('https://api.github.com/repos/itsrohan17/android_device_xiaomi_xaga/releases/latest')
@@ -1304,10 +1303,6 @@
           })
           .catch(() => { setVal('gh-ver', 'v3.12'); setVal('gh-date', 'Aug 2026'); setVal('gh-dl', '—'); });
       });
-
-      /* Feature card staggered reveal */
-      const featObs = new IntersectionObserver(entries => { entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); featObs.unobserve(e.target); } }); }, lunarisRevealOpts({ threshold: 0.15 }));
-      document.querySelectorAll('.feat').forEach(el => featObs.observe(el));
     })();
   </script>
 </body>

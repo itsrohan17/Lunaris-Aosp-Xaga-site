@@ -28,7 +28,6 @@
   .device-info {
     -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
-    will-change: transform, opacity;
   }
 
   .nav { background: rgba(8, 10, 22, 0.85); }
@@ -228,6 +227,9 @@
   .ss-carousel {
     gap: 16px;
     padding: 10px 4px 32px;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+    touch-action: pan-x pan-y;
   }
 
   .pw {
@@ -399,12 +401,12 @@
   }
 
   .scroll-reveal.active {
-    transform: translate3d(0, 0, 0);
+    transform: none;
   }
 
   html.is-mobile .scroll-reveal.in-view {
     opacity: 1;
-    transform: translate3d(0, 0, 0);
+    transform: none;
   }
 
   .feat {
@@ -419,7 +421,7 @@
   .feat.visible,
   .feat.rev.visible {
     opacity: 1;
-    transform: translate3d(0, 0, 0);
+    transform: none;
   }
 
   .feat.rev {
@@ -435,7 +437,7 @@
 
   .terminal-wrap.visible {
     opacity: 1;
-    transform: translate3d(0, 0, 0);
+    transform: none;
   }
 
   .dl-card {
@@ -449,7 +451,7 @@
 
   .dl-card.visible {
     opacity: 1;
-    transform: translate3d(0, 0, 0);
+    transform: none;
   }
 
   .dl-card:nth-child(1) { transition-delay: 0s !important; }

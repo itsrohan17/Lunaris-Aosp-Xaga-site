@@ -72,7 +72,7 @@
 
   /* ── TAB SWITCHER & COPY COMMAND ── */
   window.showTab = function (id, btn) {
-    ['win', 'linux', 'termux', 'ota'].forEach(t => {
+    ['win', 'linux', 'termux'].forEach(t => {
       const el = document.getElementById('tab-' + t);
       if (el) el.style.display = (t === id) ? 'block' : 'none';
     });
@@ -198,29 +198,25 @@
   /* ── SCROLL & OBSERVERS ── */
   window.smoothScrollTo = function (id) {
     const el = document.getElementById(id);
-    if (el) el.scrollIntoView({ behavior: isMobile ? 'auto' : 'smooth', block: 'start' });
+    if (!el) return;
+    try {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } catch (err) {
+      window.scrollTo({ top: el.offsetTop, behavior: 'smooth' });
+    }
   };
 
-  const revealOpts = window.lunarisRevealOpts ? lunarisRevealOpts({ threshold: 0.08 }) : { threshold: 0.08 };
+  const revealOpts = window.lunarisRevealOpts ? lunarisRevealOpts({ threshold: 0.05, rootMargin: '0px 0px -20px 0px' }) : { threshold: 0.05 };
   const revealObs = new IntersectionObserver(entries => {
     entries.forEach(e => {
       if (e.isIntersecting) {
-        e.target.classList.add('active');
+        e.target.classList.add('active', 'visible', 'in-view');
         revealObs.unobserve(e.target);
       }
     });
   }, revealOpts);
-  document.querySelectorAll('.scroll-reveal').forEach(el => revealObs.observe(el));
 
-  const tlObs = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        e.target.classList.add('visible');
-        tlObs.unobserve(e.target);
-      }
-    });
-  }, window.lunarisRevealOpts ? lunarisRevealOpts({ threshold: 0.15 }) : { threshold: 0.15 });
-  document.querySelectorAll('.tl-item').forEach(el => tlObs.observe(el));
+  document.querySelectorAll('.scroll-reveal, .tl-item, .feat, .dl-card, .terminal-wrap').forEach(el => revealObs.observe(el));
 
   /* ── GITHUB RELEASE DATA FETCH ── */
   const setVal = (id, val) => {

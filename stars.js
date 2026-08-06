@@ -60,7 +60,9 @@
         currentY += (targetY - currentY) * 0.04;
       }
 
-      var positions = pts.map(function (p) {
+      var len = pts.length;
+      for (var i = 0; i < len; i++) {
+        var p = pts[i];
         p.x += p.vx;
         p.y += p.vy;
         p.a += p.ts * p.td;
@@ -69,26 +71,23 @@
         if (p.x < 0) p.x = W;
         if (p.y > H) p.y = 0;
         if (p.y < 0) p.y = H;
-        return {
-          x: p.x + (currentX * p.depth),
-          y: p.y + (currentY * p.depth),
-          a: p.a,
-          hue: p.hue,
-          s: p.s
-        };
-      });
+        p.renderX = p.x + (currentX * p.depth);
+        p.renderY = p.y + (currentY * p.depth);
+      }
 
       if (linked && !isMobile) {
-        for (var i = 0; i < positions.length; i++) {
-          for (var j = i + 1; j < positions.length; j++) {
-            var dx = positions[i].x - positions[j].x;
-            var dy = positions[i].y - positions[j].y;
+        for (var i = 0; i < len; i++) {
+          var p1 = pts[i];
+          for (var j = i + 1; j < len; j++) {
+            var p2 = pts[j];
+            var dx = p1.renderX - p2.renderX;
+            var dy = p1.renderY - p2.renderY;
             var dist = Math.hypot(dx, dy);
             if (dist < LINK_DIST) {
               var alpha = (1 - dist / LINK_DIST) * 0.12;
               ctx.beginPath();
-              ctx.moveTo(positions[i].x, positions[i].y);
-              ctx.lineTo(positions[j].x, positions[j].y);
+              ctx.moveTo(p1.renderX, p1.renderY);
+              ctx.lineTo(p2.renderX, p2.renderY);
               ctx.strokeStyle = 'rgba(139, 92, 246, ' + alpha + ')';
               ctx.lineWidth = 0.5;
               ctx.stroke();
@@ -97,17 +96,15 @@
         }
       }
 
-      positions.forEach(function (pos, i) {
+      for (var i = 0; i < len; i++) {
         var p = pts[i];
         ctx.beginPath();
-        ctx.arc(pos.x, pos.y, p.s, 0, Math.PI * 2);
-        if (pos.hue) {
-          ctx.fillStyle = 'rgba(167, 139, 250, ' + pos.a + ')';
-        } else {
-          ctx.fillStyle = 'rgba(255, 255, 255, ' + pos.a + ')';
-        }
+        ctx.arc(p.renderX, p.renderY, p.s, 0, Math.PI * 2);
+        ctx.fillStyle = p.hue
+          ? 'rgba(167, 139, 250, ' + p.a + ')'
+          : 'rgba(255, 255, 255, ' + p.a + ')';
         ctx.fill();
-      });
+      }
 
       rafId = requestAnimationFrame(loop);
     }
