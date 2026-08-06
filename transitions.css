@@ -123,8 +123,12 @@ html.page-leave a.page-link {
   }
 
   html.page-enter-active #page-root {
-    animation: pageEnterMobile 0.18s var(--page-ease) forwards;
-    will-change: transform, opacity;
+    animation: pageEnterMobile 0.18s var(--page-ease);
+  }
+
+  html:not(.page-enter-active):not(.page-leave) #page-root {
+    transform: none !important;
+    will-change: auto !important;
   }
 
   @keyframes pageEnterMobile {

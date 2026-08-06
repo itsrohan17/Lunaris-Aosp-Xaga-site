@@ -6,47 +6,37 @@
     -webkit-tap-highlight-color: transparent;
   }
 
-  /* Optimized backdrop blur & GPU accelerated rendering for mobile */
+  /* Optimized glass background rendering for mobile (avoids backdrop-filter GPU scroll locking) */
   .nav,
-  .feat,
-  .bg,
-  .dl-card,
-  .terminal,
-  .step-card,
-  .filter-btn,
-  .pf,
-  .tl-card,
   .community-popup,
   .dl38-popup,
-  .lightbox,
-  .lightbox-nav,
-  .gh-stat,
-  .premium-footer,
-  .cmd-row,
-  .prereq-item,
-  .boot-opt,
-  .device-info {
-    -webkit-backdrop-filter: blur(10px);
-    backdrop-filter: blur(10px);
+  .lightbox {
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
   }
 
-  .nav { background: rgba(8, 10, 22, 0.85); }
+  .nav { background: rgba(8, 10, 22, 0.88); }
   .feat,
   .dl-card,
   .tl-card,
   .terminal,
   .step-card,
   .filter-btn,
-  .device-info {
-    background: rgba(8, 10, 22, 0.82);
+  .device-info,
+  .cmd-row,
+  .prereq-item,
+  .boot-opt {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+    background: rgba(10, 14, 28, 0.92) !important;
   }
-  .bg { background: rgba(8, 10, 22, 0.75); }
+  .bg { background: rgba(8, 10, 22, 0.85); }
 
   .ambient-glow {
-    will-change: transform, opacity;
-    opacity: 0.7;
+    opacity: 0.65;
     transform: translate3d(-50%, 0, 0);
-    animation: mobileNebulaPulse 8s ease-in-out infinite alternate !important;
+    animation: none !important;
+    will-change: auto;
   }
 
   @keyframes mobileNebulaPulse {
@@ -63,16 +53,13 @@
     pointer-events: none;
   }
 
-  /* Active touch-down feedback for Android / Mobile devices */
+  /* Active touch-down feedback for buttons (excludes scrollable cards to prevent swipe locking) */
   .btn:active,
-  .dl-card:active,
-  .tl-card:active,
-  .step-card:active,
-  .feat:active,
   .filter-btn:active,
-  .mtab:active {
-    transform: scale(0.97) translate3d(0, 0, 0) !important;
-    transition: transform 0.12s cubic-bezier(0.2, 0, 0.1, 1) !important;
+  .mtab:active,
+  .cmd-copy:active {
+    transform: scale(0.97) !important;
+    transition: transform 0.1s cubic-bezier(0.2, 0, 0.1, 1) !important;
   }
 
   /* ── Nav & header ── */
@@ -466,15 +453,15 @@
     transition-delay: 0s !important;
   }
 
-  .rev,
-  .scroll-reveal,
-  .feat,
-  .terminal-wrap,
-  .dl-card,
-  .pw,
-  .tl-item {
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
+  .rev.visible,
+  .scroll-reveal.active,
+  .feat.visible,
+  .terminal-wrap.visible,
+  .dl-card.visible,
+  .tl-item.visible {
+    opacity: 1 !important;
+    transform: none !important;
+    will-change: auto !important;
   }
 
   .btn,

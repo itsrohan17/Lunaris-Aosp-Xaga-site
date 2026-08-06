@@ -86,6 +86,9 @@
   function startEnter() {
     document.documentElement.classList.add('page-enter-active');
     revealContent(!useTransitions);
+    window.setTimeout(function () {
+      document.documentElement.classList.remove('page-enter', 'page-enter-active');
+    }, isMobile ? 250 : 350);
   }
 
   function navigateWithExit(url) {
